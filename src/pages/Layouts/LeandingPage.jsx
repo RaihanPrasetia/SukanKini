@@ -11,7 +11,7 @@ import Navbar from '../../components/Navbar';
 const LandingPage = () => {
     return (<div className="w-full">
         <Navbar />
-        <div className="flex flex-col space-y-12 ">
+        <div className="flex flex-col space-y-12 -z-50 ">
 
             <section id="home">
                 <Home />

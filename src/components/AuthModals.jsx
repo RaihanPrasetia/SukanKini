@@ -41,11 +41,28 @@ function AuthModal({ isOpen, onClose }) {
                 return null;
         }
     };
+
+    // Function to close modal when clicking outside the modal content
+    const handleClickOutside = (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+            onClose();
+        }
+    };
+
     return (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
-                <button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-800">X</button>
-                {renderForm()}
+        <div
+            className="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 w-full modal-overlay"
+            onClick={handleClickOutside}
+        >
+            <div className="bg-green-500 rounded-lg shadow-lg relative w-[1000px] flex min-h-[400px] justify-start" onClick={(e) => e.stopPropagation()}>
+                <div className="min-w-[350px] h-full text-start py-10">
+                    <h1 className="text-center text-[16px] text-white font-bold px-5">
+                        Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
+                    </h1>
+                </div>
+                <div className="flex items-center justify-center w-full bg-white rounded-xl p-24">
+                    {renderForm()}
+                </div>
             </div>
         </div>
     );

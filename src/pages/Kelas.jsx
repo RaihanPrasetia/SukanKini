@@ -50,7 +50,7 @@ const Kelas = () => {
       <div className="flex justify-start gap-4 items-start w-full">
         {['Cardio', 'Dance', 'Mind & Body', 'Strength'].map((category) => (
           <button key={category}
-            className="px-4 py-2 border border-green-500 text-green-700 rounded-full hover:bg-green-500 hover:text-white transition">
+            className="px-4 py-2 border border-green-500 text-green-700 rounded-xl hover:bg-green-500 hover:text-white transition">
             {category}
           </button>
         ))}

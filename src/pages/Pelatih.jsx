@@ -30,7 +30,7 @@ function Pelatih() {
                         <button
                             key={category}
                             onClick={() => setActiveCategory(category)}
-                            className={`text-lg font-semibold ${activeCategory === category ? 'text-green-500 hover:text-green-600' : 'text-black hover:text-green-600'}`}
+                            className={`text-lg font-semibold  px-4 py-2 border rounded-xl ${activeCategory === category ? 'text-white hover:text-green-500 bg-green-500 hover:bg-white ' : 'text-green-500 hover:text-white bg-white hover:bg-green-500 '}`}
                         >
                             {category}
                         </button>
@@ -49,7 +49,7 @@ function Pelatih() {
                 </div>
 
             </div>
-            <button className="mt-6 px-6 py-2 text-white bg-green-600 rounded-full hover:bg-white hover:text-green-600 text-center">
+            <button className="mt-6 px-6 py-2 text-white bg-green-600 rounded-xl hover:bg-white hover:text-green-600 text-center">
                 Lihat Semua Pelatih
             </button>
         </div>
