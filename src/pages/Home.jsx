@@ -27,12 +27,12 @@ export default function Home() {
 
     return (
         <>
-            <div className="relative bg-cover bg-center min-h-screen flex items-center justify-start" style={{
+            <div className="relative bg-cover bg-center min-h-screen flex items-center justify-start px-36" style={{
                 backgroundImage: `url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
             }}>
                 <div className="absolute inset-0 bg-black opacity-50"></div>
 
-                <div className="relative z-10 text-left text-white max-w-2xl p-6">
+                <div className="relative z-10 text-left text-white max-w-2xl ">
                     <h1 className="text-5xl font-bold mb-4">
                         SELAMAT DATANG <br /> DI SUKANKINI! FITLIFE!
                     </h1>

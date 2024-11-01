@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 function Komunitas() {
     return (
-        <div className="w-full flex flex-col justify-center items-center bg-slate-50 py-10 rounded-lg shadow-lg">
+        <div className="w-full flex flex-col justify-center px-36  items-center bg-slate-50 py-10 rounded-lg shadow-lg">
             {/* Header Section */}
-            <div className="flex flex-col max-w-[1367px] space-y-5">
+            <div className="flex flex-col w-full space-y-5">
                 <div className="text-center">
                     <h1 className="text-3xl font-bold text-yellow-600">Temukan Komunitas yang Anda Minati</h1>
                     <p className="text-gray-700 mt-4">
@@ -76,6 +76,10 @@ function Komunitas() {
 
             </div>
 
+            {/* Community Cards Section */}
+            <div>
+
+            </div>
 
 
         </div>
