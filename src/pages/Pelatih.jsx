@@ -14,7 +14,7 @@ function Pelatih() {
         <div className="relative w-full h-screen bg-cover bg-center" style={{ backgroundImage: "url('https://example.com/background-image.jpg')" }}>
             {/* Overlay */}
             <div className="absolute inset-0 bg-black opacity-50"></div>
-            
+
             {/* Content */}
             <div className="relative z-10 p-8 max-w-7xl mx-auto">
                 {/* Header */}
