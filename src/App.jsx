@@ -6,6 +6,7 @@ import ThemeToggleButton from './components/ThemeToggleButton';
 import AppRoutes from './routes/AppRoutes';
 
 function App() {
+
   return (
     <div className='bg-white dark:bg-gray-800 min-h-screen'>
       <Router>
