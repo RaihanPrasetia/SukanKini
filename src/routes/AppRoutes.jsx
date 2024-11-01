@@ -4,11 +4,13 @@ import Dashboard from '../pages/Dashboard';
 import LandingPage from '../pages/Layouts/LeandingPage';
 
 function AppRoutes() {
-    return (
+    return (<>
         <Routes>
             <Route path="/" element={<LandingPage />} /> {/* Gunakan LandingPage */}
             <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
+    </>
+
     );
 }
 

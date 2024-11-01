@@ -9,11 +9,9 @@ import Navbar from '../../components/Navbar';
 
 
 const LandingPage = () => {
-    return (
-        <div>
-            <header>
-                <Navbar />
-            </header>
+    return (<div className="w-full">
+        <Navbar />
+        <div className="flex flex-col space-y-12 ">
 
             <section id="home">
                 <Home />
@@ -27,18 +25,19 @@ const LandingPage = () => {
                 <Komunitas />
             </section>
 
+            <section id="kelas">
+                <Kelas />
+            </section>
             <section id="pelatih">
                 <Pelatih />
             </section>
 
-            <section id="kelas">
-                <Kelas />
-            </section>
 
             <section id="membership">
                 <Membership />
             </section>
         </div>
+    </div>
     );
 };
 
