@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import googleLogo from '../assets/images/google.png';
 
-function Home() {
+export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false); // State to toggle between login and signup
     const [isForgotPassword, setIsForgotPassword] = useState(false); // State for forgot password form
@@ -71,9 +71,9 @@ function Home() {
                         >
                             <div className="flex flex-col justify-center items-center w-1/3 bg-green-600 p-8 text-white">
                                 <h2 className="text-lg font-semibold mb-4">Selamat datang di perjalanan kebugaranmu!</h2>
-                                <img 
-                                    src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                                    alt="User holding a dumbbell" 
+                                <img
+                                    src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="User holding a dumbbell"
                                     className="w-36 h-36 rounded-full object-cover"
                                 />
                             </div>
@@ -89,14 +89,14 @@ function Home() {
                                     <form className="flex flex-col gap-4">
                                         <div className="flex flex-col mb-4">
                                             <label className="mb-1 text-gray-700">Email</label>
-                                            <input 
-                                                type="email" 
-                                                placeholder="Masukkan alamat email Anda" 
+                                            <input
+                                                type="email"
+                                                placeholder="Masukkan alamat email Anda"
                                                 className="border border-gray-300 p-2 rounded"
                                             />
                                         </div>
-                                        <button 
-                                            type="submit" 
+                                        <button
+                                            type="submit"
                                             className="bg-green-500 text-white py-2 rounded-full font-semibold hover:bg-green-600 transition duration-300"
                                         >
                                             Kirim Tautan Pemulihan
@@ -111,31 +111,31 @@ function Home() {
                                         {isSignUp && (
                                             <div className="flex flex-col mb-4">
                                                 <label className="mb-1 text-gray-700">Nama Lengkap</label>
-                                                <input 
-                                                    type="text" 
-                                                    placeholder="Nama Lengkap" 
+                                                <input
+                                                    type="text"
+                                                    placeholder="Nama Lengkap"
                                                     className="border border-gray-300 p-2 rounded"
                                                 />
                                             </div>
                                         )}
                                         <div className="flex flex-col mb-4">
                                             <label className="mb-1 text-gray-700">Email</label>
-                                            <input 
-                                                type="email" 
-                                                placeholder="Email" 
+                                            <input
+                                                type="email"
+                                                placeholder="Email"
                                                 className="border border-gray-300 p-2 rounded"
                                             />
                                         </div>
                                         <div className="flex flex-col mb-4">
                                             <label className="mb-1 text-gray-700">Password</label>
-                                            <input 
-                                                type="password" 
-                                                placeholder="Password" 
+                                            <input
+                                                type="password"
+                                                placeholder="Password"
                                                 className="border border-gray-300 p-2 rounded"
                                             />
                                         </div>
-                                        <button 
-                                            type="submit" 
+                                        <button
+                                            type="submit"
                                             className="bg-green-500 text-white py-2 rounded-full font-semibold hover:bg-green-600 transition duration-300"
                                         >
                                             {isSignUp ? "Daftar" : "Masuk"}
@@ -157,7 +157,7 @@ function Home() {
                                 {/* Sign Up Toggle and Password Reset Link */}
                                 <div className="text-center mt-4 text-gray-600">
                                     <p>
-                                        {isSignUp ? "Sudah punya akun?" : "Pengguna baru?"} 
+                                        {isSignUp ? "Sudah punya akun?" : "Pengguna baru?"}
                                         <button onClick={toggleForm} className="text-blue-500"> {isSignUp ? "Masuk disini" : "Daftar disini"}</button>
                                     </p>
                                     {!isForgotPassword && (
@@ -173,4 +173,4 @@ function Home() {
     );
 }
 
-export default Home;
+

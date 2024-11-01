@@ -34,16 +34,16 @@ function Navbar() {
                 {/* Links */}
                 <div className={`md:flex md:items-center ${isOpen ? 'block' : 'hidden'} w-full md:w-auto`}>
                     <div className="flex flex-col md:flex-row mt-4 md:mt-0">
-                        <Link to="/" className="text-white hover:text-blue-300 py-2 px-4 md:mr-4 transition duration-300">
+                        <Link to="#" className="text-white hover:text-blue-300 py-2 px-4 md:mr-4 transition duration-300">
                             Home
                         </Link>
-                        <Link to="/About" className="text-white hover:text-blue-300 py-2 px-4 md:mr-4 transition duration-300">
+                        <Link to="#" onClick={(e) => { e.preventDefault(); document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); }} className="text-white hover:text-blue-300 py-2 px-4 md:mr-4 transition duration-300">
                             Tentang Kami
                         </Link>
-                        <Link to="/Komunitas"
-                            className="text-white hover:text-blue-300 py-2 px-4 md:mr-4 transition duration-300">
+                        <Link to="#" onClick={(e) => { e.preventDefault(); document.getElementById('komunitas').scrollIntoView({ behavior: 'smooth' }); }} className="text-white hover:text-blue-300 py-2 px-4 md:mr-4 transition duration-300">
                             Komunitas
                         </Link>
+
 
                         {/* Dropdown for Kelas */}
                         <div className="relative group">
