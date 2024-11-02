@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import googleLogo from '../assets/images/google.png';
+import googleLogo from '../../assets/images/google.png';
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);

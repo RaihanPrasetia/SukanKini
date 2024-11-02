@@ -19,7 +19,6 @@ function Navbar() {
     useEffect(() => {
         const handleScroll = () => {
             const sections = ['about', 'komunitas', 'kelas', 'pelatih', 'membership']; // Add IDs of all sections here
-            const scrollPosition = window.scrollY + 1; // Adding 1 for better triggering on the top of sections
 
             const isInViewport = sections.some((sectionId) => {
                 const section = document.getElementById(sectionId);

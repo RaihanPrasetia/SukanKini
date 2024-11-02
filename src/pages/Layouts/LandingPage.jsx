@@ -1,10 +1,9 @@
 import React from 'react';
-import Home from '../Home'
-import About from '../About'
-import Komunitas from '../Komunitas'
-import Pelatih from '../Pelatih'
-import Kelas from '../Kelas'
-import Membership from '../Membership'
+import Home from '../LeandingPages/Home'
+import About from '../LeandingPages/About'
+import Komunitas from '../LeandingPages/Komunitas'
+import Pelatih from '../LeandingPages/Pelatih'
+import Kelas from '../LeandingPages/Kelas'
 import Navbar from '../../components/Navbar';
 
 
@@ -30,11 +29,6 @@ const LandingPage = () => {
             </section>
             <section id="pelatih">
                 <Pelatih />
-            </section>
-
-
-            <section id="membership">
-                <Membership />
             </section>
         </div>
     </div>
