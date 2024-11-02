@@ -1,19 +1,18 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LandingPage from './pages/Layouts/LandingPage';
-import Kelas from './pages/Kelas'; 
-import Membership from './pages/Membership'; 
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
+import { AuthProvider } from './pages/Layouts/AuthContext'; // Import AuthProvider
 
-const App = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/kelas" element={<Kelas />} />
-                <Route path="/membership" element={<Membership />} />
-            </Routes>
-        </Router>
-    );
-};
+function App() {
+  return (
+    <div className="bg-white dark:bg-gray-800 min-h-screen">
+      <Router>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </Router>
+    </div>
+  );
+}
 
 export default App;
