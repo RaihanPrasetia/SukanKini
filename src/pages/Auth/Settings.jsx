@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DashboardSettings = () => {
+const Setting = () => {
     return (
         <div>
             <h1 className="text-2xl font-bold">Settings</h1>
@@ -10,4 +10,4 @@ const DashboardSettings = () => {
     );
 };
 
-export default DashboardSettings;
+export default Setting;

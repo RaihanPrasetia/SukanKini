@@ -1,10 +1,10 @@
-import React, { createContext, useState, useEffect } from 'react';
+// src/pages/Layouts/AuthContext.jsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [message, setMessage] = useState(''); // Add state for message
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -16,20 +16,21 @@ export const AuthProvider = ({ children }) => {
     const login = (token) => {
         localStorage.setItem('token', token);
         setIsAuthenticated(true);
-        setMessage('Login successful!'); // Set message upon login
     };
 
     const logout = () => {
         localStorage.removeItem('token');
         setIsAuthenticated(false);
-        setMessage(''); // Clear message on logout
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, message }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+// Correctly export useAuth
+export const useAuth = () => useContext(AuthContext);
 
 export default AuthContext;

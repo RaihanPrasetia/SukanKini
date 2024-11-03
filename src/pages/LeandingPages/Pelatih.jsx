@@ -13,7 +13,7 @@ function Pelatih() {
     return (
         <div className=" w-full bg-cover bg-center flex items-center justify-center flex-col bg-slate-50 shadow-lg border-2 py-10">
             {/* Content */}
-            <div className="p-8 max-w-7xl mx-auto space-y-5">
+            <div className="">
                 {/* Header */}
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-yellow-500">PELATIH YANG PROFESIONAL</h1>

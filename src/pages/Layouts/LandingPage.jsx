@@ -1,11 +1,13 @@
 import React from 'react';
-import Home from '../Home';
-import About from '../About';
-import Komunitas from '../Komunitas';
-import Pelatih from '../Pelatih';
-import ClientTestimonials from '../ClientTestimonials'; 
+import Home from '../LeandingPages/Home';
+import About from '../LeandingPages/About';
+import Komunitas from '../LeandingPages/Komunitas';
+import Kelas from '../LeandingPages/Kelas';
+import Pelatih from '../LeandingPages/Pelatih';
 import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+import ClientTestimonials from '../ClientTestimonials'
+import Footer from '../../components/Footer'
+import Promosi from '../LeandingPages/Promosi';
 
 const LandingPage = () => {
     return (
@@ -21,16 +23,24 @@ const LandingPage = () => {
             <section id="about">
                 <About />
             </section>
+            <section id="promosi">
+                <Promosi />
+            </section>
 
             <section id="komunitas">
                 <Komunitas />
             </section>
 
-            <section id="pelatih"> 
-                <Pelatih /> 
+
+            <section id="kelas">
+                <Kelas />
             </section>
-            <section id="ClientTestimonials"> 
-                <ClientTestimonials /> 
+
+            <section id="pelatih">
+                <Pelatih />
+            </section>
+            <section id="client">
+                <ClientTestimonials />
             </section>
             <footer>
                 <Footer />

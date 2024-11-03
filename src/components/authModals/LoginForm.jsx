@@ -26,7 +26,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
                 console.log('Login successful:', data); // Log the response data
                 login(data.token); // Call the login function with the token
                 alert('Login successful!'); // Alert message for successful login
-                navigate('/dashboard');
+                navigate('/home');
             } else {
                 const errorData = await response.json(); // Get the error message
                 console.error('Login failed:', errorData); // Log the error response

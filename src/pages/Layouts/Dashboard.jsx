@@ -1,8 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from '../../components/AuthNavbar';
-import DashboardHome from '../Auth/DashboardHome'; // Default Home component for dashboard
-import DashboardSettings from '../Auth/DashboardSettings'; // Example settings component
+import Home from '../Auth/Home'; // Default Home component for 
+import Settings from '../Auth/Settings'; // Example settings component
+import Footer from '../../components/Footer';
 
 const Dashboard = () => {
     return (
@@ -10,11 +11,11 @@ const Dashboard = () => {
             <Navbar />
             <div className="container mx-auto p-4">
                 <Routes>
-                    <Route path="home" element={<DashboardHome />} />
-                    <Route path="settings" element={<DashboardSettings />} />
-                    {/* Add more routes as needed */}
+                    <Route path="home" element={<Home />} />
+                    <Route path="settings" element={<Settings />} />
                 </Routes>
             </div>
+            <Footer />
         </div>
     );
 };
