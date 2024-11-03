@@ -1,12 +1,9 @@
-// src/pages/Dashboard.jsx
 import React from 'react';
-import DashboardNavbar from '../../components/DashboardNavbar';
 
-const Dashboard = () => {
+const Home = () => {
     return (
         <div className="text-center min-h-screen bg-gray-100">
             {/* Dashboard Navbar */}
-            <DashboardNavbar />
 
             {/* Dashboard Content */}
             <main className="px-8 py-10 min-h-screen bg-cover bg-center" style={{
@@ -52,4 +49,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Home;

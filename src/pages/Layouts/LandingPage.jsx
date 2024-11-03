@@ -1,13 +1,13 @@
 import React from 'react';
-import Home from '../LeandingPages/Home';
-import About from '../LeandingPages/About';
-import Komunitas from '../LeandingPages/Komunitas';
-import Kelas from '../LeandingPages/Kelas';
-import Pelatih from '../LeandingPages/Pelatih';
+import Home from '../LandingPages/Home';
+import About from '../LandingPages/About';
+import Komunitas from '../LandingPages/Komunitas';
+import Promosi from '../LandingPages/Promosi';
+import Kelas from '../LandingPages/Kelas';
+import Pelatih from '../LandingPages/Pelatih';
+import ClientTestimonials from '../LandingPages/ClientTestimonials';
 import Navbar from '../../components/Navbar';
-import ClientTestimonials from '../ClientTestimonials'
-import Footer from '../../components/Footer'
-import Promosi from '../LeandingPages/Promosi';
+import Footer from '../../components/Footer';
 
 const LandingPage = () => {
     return (
@@ -23,6 +23,7 @@ const LandingPage = () => {
             <section id="about">
                 <About />
             </section>
+
             <section id="promosi">
                 <Promosi />
             </section>
@@ -31,7 +32,6 @@ const LandingPage = () => {
                 <Komunitas />
             </section>
 
-
             <section id="kelas">
                 <Kelas />
             </section>
@@ -39,9 +39,11 @@ const LandingPage = () => {
             <section id="pelatih">
                 <Pelatih />
             </section>
-            <section id="client">
+
+            <section id="clienttestimonials">
                 <ClientTestimonials />
             </section>
+
             <footer>
                 <Footer />
             </footer>

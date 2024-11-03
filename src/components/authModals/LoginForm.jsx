@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import styles for toast notifications
-
 import FormInput from '../FormInput'; // Ensure this path is correct
 import Button from '../Button'; // Ensure this path is correct
 import AuthContext from '../../pages/Layouts/AuthContext'; // Import AuthContext
@@ -30,7 +29,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
                 console.log('Login successful:', data); // Log the response data
                 login(data.token); // Call the login function with the token
                 toast.success('Login successful! Redirecting to dashboard...'); // Success notification
-                navigate('/dashboard');
+                navigate('/home');
             } else {
                 const errorData = await response.json(); // Get the error message
                 console.error('Login failed:', errorData); // Log the error response
