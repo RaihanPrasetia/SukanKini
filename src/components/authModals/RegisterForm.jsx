@@ -4,7 +4,7 @@ function RegisterForm({ onLogin }) {
     return (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg border border-gray-200">
             <h2 className="text-2xl font-bold mb-6 text-center text-green-600">Create Your Account</h2>
-            
+
             <input
                 type="text"
                 placeholder="Full Name"
@@ -26,7 +26,7 @@ function RegisterForm({ onLogin }) {
             >
                 Register
             </button>
-            
+
             <div className="text-center mt-6">
                 <p className="text-sm text-gray-600">
                     Already have an account?{' '}
