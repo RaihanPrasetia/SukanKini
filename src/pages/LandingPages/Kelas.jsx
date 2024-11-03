@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Kelas = () => {
   const communityData = [
@@ -38,7 +39,7 @@ const Kelas = () => {
 
     <div className=" flex flex-col justify-center items-center px-16 space-y-10 py-20 w-full">
       <div className="w-full">
-        <h2 className="text-2xl font-bold text-center text-green-700">
+        <h2 className="text-4xl font-bold text-green-600 text-center">
           Ikuti 40+ variasi kelas sepuasnya
         </h2>
         <p className="text-center text-gray-600 ">
@@ -73,10 +74,10 @@ const Kelas = () => {
         ))}
       </div>
 
-      <div className="flex justify-center mt-6 gap-4">
-        <button className="px-6 py-2 text-white bg-green-500 rounded-md hover:bg-green-600">
-          Lihat Semua Kelas
-        </button>
+      <div className="text-center mt-10">
+        <Link to="#" className="text-xl bg-gradient-to-r from-green-500 to-blue-500 py-3 px-6 rounded-xl text-white font-semibold shadow-lg hover:from-blue-500 hover:to-green-500 transition duration-300 ease-in-out transform hover:scale-105">
+          Semua Kelas
+        </Link>
       </div>
 
     </div>

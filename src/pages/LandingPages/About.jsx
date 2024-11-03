@@ -4,7 +4,7 @@ import { FaUserCheck, FaVideo, FaClock } from 'react-icons/fa';
 function About() {
     return (
         <div className="w-full relative flex  bg-white ">
-            <div className="relative min-w-[343px] h-[550px] overflow-hidden bg-green-500">
+            <div className="relative min-w-[343px] h-[552px] overflow-hidden bg-green-500">
                 <img
                     src="/assets/images/left-img.png"
                     alt=""

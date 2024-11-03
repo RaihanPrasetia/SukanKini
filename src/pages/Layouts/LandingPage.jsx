@@ -8,6 +8,7 @@ import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import Space from '../../components/Space';
 
 const LandingPage = () => {
     return (
@@ -21,14 +22,19 @@ const LandingPage = () => {
             </section>
 
             <section id="about">
+                <Space />
                 <About />
             </section>
 
+
             <section id="promosi">
+                <Space />
                 <Promosi />
             </section>
 
+
             <section id="komunitas">
+                <Space />
                 <Komunitas />
             </section>
 
@@ -37,6 +43,7 @@ const LandingPage = () => {
             </section>
 
             <section id="pelatih">
+                <Space />
                 <Pelatih />
             </section>
 

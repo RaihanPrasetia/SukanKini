@@ -16,7 +16,7 @@ function Pelatih() {
             <div className="p-8 mx-auto space-y-5">
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold text-yellow-500">PELATIH YANG PROFESIONAL</h1>
+                    <h1 className="text-4xl font-bold text-green-600">PELATIH YANG PROFESIONAL</h1>
                     <p className="text-white mt-4 ">
                         Disini kami menyediakan trainers yang berpengalaman dan berkualifikasi. Kalian bisa memilih pelatih sesuai kelas yang kalian ikuti.
                     </p>

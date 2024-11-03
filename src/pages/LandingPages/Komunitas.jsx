@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 function Komunitas() {
     return (
-        <div className="w-full flex flex-col justify-center items-center bg-gradient-to-r from-blue-50 to-green-50 py-20 px-4 md:px-16 rounded-lg shadow-lg mt-20">
+        <div className="w-full flex flex-col justify-center items-center  py-20 px-4 md:px-16 ">
             {/* Header Section */}
             <div className="flex flex-col w-full space-y-8">
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold text-yellow-600">Temukan Komunitas yang Anda Minati</h1>
+                    <h1 className="text-4xl font-bold text-green-600">Temukan Komunitas yang Anda Minati</h1>
                     <p className="text-gray-700 mt-4 text-lg max-w-2xl mx-auto">
                         Mulailah berinteraksi bersama komunitas yang sesuai dengan diri Anda! Ciptakan pengalaman seru dalam perjalanan aktivitas produktif Anda!
                     </p>
@@ -58,7 +58,7 @@ function Komunitas() {
                 </div>
                 <div className="text-center mt-10">
                     <Link to={'#'} className="text-xl bg-gradient-to-r from-green-500 to-blue-500 py-3 px-6 rounded-xl text-white font-semibold shadow-lg hover:from-blue-500 hover:to-green-500 transition duration-300 ease-in-out transform hover:scale-105">
-                        Lihat Komunitas
+                        Semua Komunitas
                     </Link>
                 </div>
 

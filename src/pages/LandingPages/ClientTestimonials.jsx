@@ -26,9 +26,9 @@ const testimonials = [
 
 const ClientTestimonials = () => {
   return (
-    <section className="bg-gray-100 py-12 px-16">
+    <section className="bg-gray-100 py-20 px-16">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-green-600">PENDAPAT KLIEN</h2>
+        <h2 className="text-4xl font-bold text-green-600">PENDAPAT KLIEN</h2>
         <p className="text-gray-600">
           Layanan yang kami terima sangat memuaskan, dengan pelatih yang selalu siap membantu dan memberikan motivasi.
         </p>
