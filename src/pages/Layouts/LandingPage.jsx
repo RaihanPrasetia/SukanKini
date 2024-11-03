@@ -40,11 +40,11 @@ const LandingPage = () => {
                 <Pelatih />
             </section>
 
-            <section id="clienttestimonials">
+            <section id="client">
                 <ClientTestimonials />
             </section>
 
-            <footer>
+            <footer id="footer">
                 <Footer />
             </footer>
         </main>

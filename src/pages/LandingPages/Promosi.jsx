@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 export default function Promosi() {
     return (
-        <div className="bg-gray-50 py-10 px-5 md:px-20">
-            <div className="container mx-auto">
+        <div className="bg-gray-50 py-20 px-5 md:px-16">
+            <div className="">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}

@@ -36,7 +36,7 @@ const Kelas = () => {
 
   return (
 
-    <div className=" flex flex-col justify-center items-center px-36 space-y-10 w-full">
+    <div className=" flex flex-col justify-center items-center px-16 space-y-10 py-20 w-full">
       <div className="w-full">
         <h2 className="text-2xl font-bold text-center text-green-700">
           Ikuti 40+ variasi kelas sepuasnya

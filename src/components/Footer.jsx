@@ -5,8 +5,8 @@ import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-white py-8">
-            <div className="container mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <footer className="bg-gray-900 text-white p-16">
+            <div className="container mx-auto  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                 {/* Logo and Slogan */}
                 <div className="col-span-1">
@@ -16,7 +16,7 @@ const Footer = () => {
                 </div>
 
                 {/* Links Section */}
-                <div>
+                <div className='px-10'>
                     <h3 className="font-semibold text-green-500 mb-3">Dapatkan latihan</h3>
                     <ul>
                         <li><a href="#" className="hover:underline">Membership</a></li>
@@ -26,7 +26,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                <div>
+                <div className='px-10'>
                     <h3 className="font-semibold text-green-500 mb-3">Kunjungi</h3>
                     <ul>
                         <li><a href="#" className="hover:underline">Jadwal Kelas</a></li>
@@ -35,7 +35,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                <div>
+                <div className='px-10'>
                     <h3 className="font-semibold text-green-500 mb-3">Kenali Kami</h3>
                     <ul>
                         <li><a href="#" className="hover:underline">Tentang Kami</a></li>
@@ -61,7 +61,7 @@ const Footer = () => {
                 </div>
 
                 {/* Social Media Links */}
-                <div className="col-span-1 flex space-x-4">
+                <div className="col-span-1 flex space-x-4 justify-center">
                     <a href="#" className="text-green-500 hover:text-white">
                         <FontAwesomeIcon icon={faInstagram} size="lg" />
                     </a>

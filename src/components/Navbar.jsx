@@ -13,7 +13,7 @@ function Navbar() {
     // Effect to handle scroll event and change background color
     useEffect(() => {
         const handleScroll = () => {
-            const sections = ['about', 'komunitas', 'kelas', 'pelatih', 'membership']; // Add IDs of all sections here
+            const sections = ['about', 'komunitas', 'kelas', 'pelatih', 'membership', 'client', 'footer']; // Add IDs of all sections here
 
             const isInViewport = sections.some((sectionId) => {
                 const section = document.getElementById(sectionId);
@@ -103,7 +103,7 @@ function Navbar() {
                                 Pelatih
                             </button>
                             <button
-                                onClick={() => scrollToSection('clienttestimonials')}
+                                onClick={() => scrollToSection('client')}
                                 className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
                             >
                                 Testimoni
@@ -115,7 +115,7 @@ function Navbar() {
                     <div className="mt-4 md:mt-0">
                         <button
                             onClick={() => setIsOpen(true)}
-                            className="bg-green-500 text-white hover:bg-white hover:text-green-500 py-2 px-4 rounded-full font-semibold transition duration-300"
+                            className="bg-green-500 text-white hover:bg-white hover:text-green-500 py-2 px-4 rounded-xl font-semibold transition duration-300"
                         >
                             Gabung Sekarang
                         </button>

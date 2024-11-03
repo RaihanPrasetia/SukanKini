@@ -26,14 +26,14 @@ const testimonials = [
 
 const ClientTestimonials = () => {
   return (
-    <section className="bg-gray-100 py-12">
+    <section className="bg-gray-100 py-12 px-16">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-green-600">PENDAPAT KLIEN</h2>
         <p className="text-gray-600">
           Layanan yang kami terima sangat memuaskan, dengan pelatih yang selalu siap membantu dan memberikan motivasi.
         </p>
       </div>
-      
+
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
         {testimonials.map((testimonial, index) => (
           <div key={index} className="bg-white shadow-lg rounded-lg p-6 text-center">

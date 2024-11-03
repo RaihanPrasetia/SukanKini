@@ -3,8 +3,17 @@ import { FaUserCheck, FaVideo, FaClock } from 'react-icons/fa';
 
 function About() {
     return (
-        <div className="h-screen w-screen flex items-center justify-center bg-white">
-            <div className="p-8 bg-white rounded-lg shadow-lg max-w-4xl mx-auto">
+        <div className="w-full relative flex  bg-white ">
+            <div className="relative min-w-[343px] h-[550px] overflow-hidden bg-green-500">
+                <img
+                    src="/assets/images/left-img.png"
+                    alt=""
+                    className="absolute left-0 bottom-0 w-full h-full object-cover"
+                />
+            </div>
+
+            <div className="p-8 bg-white rounded-lg shadow- mx-auto py-20 ">
+
                 <h1 className="text-4xl font-bold text-center text-green-700 mb-6">KENAPA HARUS KAMI?</h1>
                 <p className="text-center text-gray-700 mb-8">
                     Kami punya segala yang Anda butuhkan untuk mencapai tujuan kesehatan Anda.
@@ -59,6 +68,7 @@ function About() {
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     );
