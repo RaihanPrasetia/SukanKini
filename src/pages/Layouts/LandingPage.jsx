@@ -2,7 +2,7 @@ import React from 'react';
 import Home from '../LandingPages/Home';
 import About from '../LandingPages/About';
 import Komunitas from '../LandingPages/Komunitas';
-import Promosi from '../LandingPages/Promosi';
+import Membership from '../LandingPages/Membership'; 
 import Kelas from '../LandingPages/Kelas';
 import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
@@ -26,12 +26,10 @@ const LandingPage = () => {
                 <About />
             </section>
 
-
-            <section id="promosi">
+            <section id="membership">
                 <Space />
-                <Promosi />
+                <Membership /> 
             </section>
-
 
             <section id="komunitas">
                 <Space />
@@ -39,6 +37,7 @@ const LandingPage = () => {
             </section>
 
             <section id="kelas">
+                <Space />
                 <Kelas />
             </section>
 
@@ -48,6 +47,7 @@ const LandingPage = () => {
             </section>
 
             <section id="client">
+                <Space />
                 <ClientTestimonials />
             </section>
 

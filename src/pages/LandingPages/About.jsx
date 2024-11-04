@@ -3,8 +3,8 @@ import { FaUserCheck, FaVideo, FaClock } from 'react-icons/fa';
 
 function About() {
     return (
-        <div className="w-full relative flex  bg-white ">
-            <div className="relative min-w-[343px] h-[552px] overflow-hidden bg-green-500">
+        <div className="w-full relative flex flex-col md:flex-row bg-white">
+            <div className="relative min-w-[343px] h-[400px] md:h-[552px] overflow-hidden bg-green-500">
                 <img
                     src="/assets/images/left-img.png"
                     alt=""
@@ -12,10 +12,9 @@ function About() {
                 />
             </div>
 
-            <div className="p-8 bg-white rounded-lg shadow- mx-auto py-20 ">
-
-                <h1 className="text-4xl font-bold text-center text-green-700 mb-6">KENAPA HARUS KAMI?</h1>
-                <p className="text-center text-gray-700 mb-8">
+            <div className="p-6 md:p-8 bg-white rounded-lg shadow mx-auto py-10 md:py-20">
+                <h1 className="text-3xl md:text-4xl font-bold text-center text-green-700 mb-6">KENAPA HARUS KAMI?</h1>
+                <p className="text-base md:text-lg text-center text-gray-700 mb-8">
                     Kami punya segala yang Anda butuhkan untuk mencapai tujuan kesehatan Anda.
                     Bergabunglah dengan komunitas yang mendukung dan nikmati program khusus yang
                     dirancang hanya untuk Anda.
@@ -26,8 +25,8 @@ function About() {
                     <div className="flex items-start">
                         <FaUserCheck className="text-green-600 text-3xl mr-4" />
                         <div>
-                            <h2 className="text-xl font-semibold text-green-700">Program Khusus</h2>
-                            <p className="text-gray-700">
+                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Program Khusus</h2>
+                            <p className="text-sm md:text-base text-gray-700">
                                 Program latihan yang disesuaikandengan kebutuhan individu, memastikan setiap anggota
                                 mendapatkan perhatian dan rencana yang sesuai.
                             </p>
@@ -37,8 +36,8 @@ function About() {
                     <div className="flex items-start">
                         <FaUserCheck className="text-green-600 text-3xl mr-4" />
                         <div>
-                            <h2 className="text-xl font-semibold text-green-700">Kualifikasi Pelatih</h2>
-                            <p className="text-gray-700">
+                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Kualifikasi Pelatih</h2>
+                            <p className="text-sm md:text-base text-gray-700">
                                 Tim pelatih kami memiliki kualifikasi tinggi dan pengalaman bertahun-tahun untuk
                                 membantu Anda mencapai tujuan kebugaran Anda.
                             </p>
@@ -49,8 +48,8 @@ function About() {
                     <div className="flex items-start">
                         <FaVideo className="text-green-600 text-3xl mr-4" />
                         <div>
-                            <h2 className="text-xl font-semibold text-green-700">Video Tutorial</h2>
-                            <p className="text-gray-700">
+                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Video Tutorial</h2>
+                            <p className="text-sm md:text-base text-gray-700">
                                 Kami menyediakan video tutorial untuk tontonan Anda yang mungkin dapat membantu
                                 Anda dalam melakukan aktivitas kebugaran jasmani yang Anda inginkan.
                             </p>
@@ -60,15 +59,14 @@ function About() {
                     <div className="flex items-start">
                         <FaClock className="text-green-600 text-3xl mr-4" />
                         <div>
-                            <h2 className="text-xl font-semibold text-green-700">Jam Operasional</h2>
-                            <p className="text-gray-700">
+                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Jam Operasional</h2>
+                            <p className="text-sm md:text-base text-gray-700">
                                 Kami buka dari jam 6 pagi hingga 10 malam setiap hari, sehingga Anda bisa berlatih
                                 kapan saja sesuai dengan jadwal Anda.
                             </p>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );

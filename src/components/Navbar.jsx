@@ -40,6 +40,8 @@ function Navbar() {
         }
     };
 
+    const buttonStyles = `py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`;
+
     return (
         <>
             <nav
@@ -52,7 +54,11 @@ function Navbar() {
                     </div>
 
                     {/* Menu button for mobile */}
-                    <button onClick={toggleMenu} className={`md:hidden focus:outline-none ${isScrolled ? 'text-green-600' : 'text-white'}`}>
+                    <button 
+                        onClick={toggleMenu} 
+                        className={`md:hidden focus:outline-none ${isScrolled ? 'text-green-600' : 'text-white'}`} 
+                        aria-expanded={isOpen}
+                    >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 strokeLinecap="round"
@@ -66,50 +72,28 @@ function Navbar() {
                     {/* Links */}
                     <div className={`md:flex md:items-center ${isOpen ? 'block' : 'hidden'} w-full md:w-auto`}>
                         <div className="flex flex-col md:flex-row mt-4 md:mt-0">
-                            <button
-                                onClick={() => scrollToSection('home')} // Scroll to Home section
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('home')} className={buttonStyles}>
                                 Home
                             </button>
-                            <button
-                                onClick={() => scrollToSection('about')}
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('about')} className={buttonStyles}>
                                 Tentang Kami
                             </button>
-                            <button
-                                onClick={() => scrollToSection('promosi')}
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('membership')} className={buttonStyles}>
                                 Promosi
                             </button>
-                            <button
-                                onClick={() => scrollToSection('komunitas')}
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('komunitas')} className={buttonStyles}>
                                 Komunitas
                             </button>
-                            <button
-                                onClick={() => scrollToSection('kelas')}
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('kelas')} className={buttonStyles}>
                                 Kelas
                             </button>
-                            <button
-                                onClick={() => scrollToSection('pelatih')}
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('pelatih')} className={buttonStyles}>
                                 Pelatih
                             </button>
-                            <button
-                                onClick={() => scrollToSection('client')}
-                                className={`py-2 px-4 md:mr-4 transition duration-300 ${isScrolled ? 'text-green-600 hover:text-green-800' : 'text-white hover:text-blue-300'}`}
-                            >
+                            <button onClick={() => scrollToSection('client')} className={buttonStyles}>
                                 Testimoni
                             </button>
                         </div>
-
                     </div>
                     {/* Join Now Button */}
                     <div className="mt-4 md:mt-0">
