@@ -36,6 +36,18 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  // New column for user role
+  role: {
+    type: DataTypes.ENUM('admin', 'user', 'mitra'),
+    allowNull: false,
+    defaultValue: 'user',
+  },
+  // New column for blocking/unblocking a user
+  isBlocked: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 }, {
   // Enable soft deletes
   paranoid: true,

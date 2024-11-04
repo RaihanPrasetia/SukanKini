@@ -1,8 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Membership from "./Membership";
 
 export default function Promosi() {
-    return (
+    return (<>
+        <Membership />
+
         <div className="bg-gray-50 py-20 px-5 lg:px-20">
             <div className="">
                 <motion.div
@@ -88,5 +91,6 @@ export default function Promosi() {
                 </motion.div>
             </div>
         </div>
+    </>
     );
 }

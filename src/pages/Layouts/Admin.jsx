@@ -1,18 +1,17 @@
-// src/pages/Layouts/Dashboard/Dashboard.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import AuthNavbar from '../../components/AuthNavbar';
+import Navbar from '../../components/AuthNavbar';
+import Settings from '../Dashboard/Settings'; // Example settings component
 import Footer from '../../components/Footer';
 import Home from '../Dashboard/Home';
-import Settings from '../Dashboard/Settings';
 
 const Dashboard = () => {
     return (
         <div className="min-h-screen bg-gray-100">
-            <AuthNavbar />
+            <Navbar />
             <div className="container mx-auto p-4">
                 <Routes>
-                    <Route path="home" element={<Home />} /> {/* Default route for Dashboard */}
+                    <Route element={<Home />} />
                     <Route path="settings" element={<Settings />} />
                 </Routes>
             </div>

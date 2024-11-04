@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FormInput from '../FormInput';
-import Button from '../Button';
+import FormInput from '../assets/FormInput';
+import Button from '../assets/Button';
 import AuthContext from '../../pages/Layouts/AuthContext';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { login as loginApi } from '../../controllers/authController';
+import { login } from '../../controllers/authController';
 
 function LoginForm({ onForgotPassword, onRegister }) {
     const [email, setEmail] = useState('');
@@ -36,6 +36,8 @@ function LoginForm({ onForgotPassword, onRegister }) {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        // Validate form inputs
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -43,15 +45,25 @@ function LoginForm({ onForgotPassword, onRegister }) {
         }
 
         try {
-            const data = await loginApi(email, password);
-            contextLogin(data.token);
-            toast.success('Selamat Bergabung');
+            // Call the login API
+            const data = await login(email, password);
+
+            // Check if the user has the 'user' role
+            if (data.user.role !== 'user') {
+                toast.error('Data tidak ditemukan.');
+                return;
+            }
+
+            // If role is 'user', proceed with login
+            contextLogin(data.token, data.user.name, data.user.role);
+            toast.success(`Selamat Bergabung, ${data.user.name}`);
             navigate('/home');
         } catch (error) {
             console.error('Gagal Masuk:', error);
-            toast.error(error.message);
+            toast.error(error.message || 'Login failed. Please try again.');
         }
     };
+
 
     return (
         <>

@@ -1,17 +1,38 @@
-import React, { useContext } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import Dashboard from '../pages/Layouts/Dashboard';
+// src/pages/AppRoutes.jsx
+import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import LandingPage from '../pages/Layouts/LandingPage';
-import AuthContext from '../pages/Layouts/AuthContext';
+import Dashboard from '../pages/Layouts/Dashboard';
+import Admin from '../pages/Layouts/Admin';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 function AppRoutes() {
-
-    const { isAuthenticated } = useContext(AuthContext);
     return (
         <Routes>
-            <Route path="/" element={<LandingPage />} /> {/* Gunakan LandingPage */}
-            <Route path="*" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} />
-            {/* <Route path="*" element={<Dashboard />} /> */}
+            {/* Public route */}
+            <Route path="/" element={<LandingPage />} />
+
+            {/* User Dashboard route - no /home prefix */}
+            <Route
+                path="*"
+                element={
+                    <ProtectedRoute requiredRole="user">
+                        <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+
+            {/* Admin Dashboard route */}
+            <Route
+                path="/admin"
+                element={
+                    <ProtectedRoute requiredRole="admin">
+                        <Admin />
+                    </ProtectedRoute>
+                }
+            />
+
+            {/* Catch-all route for unmatched paths */}
         </Routes>
     );
 }

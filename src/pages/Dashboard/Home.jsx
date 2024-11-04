@@ -1,6 +1,8 @@
 import React from 'react';
+import { useAuth } from '../Layouts/AuthContext';
 
 const Home = () => {
+    const { userName } = useAuth();
     return (
         <div className="text-center min-h-screen bg-gray-100">
             {/* Dashboard Navbar */}
@@ -13,7 +15,7 @@ const Home = () => {
                     className="bg-white bg-opacity-100 p-8 rounded-lg shadow-lg max-w-full h-[80vh] mx-auto flex flex-col justify-between">
                     <div>
                         <h1 className="text-3xl font-bold text-green-700">Dashboard</h1>
-                        <p className="mt-4 text-xl text-yellow-500 font-semibold">Hai, Selamat Datang Kembali!</p>
+                        <p className="mt-4 text-xl text-yellow-500 font-semibold">Hai, Selamat Datang Kembali, {userName}! </p>
                         <p className="mt-2 text-lg text-gray-700">Ingin Olahraga Apa Hari ini?</p>
                     </div>
 

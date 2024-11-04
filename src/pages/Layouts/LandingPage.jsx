@@ -8,7 +8,7 @@ import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import Space from '../../components/Space';
+import Space from '../../components/assets/Space';
 import Membership from '../LandingPages/Membership';
 
 const LandingPage = () => {
@@ -28,7 +28,7 @@ const LandingPage = () => {
             </section>
 
             <section id="promosi">
-                <Membership />
+                <Space />
                 <Promosi />
             </section>
 
