@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../pages/Layouts/AuthContext';
-import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaCog, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons
+import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons
 
 const Navbar = () => {
     const { logout, user } = useAuth(); // Get user data from useAuth

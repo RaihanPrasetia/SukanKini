@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -26,30 +27,30 @@ const Footer = () => {
                 <div className="space-y-4 flex flex-col items-center sm:items-start">
                     <h3 className="text-lg font-semibold text-green-500">Dapatkan Latihan</h3>
                     <ul className="space-y-2">
-                        <li><a href="#" className="hover:text-green-500">Membership</a></li>
-                        <li><a href="#" className="hover:text-green-500">Video Latihan</a></li>
-                        <li><a href="#" className="hover:text-green-500">Kelas</a></li>
-                        <li><a href="#" className="hover:text-green-500">Blog</a></li>
+                        <li><Link to='#' className="hover:text-green-500">Membership</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Video Latihan</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Kelas</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Blog</Link></li>
                     </ul>
                 </div>
 
                 <div className="space-y-4 flex flex-col items-center sm:items-start">
                     <h3 className="text-lg font-semibold text-green-500">Kunjungi</h3>
                     <ul className="space-y-2">
-                        <li><a href="#" className="hover:text-green-500">Jadwal Kelas</a></li>
-                        <li><a href="#" className="hover:text-green-500">Lokasi Kebugaran</a></li>
-                        <li><a href="#" className="hover:text-green-500">Fasilitas</a></li>
+                        <li><Link to='#' className="hover:text-green-500">Jadwal Kelas</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Lokasi Kebugaran</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Fasilitas</Link></li>
                     </ul>
                 </div>
 
                 <div className="space-y-4 flex flex-col items-center sm:items-start">
                     <h3 className="text-lg font-semibold text-green-500">Kenali Kami</h3>
                     <ul className="space-y-2">
-                        <li><a href="#" className="hover:text-green-500">Tentang Kami</a></li>
-                        <li><a href="#" className="hover:text-green-500">Syarat & Ketentuan</a></li>
-                        <li><a href="#" className="hover:text-green-500">Kebijakan Privasi</a></li>
-                        <li><a href="#" className="hover:text-green-500">FAQs</a></li>
-                        <li><a href="#" className="hover:text-green-500">Karir</a></li>
+                        <li><Link to='#' className="hover:text-green-500">Tentang Kami</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Syarat & Ketentuan</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Kebijakan Privasi</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">FAQs</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Karir</Link></li>
                     </ul>
                 </div>
 
@@ -79,15 +80,15 @@ const Footer = () => {
 
                 {/* Social Media Links */}
                 <div className="flex justify-center items-center space-x-6 mt-8">
-                    <a href="#" className="text-green-500 hover:text-white">
+                    <Link to='#' className="text-green-500 hover:text-white">
                         <FontAwesomeIcon icon={faInstagram} size="2x" />
-                    </a>
-                    <a href="#" className="text-green-500 hover:text-white">
+                    </Link>
+                    <Link to="#" className="text-green-500 hover:text-white">
                         <FontAwesomeIcon icon={faFacebook} size="2x" />
-                    </a>
-                    <a href="#" className="text-green-500 hover:text-white">
+                    </Link>
+                    <Link to='#' className="text-green-500 hover:text-white">
                         <FontAwesomeIcon icon={faTiktok} size="2x" />
-                    </a>
+                    </Link>
                 </div>
             </div>
 

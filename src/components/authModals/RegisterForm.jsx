@@ -12,6 +12,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // State untuk konfirmasi password
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const { login: contextLogin } = useContext(AuthContext);
@@ -29,6 +30,9 @@ function RegisterForm({ onLogin, onSendOTP }) {
         } else if (password.length < 8) {
             newErrors.password = 'Password minimal 8 karakter.';
         }
+        if (password !== confirmPassword) { // Validasi konfirmasi password
+            newErrors.confirmPassword = 'Konfirmasi password tidak cocok.';
+        }
         return newErrors;
     };
 
@@ -45,7 +49,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
             console.log('Register successful:', data);
             contextLogin(data.token, data.user.name, data.user.role);
             toast.success('Registrasi berhasil! Mengarahkan ke dashboard...');
-            navigate('/dashboard');
+            navigate('/home');
         } catch (error) {
             console.error('Registration failed:', error);
             toast.error(error?.response?.data?.message || 'Registrasi gagal. Silakan coba lagi.');
@@ -54,7 +58,6 @@ function RegisterForm({ onLogin, onSendOTP }) {
 
     return (
         <>
-
             <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg relative">
                 <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Buat Akun Sukankini</h2>
 
@@ -92,6 +95,17 @@ function RegisterForm({ onLogin, onSendOTP }) {
                             }}
                         />
                         {errors.password && <p className="text-red-500">{errors.password}</p>}
+
+                        <FormInput
+                            type="password"
+                            placeholder="Konfirmasi Password" // Input untuk konfirmasi password
+                            value={confirmPassword}
+                            onChange={(e) => {
+                                setConfirmPassword(e.target.value);
+                                setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                            }}
+                        />
+                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>} {/* Menampilkan error konfirmasi password */}
                     </div>
 
                     <div className="flex items-center justify-center">
