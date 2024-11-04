@@ -2,82 +2,98 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
 
-
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-white p-16">
-            <div className="container mx-auto  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <footer className="bg-gray-900 text-white py-12 lg:px-20 px-6">
+            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center sm:text-left">
 
                 {/* Logo and Slogan */}
-                <div className="col-span-1">
-                    <img src="https://w7.pngwing.com/pngs/786/126/png-transparent-logo-contracting-photography-logo-symbol.png"
-                        alt="SukanKini FitLife Logo" className="mb-4" />
-                    <h2 className="font-bold text-xl">SUKANKINI FITLIFE TAU YANG TERBAIK UNTUK HIDUP SEHAT ANDA</h2>
+                <div className="flex flex-col items-center sm:items-start space-y-3">
+                    <img
+                        src="https://w7.pngwing.com/pngs/786/126/png-transparent-logo-contracting-photography-logo-symbol.png"
+                        alt="SukanKini FitLife Logo"
+                        className="w-20 h-20 object-cover mb-3"
+                    />
+                    <h2 className="text-2xl font-bold text-green-500">
+                        SUKANKINI FITLIFE
+                    </h2>
+                    <p className="text-sm text-gray-400">
+                        Tau yang terbaik untuk hidup sehat Anda.
+                    </p>
                 </div>
 
                 {/* Links Section */}
-                <div className='px-10'>
-                    <h3 className="font-semibold text-green-500 mb-3">Dapatkan latihan</h3>
-                    <ul>
-                        <li><a href="#" className="hover:underline">Membership</a></li>
-                        <li><a href="#" className="hover:underline">Video latihan</a></li>
-                        <li><a href="#" className="hover:underline">Kelas</a></li>
-                        <li><a href="#" className="hover:underline">Blog</a></li>
+                <div className="space-y-4 flex flex-col items-center sm:items-start">
+                    <h3 className="text-lg font-semibold text-green-500">Dapatkan Latihan</h3>
+                    <ul className="space-y-2">
+                        <li><a href="#" className="hover:text-green-500">Membership</a></li>
+                        <li><a href="#" className="hover:text-green-500">Video Latihan</a></li>
+                        <li><a href="#" className="hover:text-green-500">Kelas</a></li>
+                        <li><a href="#" className="hover:text-green-500">Blog</a></li>
                     </ul>
                 </div>
 
-                <div className='px-10'>
-                    <h3 className="font-semibold text-green-500 mb-3">Kunjungi</h3>
-                    <ul>
-                        <li><a href="#" className="hover:underline">Jadwal Kelas</a></li>
-                        <li><a href="#" className="hover:underline">Lokasi Kebugaran</a></li>
-                        <li><a href="#" className="hover:underline">Fasilitas</a></li>
+                <div className="space-y-4 flex flex-col items-center sm:items-start">
+                    <h3 className="text-lg font-semibold text-green-500">Kunjungi</h3>
+                    <ul className="space-y-2">
+                        <li><a href="#" className="hover:text-green-500">Jadwal Kelas</a></li>
+                        <li><a href="#" className="hover:text-green-500">Lokasi Kebugaran</a></li>
+                        <li><a href="#" className="hover:text-green-500">Fasilitas</a></li>
                     </ul>
                 </div>
 
-                <div className='px-10'>
-                    <h3 className="font-semibold text-green-500 mb-3">Kenali Kami</h3>
-                    <ul>
-                        <li><a href="#" className="hover:underline">Tentang Kami</a></li>
-                        <li><a href="#" className="hover:underline">Syarat & Ketentuan</a></li>
-                        <li><a href="#" className="hover:underline">Kebijakan Privasi</a></li>
-                        <li><a href="#" className="hover:underline">FAQs</a></li>
-                        <li><a href="#" className="hover:underline">Karir</a></li>
+                <div className="space-y-4 flex flex-col items-center sm:items-start">
+                    <h3 className="text-lg font-semibold text-green-500">Kenali Kami</h3>
+                    <ul className="space-y-2">
+                        <li><a href="#" className="hover:text-green-500">Tentang Kami</a></li>
+                        <li><a href="#" className="hover:text-green-500">Syarat & Ketentuan</a></li>
+                        <li><a href="#" className="hover:text-green-500">Kebijakan Privasi</a></li>
+                        <li><a href="#" className="hover:text-green-500">FAQs</a></li>
+                        <li><a href="#" className="hover:text-green-500">Karir</a></li>
                     </ul>
                 </div>
 
                 {/* Customer Service */}
-                <div className="col-span-1 md:col-span-2 lg:col-span-2">
-                    <h3 className="font-semibold">Layanan Pengaduan Konsumen</h3>
-                    <p>PT Gajah Mada Properti<br />Jambi Timur, Lt. 3, Jl. Jendral Sudirman, Kenali Asam, Provinsi Jambi, Kota
-                        Jambi</p>
-                    <p>WhatsApp: 0856 8892 8272<br />Nomor Telepon: 021 2736 7126<br />Email: SukanKiniFitLife@gmail.com</p>
+                <div className="md:col-span-2 lg:col-span-2 space-y-4 text-center sm:text-left">
+                    <h3 className="text-lg font-semibold">Layanan Pengaduan Konsumen</h3>
+                    <p className="text-sm text-gray-400">
+                        PT Gajah Mada Properti <br />
+                        Jambi Timur, Lt. 3, Jl. Jendral Sudirman, Kenali Asam, Provinsi Jambi, Kota Jambi
+                    </p>
+                    <p className="text-sm text-gray-400">
+                        WhatsApp: 0856 8892 8272 <br />
+                        Telepon: 021 2736 7126 <br />
+                        Email: SukanKiniFitLife@gmail.com
+                    </p>
                 </div>
 
                 {/* Operational Hours */}
-                <div>
-                    <h3 className="font-semibold">Jam Operasional</h3>
-                    <p>Senin-Jumat: 06:00 - 23:00<br />Sabtu: 06:00 - 21:00<br />Libur Nasional: 08:00 - 20:00</p>
+                <div className="space-y-4 flex flex-col items-center sm:items-start">
+                    <h3 className="text-lg font-semibold">Jam Operasional</h3>
+                    <p className="text-sm text-gray-400">
+                        Senin-Jumat: 06:00 - 23:00 <br />
+                        Sabtu: 06:00 - 21:00 <br />
+                        Libur Nasional: 08:00 - 20:00
+                    </p>
                 </div>
 
                 {/* Social Media Links */}
-                <div className="col-span-1 flex space-x-4 justify-center">
+                <div className="flex justify-center items-center space-x-6 mt-8">
                     <a href="#" className="text-green-500 hover:text-white">
-                        <FontAwesomeIcon icon={faInstagram} size="lg" />
+                        <FontAwesomeIcon icon={faInstagram} size="2x" />
                     </a>
                     <a href="#" className="text-green-500 hover:text-white">
-                        <FontAwesomeIcon icon={faFacebook} size="lg" />
+                        <FontAwesomeIcon icon={faFacebook} size="2x" />
                     </a>
                     <a href="#" className="text-green-500 hover:text-white">
-                        <FontAwesomeIcon icon={faTiktok} size="lg" />
+                        <FontAwesomeIcon icon={faTiktok} size="2x" />
                     </a>
                 </div>
-
             </div>
 
             {/* Copyright */}
-            <div className="text-center mt-8">
-                <p>© Copyright PT. GajahMada Properti. All Rights Reserved</p>
+            <div className="text-center mt-12 text-sm text-gray-500">
+                © {new Date().getFullYear()} PT. Gajah Mada Properti. All Rights Reserved.
             </div>
         </footer>
     );

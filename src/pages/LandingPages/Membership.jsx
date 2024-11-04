@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
-import '../index.css';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
-const Membership = () => {
+export default function Membership() {
     const [selectedPlan, setSelectedPlan] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [planIndex, setPlanIndex] = useState(0);
 
     const plans = [
-        { duration: '3 Bulan', price: 'Rp385.000', discount: '10%', popular: false, bestValue: false },
-        { duration: '6 Bulan', price: 'Rp320.000', discount: '20%', popular: false, bestValue: false },
-        { duration: '12 Bulan', price: 'Rp275.000', discount: '32%', popular: true, bestValue: false },
-        { duration: '18 Bulan', price: 'Rp259.000', discount: '36%', popular: false, bestValue: false },
-        { duration: '3 Bulan', price: 'Rp249.000', discount: '38%', popular: false, bestValue: true },
+        { id: 1, duration: '1 Bulan', price: 'Rp149.000', discount: '20%', popular: false, bestValue: false },
+        { id: 6, duration: '3 Bulan', price: 'Rp385.000', discount: '10%', popular: false, bestValue: true },
+        { id: 2, duration: '6 Bulan', price: 'Rp320.000', discount: '20%', popular: false, bestValue: false },
+        { id: 3, duration: '12 Bulan', price: 'Rp275.000', discount: '32%', popular: true, bestValue: false },
+        { id: 4, duration: '18 Bulan', price: 'Rp259.000', discount: '36%', popular: true, bestValue: false },
+        { id: 5, duration: '3 Bulan', price: 'Rp249.000', discount: '38%', popular: false, bestValue: true },
     ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPlanIndex((prevIndex) => (prevIndex + 2) % plans.length);
+        }, 3000); // Change cards every 3 seconds
+
+        return () => clearInterval(interval);
+    }, []);
 
     const openModal = (plan) => {
         setSelectedPlan(plan);
@@ -24,49 +34,59 @@ const Membership = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-green-600 to-gray-100 p-4 md:p-8">
+        <div className="bg-green-500 p-8 md:p-8 flex flex-col lg:flex-row justify-center items-center">
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white">Dengan satu keanggotaan, berbagai fasilitas tanpa batas!</h2>
-                <p className="text-white mt-2">Nikmati semua yang kami tawarkan.</p>
+                <h2 className="text-3xl font-bold text-white">Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!</h2>
                 <div className="mt-4 p-4 bg-white rounded-lg shadow-md inline-flex items-center">
                     <ul className="text-green-700 list-disc pl-4">
-                        <li>Nikmati akses ke lebih dari 80 klub di lebih dari 18 kota di Indonesia.</li>
-                        <li>Peralatan gym berkualitas tinggi dan beragam tersedia untuk Anda.</li>
-                        <li>Partisipasi dalam lebih dari 40 jenis kelas tanpa biaya tambahan.</li>
+                        <li className='text-left'>Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!</li>
                     </ul>
                 </div>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                {plans.map((plan, index) => (
-                    <div key={index} className="bg-white rounded-lg shadow-lg p-6 relative">
-                        {plan.popular && (
-                            <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                                Most Popular
-                            </span>
-                        )}
-                        {plan.bestValue && (
-                            <span className="absolute top-2 right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
-                                Best Value
-                            </span>
-                        )}
+            <div className="grid gap-2 lg:gap-5 md:grid-cols-2 grid-cols-1 w-full lg:grid-cols-2 lg:w-full ">
+                {plans.slice(planIndex, planIndex + 2).map((plan, id) => (
+                    <motion.div
+                        key={`${plan.id}-${planIndex}`} // Use a combination of plan ID and planIndex for the key
+                        className="bg-white rounded-lg shadow-lg p-4 relative lg:w-full h-48 flex flex-col justify-between"
+                        initial={{ opacity: 0, x: 30 }} // Start from the right
+                        animate={{ opacity: 1, x: 0 }} // Move to the original position
+                        exit={{ opacity: 0, x: -30 }} // Move out to the left
+                        transition={{
+                            duration: 0.8,
+                            delay: id * 0.3 // Adding delay based on the index of the card
+                        }}
+                    >
                         <div className="flex items-center justify-between">
                             <span className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
                                 {plan.duration}
                             </span>
                             <span className="text-red-500 font-bold">{plan.discount}</span>
                         </div>
-                        <div className="mt-4">
-                            <p className="text-2xl font-bold text-gray-800">{plan.price}</p>
-                            <p className="text-sm text-gray-600">per bulan</p>
+                        <div className="mt-2 flex items-center justify-between">
+                            <div>
+                                <p className="text-lg font-bold text-gray-800">{plan.price}</p>
+                                <p className="text-xs text-gray-600">per bulan</p>
+                            </div>
+                            {/* Labels: "Most Popular" or "Best Value" */}
+                            {plan.popular && (
+                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                                    Most Popular
+                                </span>
+                            )}
+                            {plan.bestValue && (
+                                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                                    Best Value
+                                </span>
+                            )}
                         </div>
                         <button
                             onClick={() => openModal(plan)}
-                            className="mt-6 w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-full transition duration-300"
+                            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-1 rounded-full transition duration-300"
                         >
                             Daftar Sekarang
                         </button>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
 
@@ -111,6 +131,4 @@ const Membership = () => {
             )}
         </div>
     );
-};
-
-export default Membership;
+}

@@ -6,10 +6,10 @@ require('dotenv').config();
 
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone_number, age, height, weight } = req.body;
 
   try {
-
+    // Validate input
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email, and password are required.' });
     }
@@ -18,19 +18,36 @@ const register = async (req, res) => {
       return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
     }
 
+    // Check if the email already exists
     const emailExists = await User.findOne({ where: { email } });
     if (emailExists) {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
-
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword });
-    res.status(201).json({ message: 'User registered successfully' });
+
+    // Create the user
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      phone_number,
+      age,
+      height,
+      weight
+    });
+
+    // Exclude the id and password from the response
+    const { id, password: _, ...userData } = newUser.dataValues; // Using destructuring to omit id and password
+
+    // Return the response
+    res.status(201).json({ message: 'User registered successfully', user: userData });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 const login = async (req, res) => {

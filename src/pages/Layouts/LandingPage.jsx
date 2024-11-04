@@ -9,26 +9,26 @@ import ClientTestimonials from '../LandingPages/ClientTestimonials';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Space from '../../components/Space';
+import Membership from '../LandingPages/Membership';
 
 const LandingPage = () => {
     return (
-        <main>
-            <header>
-                <Navbar />
-            </header>
+        <>
+
+            <Navbar />
 
             <section id="home">
                 <Home />
             </section>
+
 
             <section id="about">
                 <Space />
                 <About />
             </section>
 
-
             <section id="promosi">
-                <Space />
+                <Membership />
                 <Promosi />
             </section>
 
@@ -39,6 +39,7 @@ const LandingPage = () => {
             </section>
 
             <section id="kelas">
+                <Space />
                 <Kelas />
             </section>
 
@@ -48,13 +49,14 @@ const LandingPage = () => {
             </section>
 
             <section id="client">
+                <Space />
                 <ClientTestimonials />
             </section>
 
             <footer id="footer">
                 <Footer />
             </footer>
-        </main>
+        </>
     );
 };
 

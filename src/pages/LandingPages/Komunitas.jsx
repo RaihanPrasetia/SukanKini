@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 function Komunitas() {
     return (
-        <div className="w-full flex flex-col justify-center items-center  py-20 px-4 md:px-16 ">
+        <div className="w-full flex flex-col justify-center items-center  py-20 px-4 lg:px-20 ">
             {/* Header Section */}
             <div className="flex flex-col w-full space-y-8">
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold text-green-600">Temukan Komunitas yang Anda Minati</h1>
+                    <h1 className="text-3xl lg:text-4xl font-bold text-green-600">Temukan Komunitas yang Anda Minati</h1>
                     <p className="text-gray-700 mt-4 text-lg max-w-2xl mx-auto">
                         Mulailah berinteraksi bersama komunitas yang sesuai dengan diri Anda! Ciptakan pengalaman seru dalam perjalanan aktivitas produktif Anda!
                     </p>
@@ -18,7 +18,7 @@ function Komunitas() {
                     <div className="flex flex-wrap justify-center mt-6">
                         {['Pembentukan Otot', 'Atletik', 'Cardio', 'Yoga & Flexibilitas', 'Relaksasi'].map((category) => (
                             <button key={category}
-                                className="mr-4 mb-4 px-4 py-2 border border-green-500 text-green-700 rounded-full shadow-md hover:bg-green-500 hover:text-white transition-all duration-200">
+                                className="mr-4 mb-4 px-4 py-2 border border-green-500 text-green-700 rounded-lg shadow-md hover:bg-green-500 hover:text-white transition-all duration-200">
                                 {category}
                             </button>
                         ))}

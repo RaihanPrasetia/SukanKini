@@ -1,6 +1,6 @@
 // models/User.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../config')
+const sequelize = require('../../config');
 
 const User = sequelize.define('User', {
   name: {
@@ -15,33 +15,33 @@ const User = sequelize.define('User', {
       isEmail: true,
     },
   },
-
   phone_number: {
     type: DataTypes.STRING,
     allowNull: true,
     unique: true,
   },
-
   password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-
   age: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-
   height: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-
   weight: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-
+}, {
+  // Enable soft deletes
+  paranoid: true,
+  // Optional: Define the field name for the deleted timestamp
+  // This will default to 'deletedAt' if you don't specify
+  deletedAt: 'deletedAt',
 });
 
 module.exports = User;
