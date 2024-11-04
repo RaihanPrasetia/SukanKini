@@ -1,9 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Membership from "./Membership";
 
 export default function Promosi() {
-    return (
-        <div className="bg-gray-50 py-20 px-5 md:px-16">
+    return (<>
+        <Membership />
+
+        <div className="bg-gray-50 py-20 px-5 lg:px-20">
             <div className="">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -11,7 +14,7 @@ export default function Promosi() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-8"
                 >
-                    <h2 className="text-4xl font-bold text-green-600">
+                    <h2 className="text-3xl lg:text-4xl font-bold text-green-600">
                         Promo Spesial untuk Anda!
                     </h2>
                     <p className="mt-2 text-gray-600">
@@ -23,7 +26,7 @@ export default function Promosi() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6 }}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                     {/* Promotion Cards */}
                     <motion.div
@@ -40,7 +43,7 @@ export default function Promosi() {
                             <p className="text-gray-500 mt-2">
                                 Dapatkan diskon hingga 50% untuk pembelian pertama Anda!
                             </p>
-                            <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300">
+                            <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition duration-300">
                                 Dapatkan Sekarang
                             </button>
                         </div>
@@ -60,7 +63,7 @@ export default function Promosi() {
                             <p className="text-gray-500 mt-2">
                                 Free membership selama 1 bulan untuk anggota baru!
                             </p>
-                            <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300">
+                            <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition duration-300">
                                 Klaim Sekarang
                             </button>
                         </div>
@@ -88,5 +91,6 @@ export default function Promosi() {
                 </motion.div>
             </div>
         </div>
+    </>
     );
 }

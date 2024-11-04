@@ -5,7 +5,7 @@ import { AuthProvider } from './pages/Layouts/AuthContext'; // Import AuthProvid
 
 function App() {
   return (
-    <div className="bg-white dark:bg-gray-800 min-h-screen">
+    <div className="bg-white dark:bg-gray-800 min-h-screen scroll-smooth">
       <Router>
         <AuthProvider>
           <AppRoutes />

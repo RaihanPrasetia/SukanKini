@@ -15,6 +15,7 @@ const Navbar = () => {
     return (
         <nav className="bg-green-600 shadow-lg p-4">
             <div className="container mx-auto flex justify-between items-center">
+<<<<<<< HEAD
                 <Link to="/dashboard" className="text-white text-2xl font-bold hover:text-gray-200 transition duration-300">
                     <span className="text-yellow-300">Sukan</span>Kini
                 </Link>
@@ -59,6 +60,13 @@ const Navbar = () => {
                         <ArrowRightOnRectangleIcon className="h-5 w-5 mr-1" />
                         Logout
                     </button>
+=======
+                <Link to="home" className="text-white text-lg font-bold">Dashboard</Link>
+                <div>
+                    <Link to="home" className="text-white mx-4">Home</Link>
+                    <Link to="settings" className="text-white mx-4">Setting</Link>
+                    <button onClick={handleLogout} className="text-white">Logout</button>
+>>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                 </div>
             </div>
         </nav>

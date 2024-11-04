@@ -8,25 +8,30 @@ import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import Space from '../../components/Space';
+import Space from '../../components/assets/Space';
+import Membership from '../LandingPages/Membership';
 
 const LandingPage = () => {
     return (
-        <main>
-            <header>
-                <Navbar />
-            </header>
+        <>
+
+            <Navbar />
 
             <section id="home">
                 <Home />
             </section>
+
 
             <section id="about">
                 <Space />
                 <About />
             </section>
 
+<<<<<<< HEAD
             <section id="membership">
+=======
+            <section id="promosi">
+>>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                 <Space />
                 <Membership /> 
             </section>
@@ -54,7 +59,7 @@ const LandingPage = () => {
             <footer id="footer">
                 <Footer />
             </footer>
-        </main>
+        </>
     );
 };
 

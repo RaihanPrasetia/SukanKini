@@ -1,5 +1,5 @@
 import React from 'react';
-import FormInput from '../FormInput';
+import FormInput from '../assets/FormInput';
 
 function ForgotForm({ onSendOTP, onLogin }) {
     return (

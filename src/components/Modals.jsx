@@ -21,7 +21,7 @@ function AuthModal({ isOpen, onClose }) {
     const handleSendOTP = () => setCurrentForm("otpConfirmation");
     const handleConfirmOTP = () => {
         console.log("OTP confirmed!");
-        onClose(); 
+        onClose();
     };
 
     const renderForm = () => {
@@ -62,21 +62,18 @@ function AuthModal({ isOpen, onClose }) {
                     onClick={handleClickOutside}
                 >
                     <motion.div
-                        className="bg-green-500 rounded-lg shadow-lg relative w-[1000px] flex min-h-[400px] justify-start"
+                        className="bg-green-500 rounded-lg shadow-lg relative w-[90%] max-w-[800px] flex flex-col md:flex-row min-h-[400px] justify-start p-5 md:p-5"
                         onClick={(e) => e.stopPropagation()}
                         variants={modalVariants}
                         initial="hidden"
                         animate="visible"
                         exit="exit"
                     >
-                        <div className="min-w-[350px] h-full text-start py-10">
-                            <h1 className="text-center text-[16px] text-white font-bold px-5">
-                                Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
-                            </h1>
-                        </div>
-                        <div className="flex items-center justify-center w-full bg-white rounded-xl p-24">
-                            {renderForm()}
-                        </div>
+                        {/* Text Section */}
+
+                        {/* Form Section */}
+
+                        {renderForm()}
                     </motion.div>
                 </motion.div>
             )}

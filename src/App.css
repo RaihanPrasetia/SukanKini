@@ -2,6 +2,12 @@
   text-align: center;
 }
 
+.scroll-smooth {
+  scroll-behavior: smooth;
+  /* Enables smooth scrolling */
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
