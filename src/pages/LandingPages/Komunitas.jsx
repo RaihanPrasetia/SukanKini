@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Komunitas() {
     return (
-        <div className="w-full flex flex-col justify-center items-center  py-20 px-4 lg:px-20 ">
+        <div className="w-full flex flex-col justify-center items-center  lg:py-20 py-16 px-4 lg:px-20 ">
             {/* Header Section */}
             <div className="flex flex-col w-full space-y-8">
                 <div className="text-center">

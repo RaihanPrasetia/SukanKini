@@ -49,7 +49,7 @@ function Navbar() {
         const sectionElement = document.getElementById(section);
         if (sectionElement) {
             const isMobile = window.innerWidth < 1024;
-            const offset = section === 'home' ? 0 : isMobile ? 100 : 10;
+            const offset = section === 'home' ? 0 : isMobile ? 50 : 10;
 
             const sectionPosition = sectionElement.getBoundingClientRect().top + window.pageYOffset + offset;
 
@@ -69,7 +69,7 @@ function Navbar() {
             <nav className={`fixed top-0 left-0 right-0 z-50 transition duration-300 px-4 lg:px-16 ${isScrolled || window.innerWidth < 1024 ? 'bg-white shadow-lg' : 'bg-transparent'} p-4`}>
                 <div className="container mx-auto flex justify-between items-center">
                     <div className={`text-xl font-bold ${isScrolled || window.innerWidth < 1024 ? 'text-green-500' : 'bg-transparent text-white'}`}>
-                        <Link to="home">SukanKini</Link>
+                        <Link to="#" onClick={scrollToHome}>SukanKini</Link>
                     </div>
 
                     <button onClick={toggleMenu} className={`lg:hidden focus:outline-none ${isScrolled || window.innerWidth < 1024 ? 'text-green-500' : 'bg-transparent text-white'}`}>

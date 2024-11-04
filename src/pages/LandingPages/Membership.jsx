@@ -34,9 +34,9 @@ export default function Membership() {
     };
 
     return (
-        <div className="bg-green-500 p-8 md:p-8 flex flex-col lg:flex-row justify-center items-center">
+        <div className="p-8 md:p-8 flex flex-col lg:flex-row justify-center items-center">
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white">Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!</h2>
+                <h2 className="text-3xl font-bold text-green-500">Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!</h2>
                 <div className="mt-4 p-4 bg-white rounded-lg shadow-md inline-flex items-center">
                     <ul className="text-green-700 list-disc pl-4">
                         <li className='text-left'>Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!</li>
