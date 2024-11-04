@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'; // Import the Google icon
 
 export default function Button({ title, icon, link, onClick, type }) {
     // If `link` is provided, render a `Link` component. Otherwise, render a `button`.

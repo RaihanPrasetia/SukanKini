@@ -32,7 +32,7 @@ function AuthModal({ isOpen, onClose }) {
                 );
             case "register":
                 return (
-                    <RegisterForm onLogin={() => setCurrentForm("login")} />
+                    <RegisterForm onLogin={() => setCurrentForm("login")} onSendOTP={handleSendOTP} />
                 );
             case "forgotPassword":
                 return (

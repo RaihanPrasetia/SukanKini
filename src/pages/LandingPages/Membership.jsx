@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
 
 export default function Membership() {
     const [selectedPlan, setSelectedPlan] = useState(null);
@@ -19,13 +15,14 @@ export default function Membership() {
         { id: 5, duration: '3 Bulan', price: 'Rp249.000', discount: '38%', popular: false, bestValue: true },
     ];
 
+    // Set an interval to change the displayed plans every 3 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setPlanIndex((prevIndex) => (prevIndex + 2) % plans.length);
-        }, 3000); // Change cards every 3 seconds
+        }, 3000);
 
-        return () => clearInterval(interval);
-    }, []);
+        return () => clearInterval(interval); // Clean up the interval on unmount
+    }, [plans.length]); // Add plans.length as a dependency
 
     const openModal = (plan) => {
         setSelectedPlan(plan);
@@ -34,7 +31,7 @@ export default function Membership() {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setTimeout(() => setSelectedPlan(null), 300);
+        setTimeout(() => setSelectedPlan(null), 300); // Delay for animation
     };
 
     return (
@@ -43,23 +40,20 @@ export default function Membership() {
                 <h2 className="text-3xl font-bold text-green-500">Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!</h2>
                 <div className="mt-4 p-4 bg-white rounded-lg shadow-md inline-flex items-center">
                     <ul className="text-green-700 list-disc pl-4">
-                        <li className='text-left'>Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!</li>
+                        <li className="text-left">Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!</li>
                     </ul>
                 </div>
             </div>
 
-            <div className="grid gap-2 lg:gap-5 md:grid-cols-2 grid-cols-1 w-full lg:grid-cols-2 lg:w-full ">
+            <div className="grid gap-2 lg:gap-5 md:grid-cols-2 grid-cols-1 w-full lg:grid-cols-2 lg:w-full">
                 {plans.slice(planIndex, planIndex + 2).map((plan, id) => (
                     <motion.div
-                        key={`${plan.id}-${planIndex}`} // Use a combination of plan ID and planIndex for the key
+                        key={`${plan.id}-${planIndex}`} // Unique key using plan ID and planIndex
                         className="bg-white rounded-lg shadow-lg p-4 relative lg:w-full h-48 flex flex-col justify-between"
-                        initial={{ opacity: 0, x: 30 }} // Start from the right
-                        animate={{ opacity: 1, x: 0 }} // Move to the original position
-                        exit={{ opacity: 0, x: -30 }} // Move out to the left
-                        transition={{
-                            duration: 0.8,
-                            delay: id * 0.3 // Adding delay based on the index of the card
-                        }}
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ duration: 0.8, delay: id * 0.3 }}
                     >
                         <div className="flex items-center justify-between">
                             <span className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
@@ -72,16 +66,11 @@ export default function Membership() {
                                 <p className="text-lg font-bold text-gray-800">{plan.price}</p>
                                 <p className="text-xs text-gray-600">per bulan</p>
                             </div>
-                            {/* Labels: "Most Popular" or "Best Value" */}
                             {plan.popular && (
-                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                                    Most Popular
-                                </span>
+                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Most Popular</span>
                             )}
                             {plan.bestValue && (
-                                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
-                                    Best Value
-                                </span>
+                                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">Best Value</span>
                             )}
                         </div>
                         <button

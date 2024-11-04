@@ -42,7 +42,7 @@ const Profile = () => {
 
       {/* Main Profile Section */}
       <div className="flex-grow flex items-center justify-center p-8 bg-pink-100">
-      <div className="bg-white shadow-lg rounded-lg p-6" style={{ width: '150vh', height: '100vh' }}>
+        <div className="bg-white shadow-lg rounded-lg p-6" style={{ width: '150vh', height: '100vh' }}>
           {/* Header */}
           <div className="flex items-center space-x-4 mb-4">
             <img

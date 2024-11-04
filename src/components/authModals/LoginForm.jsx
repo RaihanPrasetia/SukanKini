@@ -17,7 +17,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
 
     const validate = () => {
         const newErrors = {};
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!email) {
             newErrors.email = 'Masukkan Email ';
@@ -37,7 +37,6 @@ function LoginForm({ onForgotPassword, onRegister }) {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Validate form inputs
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -45,16 +44,13 @@ function LoginForm({ onForgotPassword, onRegister }) {
         }
 
         try {
-            // Call the login API
             const data = await login(email, password);
 
-            // Check if the user has the 'user' role
             if (data.user.role !== 'user') {
                 toast.error('Data tidak ditemukan.');
                 return;
             }
 
-            // If role is 'user', proceed with login
             contextLogin(data.token, data.user.name, data.user.role);
             toast.success(`Selamat Bergabung, ${data.user.name}`);
             navigate('/home');
@@ -68,13 +64,11 @@ function LoginForm({ onForgotPassword, onRegister }) {
     return (
         <>
             <div className='w-full flex  rounded-xl p-2 md:p-0 md:w-full'>
-                <div className="flex flex-col justify-between md:w-1/2">
+                <div className="flex flex-col justify-between">
                     <h1 className=" items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
                         Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
                     </h1>
-                    {/* Image only in desktop view */}
                     <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
-                        {/* You can put an image or other content here if needed */}
                     </div>
                 </div>
                 <img

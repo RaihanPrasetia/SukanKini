@@ -18,13 +18,8 @@ const Home = () => {
                     className="bg-white bg-opacity-90 p-10 rounded-2xl shadow-2xl max-w-full h-[80vh] mx-auto flex flex-col justify-between items-center"
                 >
                     <div>
-<<<<<<< HEAD
-                        <h1 className="text-4xl font-bold text-indigo-800">Dashboard</h1>
-                        <p className="mt-4 text-2xl text-yellow-500 font-semibold">Hai, Selamat Datang Kembali!</p>
-=======
                         <h1 className="text-3xl font-bold text-green-700">Dashboard</h1>
                         <p className="mt-4 text-xl text-yellow-500 font-semibold">Hai, Selamat Datang Kembali, {userName}! </p>
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                         <p className="mt-2 text-lg text-gray-700">Ingin Olahraga Apa Hari ini?</p>
                     </div>
 

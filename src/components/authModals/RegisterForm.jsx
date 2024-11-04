@@ -8,7 +8,7 @@ import Button from '../assets/Button'; // Ensure this path is correct
 import { register } from '../../controllers/authController'; // Fix the import spelling
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-function RegisterForm({ onLogin }) {
+function RegisterForm({ onLogin, onSendOTP }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

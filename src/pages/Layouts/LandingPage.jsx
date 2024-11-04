@@ -2,14 +2,13 @@ import React from 'react';
 import Home from '../LandingPages/Home';
 import About from '../LandingPages/About';
 import Komunitas from '../LandingPages/Komunitas';
-import Membership from '../LandingPages/Membership'; 
 import Kelas from '../LandingPages/Kelas';
 import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Space from '../../components/assets/Space';
-import Membership from '../LandingPages/Membership';
+import Promosi from '../LandingPages/Promosi';
 
 const LandingPage = () => {
     return (
@@ -27,13 +26,9 @@ const LandingPage = () => {
                 <About />
             </section>
 
-<<<<<<< HEAD
-            <section id="membership">
-=======
             <section id="promosi">
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                 <Space />
-                <Membership /> 
+                <Promosi />
             </section>
 
             <section id="komunitas">

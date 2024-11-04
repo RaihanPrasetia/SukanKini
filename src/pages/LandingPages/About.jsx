@@ -68,10 +68,6 @@ function About() {
     };
 
     return (
-<<<<<<< HEAD
-        <div className="w-full relative flex flex-col md:flex-row bg-white">
-            <div className="relative min-w-[343px] h-[400px] md:h-[552px] overflow-hidden bg-green-500">
-=======
         <div className="w-full flex flex-col md:flex-row bg-white">
             {/* Left Image Section with animation from left to right */}
             <motion.div
@@ -81,7 +77,6 @@ function About() {
                 variants={fadeInLeft}
                 ref={ref}
             >
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                 <img
                     src="/assets/images/left-img.png"
                     alt=""
@@ -89,11 +84,6 @@ function About() {
                 />
             </motion.div>
 
-<<<<<<< HEAD
-            <div className="p-6 md:p-8 bg-white rounded-lg shadow mx-auto py-10 md:py-20">
-                <h1 className="text-3xl md:text-4xl font-bold text-center text-green-700 mb-6">KENAPA HARUS KAMI?</h1>
-                <p className="text-base md:text-lg text-center text-gray-700 mb-8">
-=======
             {/* Right Content Section with animation from right to left */}
             <motion.div
                 className="p-6 md:p-8 lg:p-20 bg-white rounded-lg shadow-lg mx-auto"
@@ -105,7 +95,6 @@ function About() {
                     KENAPA HARUS KAMI?
                 </h1>
                 <p className="text-justify lg:text-center text-gray-700 mb-6 lg:mb-8">
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                     Kami punya segala yang Anda butuhkan untuk mencapai tujuan kesehatan Anda.
                     Bergabunglah dengan komunitas yang mendukung dan nikmati program khusus yang
                     dirancang hanya untuk Anda.
@@ -116,19 +105,12 @@ function About() {
                     <motion.div className="flex items-start" variants={titleVariants} custom={0}>
                         <FaUserCheck className="text-green-600 text-2xl lg:text-3xl mr-3 lg:mr-4" />
                         <div>
-<<<<<<< HEAD
-                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Program Khusus</h2>
-                            <p className="text-sm md:text-base text-gray-700">
-                                Program latihan yang disesuaikandengan kebutuhan individu, memastikan setiap anggota
-                                mendapatkan perhatian dan rencana yang sesuai.
-=======
                             <h2 className="text-lg lg:text-xl font-semibold text-green-700">
                                 Program Khusus
                             </h2>
                             <p className="text-gray-700 text-justify">
                                 Program latihan yang disesuaikan dengan kebutuhan individu,
                                 memastikan setiap anggota mendapatkan perhatian dan rencana yang sesuai.
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                             </p>
                         </div>
                     </motion.div>
@@ -137,19 +119,12 @@ function About() {
                     <motion.div className="flex items-start" variants={titleVariants} custom={1}>
                         <FaUserCheck className="text-green-600 text-2xl lg:text-3xl mr-3 lg:mr-4" />
                         <div>
-<<<<<<< HEAD
-                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Kualifikasi Pelatih</h2>
-                            <p className="text-sm md:text-base text-gray-700">
-                                Tim pelatih kami memiliki kualifikasi tinggi dan pengalaman bertahun-tahun untuk
-                                membantu Anda mencapai tujuan kebugaran Anda.
-=======
                             <h2 className="text-lg lg:text-xl font-semibold text-green-700">
                                 Kualifikasi Pelatih
                             </h2>
                             <p className="text-gray-700 text-justify">
                                 Tim pelatih kami memiliki kualifikasi tinggi dan pengalaman bertahun-tahun
                                 untuk membantu Anda mencapai tujuan kebugaran Anda.
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                             </p>
                         </div>
                     </motion.div>
@@ -158,19 +133,12 @@ function About() {
                     <motion.div className="flex items-start" variants={titleVariants} custom={2}>
                         <FaVideo className="text-green-600 text-2xl lg:text-3xl mr-3 lg:mr-4" />
                         <div>
-<<<<<<< HEAD
-                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Video Tutorial</h2>
-                            <p className="text-sm md:text-base text-gray-700">
-                                Kami menyediakan video tutorial untuk tontonan Anda yang mungkin dapat membantu
-                                Anda dalam melakukan aktivitas kebugaran jasmani yang Anda inginkan.
-=======
                             <h2 className="text-lg lg:text-xl font-semibold text-green-700">
                                 Video Tutorial
                             </h2>
                             <p className="text-gray-700 text-justify">
                                 Kami menyediakan video tutorial untuk tontonan Anda yang mungkin dapat
                                 membantu Anda dalam melakukan aktivitas kebugaran jasmani yang Anda inginkan.
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                             </p>
                         </div>
                     </motion.div>
@@ -179,28 +147,17 @@ function About() {
                     <motion.div className="flex items-start" variants={titleVariants} custom={3}>
                         <FaClock className="text-green-600 text-2xl lg:text-3xl mr-3 lg:mr-4" />
                         <div>
-<<<<<<< HEAD
-                            <h2 className="text-lg md:text-xl font-semibold text-green-700">Jam Operasional</h2>
-                            <p className="text-sm md:text-base text-gray-700">
-                                Kami buka dari jam 6 pagi hingga 10 malam setiap hari, sehingga Anda bisa berlatih
-                                kapan saja sesuai dengan jadwal Anda.
-=======
                             <h2 className="text-lg lg:text-xl font-semibold text-green-700">
                                 Jam Operasional
                             </h2>
                             <p className="text-gray-700 text-justify">
                                 Kami buka dari jam 6 pagi hingga 10 malam setiap hari, sehingga Anda bisa
                                 berlatih kapan saja sesuai dengan jadwal Anda.
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
                             </p>
                         </div>
                     </motion.div>
                 </div>
-<<<<<<< HEAD
-            </div>
-=======
             </motion.div>
->>>>>>> bd731ba6fad3963c4ee7f1c1cd54a48531675ef6
         </div>
     );
 }
