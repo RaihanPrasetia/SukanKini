@@ -1,38 +1,16 @@
-// src/pages/AppRoutes.jsx
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import LandingPage from '../pages/Layouts/LandingPage';
+import React, { useContext } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from '../pages/Layouts/Dashboard';
-import Admin from '../pages/Layouts/Admin';
-import ProtectedRoute from '../components/ProtectedRoute';
+import LandingPage from '../pages/Layouts/LandingPage';
+
 
 function AppRoutes() {
+
+    //const { isAuthenticated } = useContext(AuthContext);
     return (
         <Routes>
-            {/* Public route */}
-            <Route path="/" element={<LandingPage />} />
-
-            {/* User Dashboard route - no /home prefix */}
-            <Route
-                path="*"
-                element={
-                    <ProtectedRoute requiredRole="user">
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* Admin Dashboard route */}
-            <Route
-                path="/admin"
-                element={
-                    <ProtectedRoute requiredRole="admin">
-                        <Admin />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* Catch-all route for unmatched paths */}
+            <Route path="/" element={<LandingPage />} /> {/* Gunakan LandingPage */}
+            <Route path="/" element={<Dashboard />} />      
         </Routes>
     );
 }

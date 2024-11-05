@@ -20,7 +20,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!email) {
-            newErrors.email = 'Masukkan Email ';
+            newErrors.email = 'Masukkan Email';
         } else if (!emailPattern.test(email)) {
             newErrors.email = 'Invalid email format.';
         }
@@ -60,23 +60,21 @@ function LoginForm({ onForgotPassword, onRegister }) {
         }
     };
 
-
     return (
         <>
-            <div className='w-full flex  rounded-xl p-2 md:p-0 md:w-full'>
+            <div className='w-full flex rounded-xl p-2 md:p-0 md:w-full'>
                 <div className="flex flex-col justify-between">
-                    <h1 className=" items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
+                    <h1 className="text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
                         Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
                     </h1>
-                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
-                    </div>
+                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
                 </div>
                 <img
                     src="/assets/images/imgAuth1.png"
                     alt=""
-                    className="absolute hidden md:block  -bottom-2 -left-10 object-cover  w-[400px] h-[400px]"
+                    className="absolute hidden md:block -bottom-2 -left-10 object-cover w-[400px] h-[400px]"
                 />
-                <div className='w-full flex flex-col items-center p-6 bg-white rounded-lg '>
+                <div className='w-full flex flex-col items-center p-6 bg-white rounded-lg'>
                     <h1 className="text-2xl font-bold mb-6 text-green-500 text-center">
                         MASUK KE AKUN SUKANKINI
                     </h1>
@@ -89,7 +87,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
                                     value={email}
                                     onChange={(e) => {
                                         setEmail(e.target.value);
-                                        setErrors(prev => ({ ...prev, email: undefined })); // Clear email error on change
+                                        setErrors(prev => ({ ...prev, email: undefined }));
                                     }}
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
@@ -102,7 +100,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
                                     value={password}
                                     onChange={(e) => {
                                         setPassword(e.target.value);
-                                        setErrors(prev => ({ ...prev, password: undefined })); // Clear password error on change
+                                        setErrors(prev => ({ ...prev, password: undefined }));
                                     }}
                                 />
                                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
@@ -129,7 +127,17 @@ function LoginForm({ onForgotPassword, onRegister }) {
                         Anda pengguna baru?{' '}
                         <span className='text-green-500 cursor-pointer' onClick={onRegister}>Daftar</span>
                     </p>
-                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+                    <ToastContainer 
+                        position="top-right" 
+                        autoClose={5000} 
+                        hideProgressBar={false} 
+                        newestOnTop={false} 
+                        closeOnClick 
+                        rtl={false} 
+                        pauseOnFocusLoss 
+                        draggable 
+                        pauseOnHover 
+                    />
                 </div>
             </div>
         </>
