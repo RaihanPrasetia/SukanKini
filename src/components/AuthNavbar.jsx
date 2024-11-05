@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../pages/Layouts/AuthContext';
 import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons
@@ -6,6 +6,7 @@ import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt } from 'react-i
 const Navbar = () => {
     const { logout, user } = useAuth(); // Get user data from useAuth
     const navigate = useNavigate();
+    const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
 
     const handleLogout = () => {
         logout();
@@ -35,11 +36,14 @@ const Navbar = () => {
                         <FaGraduationCap className="h-5 w-5 mr-1" />
                         Kelas Pelatihan
                     </Link>
-
                 </div>
 
                 {/* Profile and Logout Section */}
-                <div className="flex items-center space-x-4">
+                <div 
+                    className="relative flex items-center" 
+                    onMouseEnter={() => setDropdownOpen(true)} 
+                    onMouseLeave={() => setDropdownOpen(false)}
+                >
                     <Link to="/profile" className="flex items-center text-white hover:text-gray-200 transition duration-300 space-x-2">
                         {user?.photoURL ? (
                             <img src={user.photoURL} alt="Profile" className="h-8 w-8 rounded-full" />
@@ -52,10 +56,25 @@ const Navbar = () => {
                         )}
                         <span>{user?.displayName || "Profile"}</span>
                     </Link>
-                    <button onClick={handleLogout} className="flex items-center text-white hover:text-gray-200 transition duration-300">
-                        <FaSignOutAlt className="h-5 w-5 mr-1" />
-                        Logout
-                    </button>
+
+                    {/* Dropdown Menu for Profile and Logout */}
+                    {dropdownOpen && (
+                        <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 z-10">
+                            <Link 
+                                to="/profile" 
+                                className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition duration-200 rounded-md"
+                            >
+                                Profile
+                            </Link>
+                            <button 
+                                onClick={handleLogout}
+                                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition duration-200 rounded-md"
+                            >
+                                <FaSignOutAlt className="inline mr-2" />
+                                Logout
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>

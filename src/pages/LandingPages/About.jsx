@@ -36,8 +36,8 @@ function About() {
             x: isInView ? 0 : 0,
         },
         transition: {
-            duration: 1.5, // Slower animation
-            ease: 'easeOut',
+            duration: 1.8, // Increased duration for smoother animation
+            ease: 'easeInOut', // Changed easing function
         },
     };
 
@@ -48,8 +48,8 @@ function About() {
             x: isInView ? 0 : -30,
         },
         transition: {
-            duration: 1.5, // Slower animation
-            ease: 'easeOut',
+            duration: 1.8, // Increased duration for smoother animation
+            ease: 'easeInOut', // Changed easing function
         },
     };
 
@@ -60,9 +60,9 @@ function About() {
             opacity: isInView ? 1 : 0,
             y: isInView ? 0 : 20,
             transition: {
-                delay: i * 0.2, // Different delays for each title
-                duration: 1,
-                ease: 'easeOut',
+                delay: i * 0.3, // Increased delay for smoother stagger
+                duration: 1.2, // Slightly increased duration for titles
+                ease: 'easeInOut', // Changed easing function
             },
         }),
     };

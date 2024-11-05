@@ -24,6 +24,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
 
         if (!email) {
             newErrors.email = 'Masukkan Email';
+            newErrors.email = 'Masukkan Email';
         } else if (!emailPattern.test(email)) {
             newErrors.email = 'Format email tidak valid.';
         }
@@ -87,6 +88,7 @@ function LoginForm({ onForgotPassword, onRegister }) {
                     <h1 className="items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
                         Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
                     </h1>
+                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
                     <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
                 </div>
                 <img

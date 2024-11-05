@@ -31,8 +31,10 @@ function Pelatih() {
         <div className="w-full bg-slate-50 shadow-lg border-2 px-8 lg:px-20 py-16 flex flex-col items-center">
             {/* Header */}
             <div className="text-center mb-8">
-                <h1 className="text-3xl  lg:text-4xl font-bold text-green-600">Pelatih yang Profesional</h1>
-                <p className="text-gray-700 mt-4">
+                <h1 className="text-3xl lg:text-4xl font-bold text-green-600 transition-transform duration-500 transform hover:scale-105">
+                    Pelatih yang Profesional
+                </h1>
+                <p className="text-gray-700 mt-4 transition-opacity duration-300 hover:opacity-80">
                     Di sini kami menyediakan pelatih berpengalaman dan berkualifikasi. Pilih pelatih sesuai kelas yang Anda ikuti.
                 </p>
             </div>
@@ -43,9 +45,9 @@ function Pelatih() {
                     <button
                         key={category}
                         onClick={() => setActiveCategory(category)}
-                        className={`text-lg font-semibold px-4 py-2 border rounded-xl transition-colors duration-300 ${activeCategory === category
-                            ? 'text-white bg-green-500 border-green-500 hover:bg-white hover:text-green-500'
-                            : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white'
+                        className={`text-lg font-semibold px-4 py-2 border rounded-xl transition-all duration-300 ${activeCategory === category
+                            ? 'text-white bg-green-500 border-green-500 hover:bg-white hover:text-green-500 transform hover:scale-105'
+                            : 'text-green-500 border-green-500 hover:bg-green-500 hover:text-white transform hover:scale-105'
                             }`}
                     >
                         {category}
@@ -56,14 +58,14 @@ function Pelatih() {
             {/* Community Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {communityCards.map((card) => (
-                    <div key={card.id} className="relative group">
+                    <div key={card.id} className="relative group transition-transform duration-300 transform hover:scale-105">
                         <img
                             src={card.image}
                             alt={card.title}
-                            className="w-full h-60 md:h-80 object-cover rounded-md"
+                            className="w-full h-60 md:h-80 object-cover rounded-md transition-transform duration-300 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-black opacity-50 rounded-md transition-opacity duration-300 group-hover:opacity-0"></div>
-                        <p className="absolute bottom-4 left-4 text-white text-lg font-semibold">
+                        <p className="absolute bottom-4 left-4 text-white text-lg font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             {card.title}
                         </p>
                     </div>
@@ -71,7 +73,7 @@ function Pelatih() {
             </div>
 
             {/* View All Trainers Button */}
-            <button className="mt-8 px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-white hover:text-green-600 border border-green-600 transition duration-300">
+            <button className="mt-8 px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-white hover:text-green-600 border border-green-600 transition duration-300 transform hover:scale-105">
                 Lihat Semua Pelatih
             </button>
         </div>

@@ -15,14 +15,13 @@ export default function Membership() {
         { id: 5, duration: '3 Bulan', price: 'Rp249.000', discount: '38%', popular: false, bestValue: true },
     ];
 
-    // Set an interval to change the displayed plans every 3 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setPlanIndex((prevIndex) => (prevIndex + 2) % plans.length);
         }, 3000);
 
-        return () => clearInterval(interval); // Clean up the interval on unmount
-    }, [plans.length]); // Add plans.length as a dependency
+        return () => clearInterval(interval);
+    }, [plans.length]);
 
     const openModal = (plan) => {
         setSelectedPlan(plan);
@@ -31,7 +30,7 @@ export default function Membership() {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setTimeout(() => setSelectedPlan(null), 300); // Delay for animation
+        setTimeout(() => setSelectedPlan(null), 300);
     };
 
     return (
@@ -48,12 +47,12 @@ export default function Membership() {
             <div className="grid gap-2 lg:gap-5 md:grid-cols-2 grid-cols-1 w-full lg:grid-cols-2 lg:w-full">
                 {plans.slice(planIndex, planIndex + 2).map((plan, id) => (
                     <motion.div
-                        key={`${plan.id}-${planIndex}`} // Unique key using plan ID and planIndex
+                        key={`${plan.id}-${planIndex}`}
                         className="bg-white rounded-lg shadow-lg p-4 relative lg:w-full h-48 flex flex-col justify-between"
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -30 }}
-                        transition={{ duration: 0.8, delay: id * 0.3 }}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.6, ease: 'easeInOut', delay: id * 0.2 }}
                     >
                         <div className="flex items-center justify-between">
                             <span className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
@@ -75,7 +74,7 @@ export default function Membership() {
                         </div>
                         <button
                             onClick={() => openModal(plan)}
-                            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-1 rounded-full transition duration-300"
+                            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 rounded-full transition duration-300 transform hover:scale-105"
                         >
                             Daftar Sekarang
                         </button>
@@ -86,10 +85,16 @@ export default function Membership() {
             {/* Modal */}
             {isModalOpen && selectedPlan && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
-                    <div className="bg-white rounded-lg shadow-lg flex flex-col w-11/12 md:w-3/4 lg:w-2/3 transform transition-all duration-300 ease-out">
+                    <motion.div
+                        className="bg-white rounded-lg shadow-lg flex flex-col w-11/12 md:w-3/4 lg:w-2/3"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                    >
                         <div className="flex flex-col md:flex-row">
                             {/* Left Section: Image and Description */}
-                            <div className="w-full md:w-1/3 p-6 bg-green-100 rounded-t-lg md:rounded-l-lg md:rounded-t-none flex flex-col items-center justify-center animate-slideInLeft">
+                            <div className="w-full md:w-1/3 p-6 bg-green-100 rounded-t-lg md:rounded-l-lg md:rounded-t-none flex flex-col items-center justify-center">
                                 <img src="https://via.placeholder.com/150" alt="Partnership" className="mb-4 rounded-lg" />
                                 <p className="text-center text-green-700 font-semibold">
                                     Dapatkan Banyak Keuntungan Dengan Menjadi Mitra Kami!
@@ -97,7 +102,7 @@ export default function Membership() {
                             </div>
 
                             {/* Right Section: Form */}
-                            <div className="w-full md:w-2/3 p-8 relative animate-slideInRight">
+                            <div className="w-full md:w-2/3 p-8 relative">
                                 <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                                     &times;
                                 </button>
@@ -119,7 +124,7 @@ export default function Membership() {
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             )}
         </div>
