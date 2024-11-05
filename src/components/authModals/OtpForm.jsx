@@ -1,29 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
-function OtpForm({ onConfirmOTP, onLogin }) {
+function OtpForm({ onConfirmOTP }) {
+    const [enteredOtp, setEnteredOtp] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (enteredOtp.trim() === '') {
+            toast.error('OTP tidak boleh kosong.');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setErrorMessage(''); // Reset error message
+
+        try {
+            await onConfirmOTP(enteredOtp); // Assuming this is a promise
+            toast.success('OTP berhasil dikonfirmasi!');
+        } catch (error) {
+            setErrorMessage('OTP tidak valid. Silakan coba lagi.');
+            toast.error('OTP tidak valid. Silakan coba lagi.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
-        <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-200">
-            <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">OTP Confirmation</h2>
-
-            <input
-                type="text"
-                placeholder="Enter OTP"
-                className="w-full mb-6 p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 transition duration-200 shadow-sm"
-            />
-
-            <button
-                onClick={onConfirmOTP}
-                className="bg-purple-500 text-white w-full py-4 rounded-lg font-semibold hover:bg-purple-600 transition duration-300 mb-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50"
-            >
-                Confirm OTP
-            </button>
-
-            <button
-                className="text-blue-500 w-full text-center font-semibold hover:underline"
-                onClick={onLogin}
-            >
-                Back to Login
-            </button>
+        <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Konfirmasi OTP</h2>
+            <form className="w-full space-y-5" onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="Masukkan OTP"
+                    value={enteredOtp}
+                    onChange={(e) => setEnteredOtp(e.target.value)}
+                    className={`border border-gray-300 rounded-lg p-2 w-full ${errorMessage ? 'border-red-500' : ''}`}
+                    maxLength={5}
+                />
+                {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+                <button
+                    type="submit"
+                    className={`bg-green-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? 'Mengonfirmasi...' : 'Konfirmasi'}
+                </button>
+            </form>
         </div>
     );
 }

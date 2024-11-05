@@ -1,21 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Import styles for toast
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import AuthContext from '../../pages/Layouts/AuthContext';
-import Button from '../assets/Button'; // Ensure this path is correct
-import { register } from '../../controllers/authController'; // Fix the import spelling
+import Button from '../assets/Button';
+import { register } from '../../controllers/authController';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 function RegisterForm({ onLogin, onSendOTP }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // State untuk konfirmasi password
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
-    const { login: contextLogin } = useContext(AuthContext);
+    const { register: contextLogin } = useContext(AuthContext);
 
     const validateForm = () => {
         const newErrors = {};
@@ -30,7 +30,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
         } else if (password.length < 8) {
             newErrors.password = 'Password minimal 8 karakter.';
         }
-        if (password !== confirmPassword) { // Validasi konfirmasi password
+        if (password !== confirmPassword) {
             newErrors.confirmPassword = 'Konfirmasi password tidak cocok.';
         }
         return newErrors;
@@ -45,11 +45,13 @@ function RegisterForm({ onLogin, onSendOTP }) {
         }
 
         try {
-            const data = await register(name, email, password);
-            console.log('Register successful:', data);
-            contextLogin(data.token, data.user.name, data.user.role);
-            toast.success('Registrasi berhasil! Mengarahkan ke dashboard...');
-            navigate('/home');
+            // Instead of registering the user, generate OTP
+            const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
+            await register(name, email, password); // Call your registration function to save the user data
+            console.log('Generated OTP:', otp);
+            toast.success('Registrasi berhasil! Silakan masukkan OTP yang dikirim ke email Anda.');
+            onSendOTP(otp); // Call the function to handle OTP sending
+            navigate('/otp'); // Navigate to the OTP confirmation page
         } catch (error) {
             console.error('Registration failed:', error);
             toast.error(error?.response?.data?.message || 'Registrasi gagal. Silakan coba lagi.');
@@ -98,14 +100,14 @@ function RegisterForm({ onLogin, onSendOTP }) {
 
                         <FormInput
                             type="password"
-                            placeholder="Konfirmasi Password" // Input untuk konfirmasi password
+                            placeholder="Konfirmasi Password"
                             value={confirmPassword}
                             onChange={(e) => {
                                 setConfirmPassword(e.target.value);
                                 setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
                             }}
                         />
-                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>} {/* Menampilkan error konfirmasi password */}
+                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
                     </div>
 
                     <div className="flex items-center justify-center">
@@ -129,7 +131,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
                     </span>
                 </p>
 
-                <ToastContainer /> {/* Render the ToastContainer */}
+                <ToastContainer />
             </div>
 
             <div className="flex flex-col justify-between md:w-1/2">
@@ -137,13 +139,12 @@ function RegisterForm({ onLogin, onSendOTP }) {
                     Ayo buat akun segera!
                 </h1>
                 <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
-                    {/* You can put an image or other content here if needed */}
                 </div>
             </div>
             <img
                 src="/assets/images/imgAuth2.png"
                 alt=""
-                className="absolute hidden md:block  -bottom-1 -right-2 object-cover  w-[400px] h-[400px]"
+                className="absolute hidden md:block -bottom-1 -right-2 object-cover w-[400px] h-[400px]"
             />
         </>
     );

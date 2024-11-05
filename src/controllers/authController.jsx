@@ -16,10 +16,14 @@ export const login = async (email, password) => {
         throw new Error(errorData.message || 'Login failed. Please check your credentials.');
     }
 
-    return await response.json();
+    const responseData = await response.json();
+    return {
+        token: responseData.token,
+        user: responseData.user,
+    };
 };
 
-export const register = async (name, email, password,) => {
+export const register = async (name, email, password) => {
     const response = await fetch(`${apiUrl}/register`, {
         method: 'POST',
         headers: {

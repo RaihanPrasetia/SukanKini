@@ -112,6 +112,13 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        age: user.age,
+        weight: user.weight,
+        height: user.height,
+        isBlocked: user.isBlocked,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        deletedAt: user.deletedAt,
       },
     });
   } catch (error) {

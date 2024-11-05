@@ -13,15 +13,24 @@ const modalVariants = {
 
 function AuthModal({ isOpen, onClose }) {
     const [currentForm, setCurrentForm] = useState("login");
+    const [otp, setOtp] = useState(null); // Store generated OTP
 
     if (!isOpen) return null;
 
     const handleForgotPassword = () => setCurrentForm("forgotPassword");
     const handleRegister = () => setCurrentForm("register");
-    const handleSendOTP = () => setCurrentForm("otpConfirmation");
-    const handleConfirmOTP = () => {
-        console.log("OTP confirmed!");
-        onClose();
+    const handleSendOTP = (generatedOtp) => {
+        setOtp(generatedOtp); // Store the generated OTP
+        setCurrentForm("otpConfirmation"); // Navigate to OTP confirmation
+    };
+    const handleConfirmOTP = (inputOtp) => {
+        if (inputOtp === otp.toString()) {
+            console.log("OTP confirmed!");
+            // Here you can create the user in the database
+            onClose(); // Close the modal after successful confirmation
+        } else {
+            console.log("OTP is incorrect!");
+        }
     };
 
     const renderForm = () => {
@@ -47,7 +56,6 @@ function AuthModal({ isOpen, onClose }) {
         }
     };
 
-    // Function to close modal when clicking outside the modal content
     const handleClickOutside = (e) => {
         if (e.target.classList.contains('modal-overlay')) {
             onClose();
@@ -63,16 +71,11 @@ function AuthModal({ isOpen, onClose }) {
                 >
                     <motion.div
                         className="bg-green-500 rounded-lg shadow-lg relative w-[90%] max-w-[800px] flex flex-col md:flex-row min-h-[400px] justify-start p-5 md:p-5"
-                        onClick={(e) => e.stopPropagation()}
                         variants={modalVariants}
                         initial="hidden"
                         animate="visible"
                         exit="exit"
                     >
-                        {/* Text Section */}
-
-                        {/* Form Section */}
-
                         {renderForm()}
                     </motion.div>
                 </motion.div>

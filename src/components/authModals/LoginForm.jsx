@@ -1,3 +1,4 @@
+// src/components/LoginForm.js
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -7,6 +8,7 @@ import Button from '../assets/Button';
 import AuthContext from '../../pages/Layouts/AuthContext';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
+import UserModel from '../../models/UserModel';
 
 function LoginForm({ onForgotPassword, onRegister }) {
     const [email, setEmail] = useState('');
@@ -15,14 +17,15 @@ function LoginForm({ onForgotPassword, onRegister }) {
     const navigate = useNavigate();
     const { login: contextLogin } = useContext(AuthContext);
 
+    // Validate email and password input
     const validate = () => {
         const newErrors = {};
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!email) {
-            newErrors.email = 'Masukkan Email ';
+            newErrors.email = 'Masukkan Email';
         } else if (!emailPattern.test(email)) {
-            newErrors.email = 'Invalid email format.';
+            newErrors.email = 'Format email tidak valid.';
         }
 
         if (!password) {
@@ -34,9 +37,11 @@ function LoginForm({ onForgotPassword, onRegister }) {
         return newErrors;
     };
 
+    // Handle login functionality
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        // Validate email and password input
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -44,76 +49,90 @@ function LoginForm({ onForgotPassword, onRegister }) {
         }
 
         try {
-            const data = await login(email, password);
+            // Call the login function to authenticate the user
+            const { token, user } = await login(email, password);
 
-            if (data.user.role !== 'user') {
+            // Initialize the user data using the User model
+            const loggedInUser = new UserModel(user);
+
+            // Check if the user is blocked
+            if (loggedInUser.isUserBlocked()) {
+                toast.error('Akun Anda diblokir. Silakan hubungi dukungan.');
+                return;
+            }
+
+            // Check if the user's role is valid (admin or user)
+            if (!loggedInUser.isUser()) {
                 toast.error('Data tidak ditemukan.');
                 return;
             }
 
-            contextLogin(data.token, data.user.name, data.user.role);
-            toast.success(`Selamat Bergabung, ${data.user.name}`);
+            // Log the user in and store the token and user details in the context
+            contextLogin(token, loggedInUser.getFormattedName(), loggedInUser.role);
+            toast.success(`Selamat Bergabung, ${loggedInUser.getFormattedName()}`);
             navigate('/home');
         } catch (error) {
             console.error('Gagal Masuk:', error);
-            toast.error(error.message || 'Login failed. Please try again.');
+            toast.error(error.message || 'Login gagal. Silakan coba lagi.');
         }
     };
 
 
+
+
     return (
         <>
-            <div className='w-full flex  rounded-xl p-2 md:p-0 md:w-full'>
+            <div className="w-full flex rounded-xl p-2 md:p-0 md:w-full">
                 <div className="flex flex-col justify-between">
-                    <h1 className=" items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
+                    <h1 className="items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
                         Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
                     </h1>
-                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
-                    </div>
+                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
                 </div>
                 <img
                     src="/assets/images/imgAuth1.png"
                     alt=""
-                    className="absolute hidden md:block  -bottom-2 -left-10 object-cover  w-[400px] h-[400px]"
+                    className="absolute hidden md:block -bottom-2 -left-10 object-cover w-[400px] h-[400px]"
                 />
-                <div className='w-full flex flex-col items-center p-6 bg-white rounded-lg '>
+                <div className="w-full flex flex-col items-center p-6 bg-white rounded-lg">
                     <h1 className="text-2xl font-bold mb-6 text-green-500 text-center">
                         MASUK KE AKUN SUKANKINI
                     </h1>
-                    <form className='w-full space-y-5' onSubmit={handleLogin}>
-                        <div className='space-y-4'>
-                            <div className='flex flex-col space-y-1'>
+                    <form className="w-full space-y-5" onSubmit={handleLogin}>
+                        <div className="space-y-4">
+                            <div className="flex flex-col space-y-1">
                                 <FormInput
                                     type="email"
                                     placeholder="Email"
                                     value={email}
                                     onChange={(e) => {
                                         setEmail(e.target.value);
-                                        setErrors(prev => ({ ...prev, email: undefined })); // Clear email error on change
+                                        setErrors((prev) => ({ ...prev, email: undefined })); // Clear email error on change
                                     }}
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
-
-                            <div className='flex flex-col space-y-1'>
+                            <div className="flex flex-col space-y-1">
                                 <FormInput
                                     type="password"
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => {
                                         setPassword(e.target.value);
-                                        setErrors(prev => ({ ...prev, password: undefined })); // Clear password error on change
+                                        setErrors((prev) => ({ ...prev, password: undefined })); // Clear password error on change
                                     }}
                                 />
                                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
                         </div>
-                        <p className='text-sm text-right font-medium text-gray-600'>
+                        <p className="text-sm text-right font-medium text-gray-600">
                             Password akun Anda lupa?{' '}
-                            <span className='text-green-500 cursor-pointer' onClick={onForgotPassword}>Dapatkan</span>
+                            <span className="text-green-500 cursor-pointer" onClick={onForgotPassword}>
+                                Dapatkan
+                            </span>
                         </p>
-                        <div className='flex items-center justify-center'>
-                            <Button title='Login' type={'submit'} />
+                        <div className="flex items-center justify-center">
+                            <Button title="Login" type="submit" />
                         </div>
                     </form>
                     <div className="w-full flex items-center my-4">
@@ -121,15 +140,26 @@ function LoginForm({ onForgotPassword, onRegister }) {
                         <p className="text-md text-center text-green-500 px-4">Atau Masuk Dengan</p>
                         <div className="flex-1 border-t border-green-500"></div>
                     </div>
-                    <div className='flex items-center justify-center mb-4'>
-                        <Button title='Google' icon={faGoogle} />
+                    <div className="flex items-center justify-center mb-4">
+                        <Button title="Google" icon={faGoogle} />
                     </div>
-
-                    <p className='text-sm text-center font-medium text-gray-600'>
+                    <p className="text-sm text-center font-medium text-gray-600">
                         Anda pengguna baru?{' '}
-                        <span className='text-green-500 cursor-pointer' onClick={onRegister}>Daftar</span>
+                        <span className="text-green-500 cursor-pointer" onClick={onRegister}>
+                            Daftar
+                        </span>
                     </p>
-                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
                 </div>
             </div>
         </>
