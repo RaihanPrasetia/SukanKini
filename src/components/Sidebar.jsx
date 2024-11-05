@@ -11,7 +11,7 @@ function Sidebar() {
         Profile
       </Link>
       <Link
-        to="/notifications" 
+        to="/notifications"
         className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out transform"
       >
         Notifications

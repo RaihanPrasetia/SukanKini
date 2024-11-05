@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar'; 
+import Sidebar from '../../components/Sidebar';
 
 const Profile = () => {
   const [name, setName] = useState("Baihaqi Khaizan");
@@ -16,10 +16,8 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col md:flex-row p-6 space-y-4 md:space-y-0 md:space-x-4">
-      {/* Sidebar Navigation */}
-      <Sidebar /> {/* Sidebar component displayed here */}
+      <Sidebar />
 
-      {/* Main Profile Section */}
       <div className="flex-grow bg-white shadow-lg rounded-lg p-6 space-y-6">
         {/* Search Bar */}
         <div className="flex">
