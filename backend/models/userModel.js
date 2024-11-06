@@ -1,16 +1,22 @@
-// models/User.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config');
+const Bank = require('./bankModel'); // Import the Bank model
 
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
-    unique: true,
     allowNull: false,
+    unique: true,
     validate: {
       isEmail: true,
     },
@@ -28,6 +34,14 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  kota: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  alamat: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   height: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -36,23 +50,29 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  // New column for user role
   role: {
     type: DataTypes.ENUM('admin', 'user', 'mitra'),
     allowNull: false,
     defaultValue: 'user',
   },
-  // New column for blocking/unblocking a user
   isBlocked: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
+  bank_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: Bank,
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+  },
 }, {
-  // Enable soft deletes
-  paranoid: true,
-  // Optional: Define the field name for the deleted timestamp
-  // This will default to 'deletedAt' if you don't specify
+  timestamps: true, // Automatically adds createdAt and updatedAt fields
+  paranoid: true, // Enables soft deletes
   deletedAt: 'deletedAt',
 });
 

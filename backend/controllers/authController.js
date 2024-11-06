@@ -1,13 +1,13 @@
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/modelUser');
+const User = require('../models/userModel');
 require('dotenv').config();
 
 
 
 const register = async (req, res) => {
-  const { name, email, password, phone_number, age, height, weight } = req.body;
+  const { name, email, password, phone_number, age, height, weight, kota, alamat, } = req.body;
 
   try {
     // Validate required fields
@@ -49,6 +49,8 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
       phone_number,
+      kota,
+      alamat,
       age,
       height,
       weight,
@@ -67,8 +69,67 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register };
+const registerMitra = async (req, res) => {
+  const { name, email, password, phone_number, age, height, weight, bank_id } = req.body;
 
+  try {
+    // Validate required fields
+    if (!name || !email || !password || !phone_number || bank_id) {
+      return res.status(400).json({ message: 'Name, email, and password are required.' });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email format.' });
+    }
+
+    // Validate password length
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
+    }
+
+    // Check if the email already exists
+    const emailExists = await User.findOne({ where: { email } });
+    if (emailExists) {
+      return res.status(400).json({ message: 'Email already exists.' });
+    }
+
+    // Check if the phone number already exists
+    if (phone_number) {
+      const phoneExists = await User.findOne({ where: { phone_number } });
+      if (phoneExists) {
+        return res.status(400).json({ message: 'Phone number already exists.' });
+      }
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the user
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      phone_number,
+      age,
+      height,
+      weight,
+      bank_id,
+      role: 'mitra', // Default role
+      isBlocked: false, // Default to not blocked
+    });
+
+    // Exclude the id and password from the response
+    const { id, password: _, ...userData } = newUser.dataValues; // Exclude id and password
+
+    // Return success response
+    res.status(201).json({ message: 'User registered successfully.', user: userData });
+  } catch (error) {
+    console.error('Error during user registration:', error); // Log the error for debugging
+    res.status(500).json({ message: 'An error occurred during registration. Please try again later.' });
+  }
+};
 
 
 
@@ -162,4 +223,4 @@ const cekemail = async (req, res) => { // Add async here
 }
 
 
-module.exports = { register, login, verifyToken, cekemail };
+module.exports = { register, login, verifyToken, cekemail, registerMitra };
