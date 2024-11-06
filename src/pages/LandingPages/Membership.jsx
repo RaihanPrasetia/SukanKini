@@ -1,45 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import AuthModal from '../../components/Modals'; // Import your AuthModal component
 
 export default function Membership() {
-    const [selectedPlan, setSelectedPlan] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [planIndex, setPlanIndex] = useState(0);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [currentForm, setCurrentForm] = useState("registerMitra"); // Track the current form
 
     const plans = [
         { id: 1, duration: '1 Bulan', price: 'Rp149.000', discount: '20%', popular: false, bestValue: false },
-        { id: 6, duration: '3 Bulan', price: 'Rp385.000', discount: '10%', popular: false, bestValue: true },
         { id: 2, duration: '6 Bulan', price: 'Rp320.000', discount: '20%', popular: false, bestValue: false },
         { id: 3, duration: '12 Bulan', price: 'Rp275.000', discount: '32%', popular: true, bestValue: false },
         { id: 4, duration: '18 Bulan', price: 'Rp259.000', discount: '36%', popular: true, bestValue: false },
         { id: 5, duration: '3 Bulan', price: 'Rp249.000', discount: '38%', popular: false, bestValue: true },
+        { id: 6, duration: '3 Bulan', price: 'Rp385.000', discount: '10%', popular: false, bestValue: true },
     ];
+
+    const [planIndex, setPlanIndex] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setPlanIndex((prevIndex) => (prevIndex + 2) % plans.length);
         }, 3000);
-
         return () => clearInterval(interval);
     }, [plans.length]);
 
-    const openModal = (plan) => {
-        setSelectedPlan(plan);
-        setIsModalOpen(true);
+    // Modified function to open the AuthModal and set the form to "registerMitra"
+    const openAuthModal = () => {
+        setIsAuthModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setTimeout(() => setSelectedPlan(null), 300);
+    const closeAuthModal = () => {
+        setIsAuthModalOpen(false);
+        setCurrentForm("default"); // Reset the form to default when the modal is closed
     };
 
     return (
         <div className="p-8 md:p-8 flex flex-col lg:flex-row justify-center items-center">
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-green-500">Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!</h2>
+                <h2 className="text-3xl font-bold text-green-500">
+                    Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!
+                </h2>
                 <div className="mt-4 p-4 bg-white rounded-lg shadow-md inline-flex items-center">
                     <ul className="text-green-700 list-disc pl-4">
-                        <li className="text-left">Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!</li>
+                        <li className="text-left">
+                            Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -66,14 +71,18 @@ export default function Membership() {
                                 <p className="text-xs text-gray-600">per bulan</p>
                             </div>
                             {plan.popular && (
-                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Most Popular</span>
+                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                                    Most Popular
+                                </span>
                             )}
                             {plan.bestValue && (
-                                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">Best Value</span>
+                                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                                    Best Value
+                                </span>
                             )}
                         </div>
                         <button
-                            onClick={() => openModal(plan)}
+                            onClick={openAuthModal}
                             className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 rounded-full transition duration-300 transform hover:scale-105"
                         >
                             Daftar Sekarang
@@ -82,50 +91,13 @@ export default function Membership() {
                 ))}
             </div>
 
-            {/* Modal */}
-            {isModalOpen && selectedPlan && (
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
-                    <motion.div
-                        className="bg-white rounded-lg shadow-lg flex flex-col w-11/12 md:w-3/4 lg:w-2/3"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0 }}
-                        transition={{ duration: 0.4, ease: 'easeInOut' }}
-                    >
-                        <div className="flex flex-col md:flex-row">
-                            {/* Left Section: Image and Description */}
-                            <div className="w-full md:w-1/3 p-6 bg-green-100 rounded-t-lg md:rounded-l-lg md:rounded-t-none flex flex-col items-center justify-center">
-                                <img src="https://via.placeholder.com/150" alt="Partnership" className="mb-4 rounded-lg" />
-                                <p className="text-center text-green-700 font-semibold">
-                                    Dapatkan Banyak Keuntungan Dengan Menjadi Mitra Kami!
-                                </p>
-                            </div>
-
-                            {/* Right Section: Form */}
-                            <div className="w-full md:w-2/3 p-8 relative">
-                                <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                                    &times;
-                                </button>
-                                <h2 className="text-2xl font-bold mb-4">Formulir Daftar Menjadi Mitra</h2>
-                                <p className="text-gray-700 mb-4">
-                                    {selectedPlan.duration} - {selectedPlan.price} ({selectedPlan.discount} discount)
-                                </p>
-                                <form>
-                                    <input type="text" placeholder="Nama Mitra" className="w-full border p-2 mb-2 rounded" />
-                                    <input type="email" placeholder="Email" className="w-full border p-2 mb-2 rounded" />
-                                    <input type="text" placeholder="No. Telp" className="w-full border p-2 mb-2 rounded" />
-                                    <input type="text" placeholder="Nama Bank" className="w-full border p-2 mb-2 rounded" />
-                                    <input type="text" placeholder="No. Rek" className="w-full border p-2 mb-2 rounded" />
-                                    <input type="text" placeholder="Kota" className="w-full border p-2 mb-2 rounded" />
-                                    <input type="text" placeholder="Alamat" className="w-full border p-2 mb-4 rounded" />
-                                    <button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded">
-                                        Lanjut Pembayaran
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
+            {/* Auth Modal */}
+            {isAuthModalOpen && (
+                <AuthModal
+                    isOpen={isAuthModalOpen}
+                    onClose={closeAuthModal}
+                    currentForm={currentForm} // Pass the current form state to the modal
+                />
             )}
         </div>
     );

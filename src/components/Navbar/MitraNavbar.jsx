@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../pages/Layouts/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons
-
-
 
 const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { logout, userName, user } = useAuth(); // Get userName and user from useAuth
     const navigate = useNavigate();
+    const location = useLocation(); // Hook to get the current location
 
     const handleLogout = () => {
         logout();
@@ -33,6 +32,11 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, [dropdownOpen]);
+
+    const isActive = (path) => {
+        return location.pathname.startsWith(path) ? 'bg-green-500 text-white hover:bg-green-600' : 'text-gray-700 hover:bg-green-400 hover:text-white';
+    };
+
     return (
         <div className="flex">
             {/* Sidebar */}
@@ -46,23 +50,22 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                     </Link>
                 </div>
                 <ul className="mt-4 text-center space-y-5">
-                    <li className="py-2 hover:bg-green-500 hover:text-white rounded-lg cursor-pointer">
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/home')}`}>
                         <Link to="/mitra/home">Home</Link>
                     </li>
 
-                    <li className="py-2 hover:bg-green-500 hover:text-white rounded-lg cursor-pointer">
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/kelas')}`}>
                         <Link to="/mitra/kelas">Kelas</Link>
                     </li>
-                    <li className="py-2 hover:bg-green-500 hover:text-white rounded-lg cursor-pointer">
-                        <Link to="/mitra/pemberitahuan">Pemberitahuan</Link>
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/notif')}`}>
+                        <Link to="/mitra/notif">Pemberitahuan</Link>
                     </li>
-                    <li className="py-2 hover:bg-green-500 hover:text-white rounded-lg cursor-pointer">
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/pembayaran')}`}>
                         <Link to="/mitra/pembayaran">Pembayaran</Link>
                     </li>
-                    <li className="py-2 hover:bg-green-500 hover:text-white rounded-lg cursor-pointer">
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/komunitas')}`}>
                         <Link to="/mitra/komunitas">Komunitas</Link>
                     </li>
-
                 </ul>
             </div>
 
@@ -110,7 +113,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                                 className="h-12 w-12 rounded-full"
                             />
                         )}
-                        <span>{userName || "Profile"}</span> {/* Display userName here */}
+                        <span className='text-green-500 font-bold text-xl'>{userName || "Profile"}</span> {/* Display userName here */}
                     </div>
 
                     {/* Dropdown Menu for Profile and Logout */}

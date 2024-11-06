@@ -3,6 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import HomeMitra from '../Mitra/HomeMitra';
 import MitraNavbar from '../../components/Navbar/MitraNavbar';
+import ProfileMitra from '../Mitra/ProfileMitra';
+import KelasMitra from '../Mitra/KelasMitra';
+import NotifMitra from '../Mitra/NotifMitra';
+import Pembayaran from '../Mitra/Pembayaran';
+import DetailKelas from '../Mitra/DetailKelas'
 
 const Mitra = () => {
     // State to manage the sidebar open/close status
@@ -20,6 +25,11 @@ const Mitra = () => {
                 <div className="container mx-auto ">
                     <Routes>
                         <Route path="/home" element={<HomeMitra />} />
+                        <Route path="/profile" element={<ProfileMitra />} />
+                        <Route path="/kelas" element={<KelasMitra />} />
+                        <Route path="/kelas/:id" element={<DetailKelas />} />
+                        <Route path="/notif" element={<NotifMitra />} />
+                        <Route path="/pembayaran" element={<Pembayaran />} />
                     </Routes>
                 </div>
                 <Footer />
