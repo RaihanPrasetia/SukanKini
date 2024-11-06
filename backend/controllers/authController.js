@@ -2,6 +2,7 @@ const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const { Bank } = require('../models');
 require('dotenv').config();
 
 
@@ -60,9 +61,14 @@ const register = async (req, res) => {
 
     // Exclude the id and password from the response
     const { id, password: _, ...userData } = newUser.dataValues; // Exclude id and password
+    const token = jwt.sign(
+      { id: newUser.id, role: newUser.role }, // Use newUser to get the id and role
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
     // Return success response
-    res.status(201).json({ message: 'User registered successfully.', user: userData });
+    res.status(201).json({ message: 'User registered successfully.', token, user: userData });
   } catch (error) {
     console.error('Error during user registration:', error); // Log the error for debugging
     res.status(500).json({ message: 'An error occurred during registration. Please try again later.' });
@@ -70,12 +76,14 @@ const register = async (req, res) => {
 };
 
 const registerMitra = async (req, res) => {
-  const { name, email, password, phone_number, age, height, weight, bank_id } = req.body;
+  const {
+    name, email, password, phone_number, an, bank, no_rek, kota, alamat, age, height, weight
+  } = req.body;
 
   try {
     // Validate required fields
-    if (!name || !email || !password || !phone_number || bank_id) {
-      return res.status(400).json({ message: 'Name, email, and password are required.' });
+    if (!name || !email || !password || !an || !bank || !no_rek) {
+      return res.status(400).json({ message: 'Name, email, password, phone number, and bank details (an, bank, no_rek) are required.' });
     }
 
     // Validate email format
@@ -103,33 +111,55 @@ const registerMitra = async (req, res) => {
       }
     }
 
+    // Check if the bank account number (no_rek) already exists
+    const bankExists = await Bank.findOne({ where: { no_rek } });
+    if (bankExists) {
+      return res.status(400).json({ message: 'Bank account number already exists.' });
+    }
+
+    // Create a new bank record if no duplicate found
+    const newBank = await Bank.create({
+      an,           // Account Name
+      bank,         // Bank Name
+      no_rek,       // Account Number
+    });
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
+    // Create the user, associating the new bank record
     const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
-      phone_number,
       age,
+      phone_number,
       height,
       weight,
-      bank_id,
-      role: 'mitra', // Default role
-      isBlocked: false, // Default to not blocked
+      bank_id: newBank.id,  // Associate the bank_id with the newly created bank
+      kota,
+      alamat,
+      role: 'mitra',  // Default role
+      isBlocked: false,  // Default to not blocked
     });
 
     // Exclude the id and password from the response
     const { id, password: _, ...userData } = newUser.dataValues; // Exclude id and password
+    const token = jwt.sign(
+      { id: newUser.id, role: newUser.role }, // Use newUser to get the id and role
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
     // Return success response
-    res.status(201).json({ message: 'User registered successfully.', user: userData });
+    res.status(201).json({ message: 'User registered successfully.', token, user: userData });
   } catch (error) {
     console.error('Error during user registration:', error); // Log the error for debugging
     res.status(500).json({ message: 'An error occurred during registration. Please try again later.' });
   }
 };
+
+
 
 
 
@@ -187,7 +217,35 @@ const login = async (req, res) => {
     res.status(500).json({ message: 'An error occurred during login. Please try again later.' });
   }
 };
+const cekemail = async (req, res) => {
+  const { email } = req.body;
 
+  // Validate if the email is provided and is in the correct format
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  try {
+    // Find if the user exists with the provided email
+    const isEmailRegistered = await User.findOne({
+      where: {
+        email: email, // or email
+      },
+    });
+
+    if (isEmailRegistered) {
+      // If the user exists, email is taken
+      return res.json({ available: false });
+    }
+
+    // If no user is found, email is available
+    return res.json({ available: true });
+  } catch (error) {
+    console.error("Error checking email:", error);
+    // Return a 500 status code for internal server error
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 const verifyToken = (req, res, next) => {
   const token = req.headers['authorization'];
@@ -205,22 +263,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const cekemail = async (req, res) => { // Add async here
-  const { email } = req.body;
 
-  try {
-    const user = await User.findOne({ email }); // This line now works because the function is async
-
-    if (user) {
-      return res.json({ available: false }); // Email is taken
-    }
-
-    return res.json({ available: true }); // Email is available
-  } catch (error) {
-    console.error("Error checking email:", error);
-    return res.status(500).json({ message: "Internal server error." });
-  }
-}
 
 
 module.exports = { register, login, verifyToken, cekemail, registerMitra };

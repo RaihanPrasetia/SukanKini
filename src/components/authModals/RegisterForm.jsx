@@ -67,92 +67,95 @@ function RegisterForm({ onLogin, onSendOTP }) {
 
     return (
         <>
-            <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg relative">
-                <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Buat Akun Sukankini</h2>
+            <div className="w-full flex rounded-xl p-4 md:p-0 md:w-full bg-green-500">
 
-                <form className="w-full space-y-5" onSubmit={handleRegis}>
-                    <div className="space-y-4">
-                        <FormInput
-                            type="text"
-                            placeholder="Nama Lengkap"
-                            value={name}
-                            onChange={(e) => {
-                                setName(e.target.value);
-                                setErrors((prev) => ({ ...prev, name: undefined }));
-                            }}
-                        />
-                        {errors.name && <p className="text-red-500">{errors.name}</p>}
+                <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg relative">
+                    <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Buat Akun Sukankini</h2>
 
-                        <FormInput
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                                setErrors((prev) => ({ ...prev, email: undefined }));
-                            }}
-                        />
-                        {errors.email && <p className="text-red-500">{errors.email}</p>}
+                    <form className="w-full space-y-5" onSubmit={handleRegis}>
+                        <div className="space-y-4">
+                            <FormInput
+                                type="text"
+                                placeholder="Nama Lengkap"
+                                value={name}
+                                onChange={(e) => {
+                                    setName(e.target.value);
+                                    setErrors((prev) => ({ ...prev, name: undefined }));
+                                }}
+                            />
+                            {errors.name && <p className="text-red-500">{errors.name}</p>}
 
-                        <FormInput
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                                setErrors((prev) => ({ ...prev, password: undefined }));
-                            }}
-                        />
-                        {errors.password && <p className="text-red-500">{errors.password}</p>}
+                            <FormInput
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    setErrors((prev) => ({ ...prev, email: undefined }));
+                                }}
+                            />
+                            {errors.email && <p className="text-red-500">{errors.email}</p>}
 
-                        <FormInput
-                            type="password"
-                            placeholder="Konfirmasi Password"
-                            value={confirmPassword}
-                            onChange={(e) => {
-                                setConfirmPassword(e.target.value);
-                                setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
-                            }}
-                        />
-                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
+                            <FormInput
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    setErrors((prev) => ({ ...prev, password: undefined }));
+                                }}
+                            />
+                            {errors.password && <p className="text-red-500">{errors.password}</p>}
+
+                            <FormInput
+                                type="password"
+                                placeholder="Konfirmasi Password"
+                                value={confirmPassword}
+                                onChange={(e) => {
+                                    setConfirmPassword(e.target.value);
+                                    setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                                }}
+                            />
+                            {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
+                        </div>
+
+                        <div className="flex items-center justify-center">
+                            <Button title="Daftar" type="submit" />
+                        </div>
+                    </form>
+
+                    <div className="w-full flex items-center my-4">
+                        <div className="flex-1 border-t border-green-500"></div>
+                        <p className="text-md text-center text-green-500 px-4">Atau Daftar Dengan</p>
+                        <div className="flex-1 border-t border-green-500"></div>
+                    </div>
+                    <div className="flex items-center justify-center mb-4">
+                        <Button title="Google" icon={faGoogle} />
                     </div>
 
-                    <div className="flex items-center justify-center">
-                        <Button title="Daftar" type="submit" />
+                    <p className="text-sm text-right font-medium text-gray-600">
+                        Anda pengguna lama?{' '}
+                        <span className="text-green-500 cursor-pointer" onClick={onLogin}>
+                            Masuk
+                        </span>
+                    </p>
+
+                    <ToastContainer />
+                </div>
+
+                <div className="flex flex-col justify-between md:w-1/2 py-5">
+                    <h1 className="text-center text-[18px] md:text-[24px] text-white font-bold mb-4 hidden md:block">
+                        Ayo buat akun segera!
+                    </h1>
+                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
                     </div>
-                </form>
-
-                <div className="w-full flex items-center my-4">
-                    <div className="flex-1 border-t border-green-500"></div>
-                    <p className="text-md text-center text-green-500 px-4">Atau Daftar Dengan</p>
-                    <div className="flex-1 border-t border-green-500"></div>
                 </div>
-                <div className="flex items-center justify-center mb-4">
-                    <Button title="Google" icon={faGoogle} />
-                </div>
-
-                <p className="text-sm text-right font-medium text-gray-600">
-                    Anda pengguna lama?{' '}
-                    <span className="text-green-500 cursor-pointer" onClick={onLogin}>
-                        Masuk
-                    </span>
-                </p>
-
-                <ToastContainer />
+                <img
+                    src="/assets/images/imgAuth2.png"
+                    alt=""
+                    className="absolute hidden md:block -bottom-1 -right-2 object-cover w-[400px] h-[400px]"
+                />
             </div>
-
-            <div className="flex flex-col justify-between md:w-1/2">
-                <h1 className="text-center text-[18px] md:text-[24px] text-white font-bold mb-4 hidden md:block">
-                    Ayo buat akun segera!
-                </h1>
-                <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
-                </div>
-            </div>
-            <img
-                src="/assets/images/imgAuth2.png"
-                alt=""
-                className="absolute hidden md:block -bottom-1 -right-2 object-cover w-[400px] h-[400px]"
-            />
         </>
     );
 }

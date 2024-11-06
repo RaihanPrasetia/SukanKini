@@ -6,8 +6,7 @@ import Button from '../assets/Button';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { checkEmailAvailability } from '../../controllers/authController';
 
-
-function RegisterMitraForm({ onLoginMitra, onSendOTP }) {
+function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [kota, setKota] = useState('');
@@ -35,10 +34,15 @@ function RegisterMitraForm({ onLoginMitra, onSendOTP }) {
         if (password !== confirmPassword) {
             newErrors.confirmPassword = 'Konfirmasi password tidak cocok.';
         }
+        if (!kota.trim()) newErrors.kota = 'Kota tidak boleh kosong.';
+        if (!alamat.trim()) newErrors.alamat = 'Alamat tidak boleh kosong.';
+        if (!bank.trim()) newErrors.bank = 'Nama bank tidak boleh kosong.';
+        if (!no_rek.trim()) newErrors.no_rek = 'Nomor rekening tidak boleh kosong.';
+        if (!an.trim()) newErrors.an = 'Atas nama tidak boleh kosong.';
         return newErrors;
     };
 
-    const handleRegis = async (e) => {
+    const handleRegisMitra = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm();
 
@@ -66,19 +70,17 @@ function RegisterMitraForm({ onLoginMitra, onSendOTP }) {
         console.log('Generated OTP:', otp);
 
         // Send user data and OTP
-        onSendOTP({ otp, name, email, password }); // Call the function to proceed to the OTP step
+        onSendOTPMitra({ otp, name, email, password, kota, alamat, bank, no_rek, an }); // Call the function to proceed to the OTP step
     };
 
 
     return (
         <>
             <div className="w-full flex rounded-xl p-4 md:p-0 md:w-full bg-yellow-500">
-
-
                 <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg relative">
                     <h2 className="text-2xl font-bold mb-6 text-center text-yellow-500">Buat Akun Mitra Sukankini</h2>
 
-                    <form className="w-full space-y-5" onSubmit={handleRegis}>
+                    <form className="w-full space-y-5" onSubmit={handleRegisMitra}>
                         <div className="space-y-4">
                             <FormInput
                                 className="border-yellow-300 focus:ring-yellow-400"
@@ -103,6 +105,77 @@ function RegisterMitraForm({ onLoginMitra, onSendOTP }) {
                                 }}
                             />
                             {errors.email && <p className="text-red-500">{errors.email}</p>}
+
+                            <div className="flex gap-4">
+                                <div className="w-full">
+                                    <FormInput
+                                        className="border-yellow-300 focus:ring-yellow-400"
+                                        type="text"
+                                        placeholder="Kota"
+                                        value={kota}
+                                        onChange={(e) => {
+                                            setKota(e.target.value);
+                                            setErrors((prev) => ({ ...prev, kota: undefined }));
+                                        }}
+                                    />
+                                    {errors.kota && <p className="text-red-500">{errors.kota}</p>}
+                                </div>
+                                <div className="w-full">
+                                    <FormInput
+                                        className="border-yellow-300 focus:ring-yellow-400"
+                                        type="text"
+                                        placeholder="Alamat"
+                                        value={alamat}
+                                        onChange={(e) => {
+                                            setAlamat(e.target.value);
+                                            setErrors((prev) => ({ ...prev, alamat: undefined }));
+                                        }}
+                                    />
+                                    {errors.alamat && <p className="text-red-500">{errors.alamat}</p>}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="w-full">
+                                    <FormInput
+                                        className="border-yellow-300 focus:ring-yellow-400"
+                                        type="text"
+                                        placeholder="Nama Bank"
+                                        value={bank}
+                                        onChange={(e) => {
+                                            setBank(e.target.value);
+                                            setErrors((prev) => ({ ...prev, bank: undefined }));
+                                        }}
+                                    />
+                                    {errors.bank && <p className="text-red-500">{errors.bank}</p>}
+                                </div>
+                                <div className="w-full">
+                                    <FormInput
+                                        className="border-yellow-300 focus:ring-yellow-400"
+                                        type="text"
+                                        placeholder="Nomor Rekening"
+                                        value={no_rek}
+                                        onChange={(e) => {
+                                            setNorek(e.target.value);
+                                            setErrors((prev) => ({ ...prev, no_rek: undefined }));
+                                        }}
+                                    />
+                                    {errors.no_rek && <p className="text-red-500">{errors.no_rek}</p>}
+                                </div>
+                                <div className="w-full">
+                                    <FormInput
+                                        className="border-yellow-300 focus:ring-yellow-400"
+                                        type="text"
+                                        placeholder="Atas Nama"
+                                        value={an}
+                                        onChange={(e) => {
+                                            setAn(e.target.value);
+                                            setErrors((prev) => ({ ...prev, an: undefined }));
+                                        }}
+                                    />
+                                    {errors.an && <p className="text-red-500">{errors.an}</p>}
+                                </div>
+                            </div>
 
                             <FormInput
                                 className="border-yellow-300 focus:ring-yellow-400"
@@ -143,19 +216,16 @@ function RegisterMitraForm({ onLoginMitra, onSendOTP }) {
                         <Button title="Google" icon={faGoogle} className="text-nowrap bg-yellow-500 hover:text-yellow-500" />
                     </div>
 
-                    <p className="text-sm text-right font-medium text-gray-600">
-                        Anda pengguna lama?{' '}
-                        <span className="text-yellow-500 cursor-pointer" onClick={onLoginMitra}>
+                    <p className="text-center text-sm text-yellow-500">
+                        Sudah memiliki akun?{' '}
+                        <button className="font-bold" onClick={onLoginMitra}>
                             Masuk
-                        </span>
+                        </button>
                     </p>
-
-                    <ToastContainer />
                 </div>
-
                 <div className="flex flex-col justify-between md:w-1/2 py-5">
                     <h1 className="text-center text-[16px] md:text-[22px] text-white font-bold mb-4 hidden md:block">
-                        Jadi bagian dari mitra kami! Rasakan Keuntungannya
+                        Jadi bagian dari mitra kami! rasakan keuntungannya.
                     </h1>
                     <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
                     </div>
@@ -165,7 +235,10 @@ function RegisterMitraForm({ onLoginMitra, onSendOTP }) {
                     alt=""
                     className="absolute hidden md:block -bottom-1 -right-2 object-cover w-[400px] h-[400px]"
                 />
+
             </div>
+
+            <ToastContainer />
         </>
     );
 }

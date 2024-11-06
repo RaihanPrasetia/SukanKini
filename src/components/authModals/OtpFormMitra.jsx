@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
+function OtpFormMitra({ onConfirmOTPMitra, onLoginMitra }) {
     const [enteredOtp, setEnteredOtp] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmitMitra = async (e) => {
         e.preventDefault();
         if (enteredOtp.trim() === '') {
             toast.error('OTP tidak boleh kosong.');
@@ -17,7 +17,7 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
         setErrorMessage(''); // Reset error message
 
         try {
-            await onConfirmOTP(enteredOtp); // Assuming this is a promise
+            await onConfirmOTPMitra(enteredOtp); // Assuming this is a promise
             setEnteredOtp(''); // Clear the OTP input on success
             toast.success('OTP berhasil dikonfirmasi!');
         } catch (error) {
@@ -29,18 +29,20 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
     };
 
     return (
-        <div className="w-full flex items-center rounded-lg space-x-6 bg-green-500 ">
+        <div className="w-full flex items-center rounded-lg space-x-6 bg-yellow-500">
             <img
                 src="/assets/images/authotp.png"
-                alt=""
+                alt="OTP Illustration"
                 className="absolute hidden md:block -bottom-1 -left-8 object-cover w-[320px] h-[320px]"
             />
             <div className='w-1/2 flex h-full justify-start items-start py-5'>
-                <h1 className='text-center text-lg text-white font-bold'>Tinggal satu langkah lagi,nih cek email Anda!</h1>
+                <h1 className='text-center text-lg text-white font-bold'>
+                    Tinggal satu langkah lagi, nih cek email Anda!
+                </h1>
             </div>
             <div className='w-full h-full flex flex-col bg-white shadow-lg p-6 rounded-lg'>
                 <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Konfirmasi OTP</h2>
-                <form className="w-full space-y-5" onSubmit={handleSubmit}>
+                <form className="w-full space-y-5" onSubmit={handleSubmitMitra}>
                     <input
                         type="text"
                         placeholder="Masukkan OTP"
@@ -48,6 +50,7 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
                         onChange={(e) => setEnteredOtp(e.target.value)}
                         className={`border border-gray-300 rounded-lg p-2 w-full ${errorMessage ? 'border-red-500' : ''}`}
                         maxLength={5}
+                        aria-label="Masukkan OTP"
                     />
                     {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
                     <button
@@ -60,15 +63,14 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
                 </form>
                 <button
                     type="button"
-                    onClick={onLogin} // Calls the back action when clicked
+                    onClick={onLoginMitra} // Calls the back action when clicked
                     className="mt-4 text-green-500 underline"
                 >
                     Kembali ke Halaman Sebelumnya
                 </button>
             </div>
-
         </div>
     );
 }
 
-export default OtpForm;
+export default OtpFormMitra;
