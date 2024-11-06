@@ -3,16 +3,18 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const classes = [
   {
+    id: 1, // Add an ID for each class
     title: "CARDIO",
-    image: "https://images.unsplash.com/photo-1583352204439-9f4efb2121f4?q=80&w=1771&auto=format&fit=crop",
+    image: "/assets/images/kelascardio.jpg",
     location: "Raffles Hotel Jakarta",
     address: "Ciputra World 1, Jl. Prof. DR. Satrio No.5, Jakarta, Daerah Khusus Ibukota Jakarta 12940",
     hours: "06.00 - 22.00 WIB",
     price: "Mulai 200.000-an",
   },
   {
+    id: 2, // Add an ID for each class
     title: "PEMBENTUKKAN OTOT",
-    image: "https://images.unsplash.com/photo-1599058917721-84d1b7f9f422?q=80&w=1771&auto=format&fit=crop",
+    image: "/assets/images/gym.jpeg",
     location: "Abadi Suite Jambi",
     address: "Jalan Telanai Pura, no 123 Lt.3",
     hours: "06.00 - 22.00 WIB",
@@ -20,7 +22,7 @@ const classes = [
   },
 ];
 
-const TrainingClassList = () => {
+const KelasPelatihan = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -51,15 +53,15 @@ const TrainingClassList = () => {
       </div>
 
       <h1 className="text-3xl font-bold text-center mb-8 text-green-800">DAFTAR KELAS PELATIHAN</h1>
-      
+
       {/* Single box to display all classes */}
       <div className="bg-white rounded-lg shadow-md p-6 max-w-6xl w-full">
         {classes
           .filter((classInfo) =>
             classInfo.title.toLowerCase().includes(searchTerm.toLowerCase())
           )
-          .map((classInfo, index) => (
-            <div key={index} className="flex flex-col md:flex-row mb-6">
+          .map((classInfo) => (
+            <div key={classInfo.id} className="flex flex-col md:flex-row mb-6">
               <img
                 src={classInfo.image}
                 alt={classInfo.title}
@@ -72,9 +74,11 @@ const TrainingClassList = () => {
                 <p className="text-gray-600">Jam Operasi: {classInfo.hours}</p>
                 <p className="text-green-700 font-semibold">Harga: {classInfo.price}</p>
                 <div className="mt-4 flex space-x-4">
-                  <button className="bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition">
-                    Lihat Kelas
-                  </button>
+                  <Link to={`/kelas/${classInfo.id}`}> {/* Navigate to the class detail page */}
+                    <button className="bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition">
+                      Lihat Kelas
+                    </button>
+                  </Link>
                   <button className="bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition">
                     Daftar Kelas
                   </button>
@@ -87,4 +91,4 @@ const TrainingClassList = () => {
   );
 };
 
-export default TrainingClassList;
+export default KelasPelatihan;

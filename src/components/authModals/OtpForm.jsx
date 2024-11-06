@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-function OtpForm({ onConfirmOTP }) {
+function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
     const [enteredOtp, setEnteredOtp] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -18,6 +18,7 @@ function OtpForm({ onConfirmOTP }) {
 
         try {
             await onConfirmOTP(enteredOtp); // Assuming this is a promise
+            setEnteredOtp(''); // Clear the OTP input on success
             toast.success('OTP berhasil dikonfirmasi!');
         } catch (error) {
             setErrorMessage('OTP tidak valid. Silakan coba lagi.');
@@ -28,26 +29,44 @@ function OtpForm({ onConfirmOTP }) {
     };
 
     return (
-        <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Konfirmasi OTP</h2>
-            <form className="w-full space-y-5" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Masukkan OTP"
-                    value={enteredOtp}
-                    onChange={(e) => setEnteredOtp(e.target.value)}
-                    className={`border border-gray-300 rounded-lg p-2 w-full ${errorMessage ? 'border-red-500' : ''}`}
-                    maxLength={5}
-                />
-                {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+        <div className="w-full flex items-center rounded-lg space-x-6 ">
+            <img
+                src="/assets/images/authotp.png"
+                alt=""
+                className="absolute hidden md:block -bottom-1 -left-8 object-cover w-[320px] h-[320px]"
+            />
+            <div className='w-1/2 flex h-full justify-start items-start'>
+                <h1 className='text-center text-lg text-white font-bold'>Tinggal satu langkah lagi,nih cek email Anda!</h1>
+            </div>
+            <div className='w-full h-full flex flex-col bg-white shadow-lg p-6 rounded-lg'>
+                <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Konfirmasi OTP</h2>
+                <form className="w-full space-y-5" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Masukkan OTP"
+                        value={enteredOtp}
+                        onChange={(e) => setEnteredOtp(e.target.value)}
+                        className={`border border-gray-300 rounded-lg p-2 w-full ${errorMessage ? 'border-red-500' : ''}`}
+                        maxLength={5}
+                    />
+                    {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+                    <button
+                        type="submit"
+                        className={`bg-green-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? 'Mengonfirmasi...' : 'Konfirmasi'}
+                    </button>
+                </form>
                 <button
-                    type="submit"
-                    className={`bg-green-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={isSubmitting}
+                    type="button"
+                    onClick={onLogin} // Calls the back action when clicked
+                    className="mt-4 text-green-500 underline"
                 >
-                    {isSubmitting ? 'Mengonfirmasi...' : 'Konfirmasi'}
+                    Kembali ke Halaman Sebelumnya
                 </button>
-            </form>
+            </div>
+
         </div>
     );
 }

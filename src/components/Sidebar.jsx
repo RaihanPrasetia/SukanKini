@@ -1,3 +1,4 @@
+// src/components/Sidebar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,23 +12,24 @@ function Sidebar() {
         Profile
       </Link>
       <Link
-        to="/notifications"
+        to="/profile/kelas"
         className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out transform"
       >
-        Notifications
+        Kelas Saya
       </Link>
       <Link
-        to="/payments"
+        to="/profile/notifications"
         className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out transform"
       >
-        Payments
+        Pemberitahuan
       </Link>
       <Link
-        to="/my-classes"
+        to="/profile/payments"
         className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out transform"
       >
-        My Classes
+        Pembayaran
       </Link>
+
       <Link
         to="/delete-account"
         className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out transform"

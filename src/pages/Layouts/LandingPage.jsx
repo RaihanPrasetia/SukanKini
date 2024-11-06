@@ -5,7 +5,7 @@ import Komunitas from '../LandingPages/Komunitas';
 import Kelas from '../LandingPages/Kelas';
 import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer';
 import Space from '../../components/assets/Space';
 import Promosi from '../LandingPages/Promosi';

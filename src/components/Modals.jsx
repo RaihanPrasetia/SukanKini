@@ -4,6 +4,10 @@ import LoginForm from './authModals/LoginForm';
 import RegisterForm from './authModals/RegisterForm';
 import ForgotForm from './authModals/ForgotForm';
 import OtpForm from './authModals/OtpForm';
+import { register } from '../controllers/authController';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuth } from '../pages/Layouts/AuthContext'; // Ensure to use your custom hook
 
 const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -13,23 +17,38 @@ const modalVariants = {
 
 function AuthModal({ isOpen, onClose }) {
     const [currentForm, setCurrentForm] = useState("login");
-    const [otp, setOtp] = useState(null); // Store generated OTP
+    const [userData, setUserData] = useState({ name: '', email: '', password: '' });
+    const [otp, setOtp] = useState(null);
+    const navigate = useNavigate();
+    const { login } = useAuth(); // Use your AuthContext's login function
 
     if (!isOpen) return null;
 
     const handleForgotPassword = () => setCurrentForm("forgotPassword");
     const handleRegister = () => setCurrentForm("register");
-    const handleSendOTP = (generatedOtp) => {
-        setOtp(generatedOtp); // Store the generated OTP
-        setCurrentForm("otpConfirmation"); // Navigate to OTP confirmation
+
+    const handleSendOTP = ({ otp: generatedOtp, name, email, password }) => {
+        setOtp(generatedOtp);
+        setUserData({ name, email, password });
+        setCurrentForm("otpConfirmation");
     };
-    const handleConfirmOTP = (inputOtp) => {
+
+    const handleConfirmOTP = async (inputOtp) => {
+        console.log("Entered OTP:", inputOtp);
+        console.log("Stored OTP:", otp);
+
         if (inputOtp === otp.toString()) {
-            console.log("OTP confirmed!");
-            // Here you can create the user in the database
-            onClose(); // Close the modal after successful confirmation
+            try {
+                const { token, user } = await register(userData); // Assuming this returns a promise
+                login(token, user.name, user.role); // Call the login method
+                navigate('/home'); // Navigate to home
+            } catch (error) {
+                console.error("Registration error:", error);
+                toast.error('Registration failed. Please try again.');
+            }
         } else {
             console.log("OTP is incorrect!");
+            toast.error('OTP tidak valid. Silakan coba lagi.');
         }
     };
 
@@ -37,19 +56,31 @@ function AuthModal({ isOpen, onClose }) {
         switch (currentForm) {
             case "login":
                 return (
-                    <LoginForm onForgotPassword={handleForgotPassword} onRegister={handleRegister} />
+                    <LoginForm
+                        onForgotPassword={handleForgotPassword}
+                        onRegister={handleRegister}
+                    />
                 );
             case "register":
                 return (
-                    <RegisterForm onLogin={() => setCurrentForm("login")} onSendOTP={handleSendOTP} />
+                    <RegisterForm
+                        onLogin={() => setCurrentForm("login")}
+                        onSendOTP={handleSendOTP}
+                    />
                 );
             case "forgotPassword":
                 return (
-                    <ForgotForm onSendOTP={handleSendOTP} onLogin={() => setCurrentForm("login")} />
+                    <ForgotForm
+                        onSendOTP={handleSendOTP}
+                        onLogin={() => setCurrentForm("login")}
+                    />
                 );
             case "otpConfirmation":
                 return (
-                    <OtpForm onConfirmOTP={handleConfirmOTP} onLogin={() => setCurrentForm("login")} />
+                    <OtpForm
+                        onConfirmOTP={handleConfirmOTP}
+                        onLogin={() => setCurrentForm("login")}
+                    />
                 );
             default:
                 return null;
@@ -70,7 +101,7 @@ function AuthModal({ isOpen, onClose }) {
                     onClick={handleClickOutside}
                 >
                     <motion.div
-                        className="bg-green-500 rounded-lg shadow-lg relative w-[90%] max-w-[800px] flex flex-col md:flex-row min-h-[400px] justify-start p-5 md:p-5"
+                        className="bg-green-500 rounded-lg shadow-lg relative w-[90%] max-w-[800px] flex flex-col md:flex-row min-h-[400px] justify-start p-4"
                         variants={modalVariants}
                         initial="hidden"
                         animate="visible"

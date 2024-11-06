@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
-import AuthContext from '../../pages/Layouts/AuthContext';
 import Button from '../assets/Button';
-import { register } from '../../controllers/authController';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { checkEmailAvailability } from '../../controllers/authController';
+
 
 function RegisterForm({ onLogin, onSendOTP }) {
     const [name, setName] = useState('');
@@ -14,8 +13,6 @@ function RegisterForm({ onLogin, onSendOTP }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
-    const { register: contextLogin } = useContext(AuthContext);
 
     const validateForm = () => {
         const newErrors = {};
@@ -39,24 +36,34 @@ function RegisterForm({ onLogin, onSendOTP }) {
     const handleRegis = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm();
+
+        // Check for form validation errors
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
 
+        // Check if the email is already registered
         try {
-            // Instead of registering the user, generate OTP
-            const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
-            await register(name, email, password); // Call your registration function to save the user data
-            console.log('Generated OTP:', otp);
-            toast.success('Registrasi berhasil! Silakan masukkan OTP yang dikirim ke email Anda.');
-            onSendOTP(otp); // Call the function to handle OTP sending
-            navigate('/otp'); // Navigate to the OTP confirmation page
+            const isEmailRegistered = await checkEmailAvailability(email);
+            if (!isEmailRegistered) { // Change this line to check for availability
+                toast.error('Email sudah terdaftar. Silakan gunakan email lain.');
+                return; // Stop the registration process if email is already registered
+            }
         } catch (error) {
-            console.error('Registration failed:', error);
-            toast.error(error?.response?.data?.message || 'Registrasi gagal. Silakan coba lagi.');
+            console.error("Error checking email:", error);
+            toast.error('Terjadi kesalahan saat memeriksa email. Silakan coba lagi.');
+            return; // Stop if there was an error checking the email
         }
+
+        // Generate OTP and call onSendOTP
+        const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
+        console.log('Generated OTP:', otp);
+
+        // Send user data and OTP
+        onSendOTP({ otp, name, email, password }); // Call the function to proceed to the OTP step
     };
+
 
     return (
         <>

@@ -144,4 +144,22 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = { register, login, verifyToken };
+const cekemail = async (req, res) => { // Add async here
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email }); // This line now works because the function is async
+
+    if (user) {
+      return res.json({ available: false }); // Email is taken
+    }
+
+    return res.json({ available: true }); // Email is available
+  } catch (error) {
+    console.error("Error checking email:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+}
+
+
+module.exports = { register, login, verifyToken, cekemail };
