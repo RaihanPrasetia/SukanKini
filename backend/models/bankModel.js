@@ -8,7 +8,7 @@ const Bank = sequelize.define('Bank', {
         autoIncrement: true,
         allowNull: false,
     },
-    name: {
+    an: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -17,7 +17,7 @@ const Bank = sequelize.define('Bank', {
         allowNull: false,
         unique: true,
     },
-    branch: {
+    bank: {
         type: DataTypes.STRING,
         allowNull: true,
     },

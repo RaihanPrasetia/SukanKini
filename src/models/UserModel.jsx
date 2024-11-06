@@ -39,6 +39,9 @@ export default class User {
     isUser() {
         return this.role === 'user';
     }
+    isMitra() {
+        return this.role === 'mitra';
+    }
 
     // Method to return a formatted name (example)
     getFormattedName() {

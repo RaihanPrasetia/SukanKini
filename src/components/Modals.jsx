@@ -8,6 +8,8 @@ import { register } from '../controllers/authController';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../pages/Layouts/AuthContext'; // Ensure to use your custom hook
+import LoginMitraForm from './authModals/LoginMitraForm';
+import RegisterMitraForm from './authModals/RegisterMitraForm';
 
 const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -26,6 +28,8 @@ function AuthModal({ isOpen, onClose }) {
 
     const handleForgotPassword = () => setCurrentForm("forgotPassword");
     const handleRegister = () => setCurrentForm("register");
+    const handleRegisterMitra = () => setCurrentForm("registerMitra");
+    const handleLoginMitra = () => setCurrentForm("loginMitra");
 
     const handleSendOTP = ({ otp: generatedOtp, name, email, password }) => {
         setOtp(generatedOtp);
@@ -59,12 +63,29 @@ function AuthModal({ isOpen, onClose }) {
                     <LoginForm
                         onForgotPassword={handleForgotPassword}
                         onRegister={handleRegister}
+                        onLoginMitra={handleLoginMitra}
+                    />
+                );
+            case "loginMitra":
+                return (
+                    <LoginMitraForm
+                        onForgotPassword={handleForgotPassword}
+                        onRegisterMitra={handleRegisterMitra}
+                        onLogin={() => setCurrentForm("login")}
                     />
                 );
             case "register":
                 return (
                     <RegisterForm
                         onLogin={() => setCurrentForm("login")}
+                        onSendOTP={handleSendOTP}
+                        onRegisterMitra={handleRegisterMitra}
+                    />
+                );
+            case "registerMitra":
+                return (
+                    <RegisterMitraForm
+                        onLoginMitra={handleLoginMitra}
                         onSendOTP={handleSendOTP}
                     />
                 );
@@ -101,7 +122,7 @@ function AuthModal({ isOpen, onClose }) {
                     onClick={handleClickOutside}
                 >
                     <motion.div
-                        className="bg-green-500 rounded-lg shadow-lg relative w-[90%] max-w-[800px] flex flex-col md:flex-row min-h-[400px] justify-start p-4"
+                        className="rounded-lg shadow-lg relative w-[90%] max-w-[800px] flex flex-col md:flex-row min-h-[400px] justify-start "
                         variants={modalVariants}
                         initial="hidden"
                         animate="visible"

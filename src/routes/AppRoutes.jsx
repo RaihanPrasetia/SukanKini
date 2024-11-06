@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import LandingPage from '../pages/Layouts/LandingPage';
 import Dashboard from '../pages/Layouts/Dashboard';
 import Admin from '../pages/Layouts/Admin';
+import Mitra from '../pages/Layouts/Mitra';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 function AppRoutes() {
@@ -28,6 +29,14 @@ function AppRoutes() {
                 element={
                     <ProtectedRoute requiredRole="admin">
                         <Admin />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/mitra/*"
+                element={
+                    <ProtectedRoute requiredRole="mitra">
+                        <Mitra />
                     </ProtectedRoute>
                 }
             />

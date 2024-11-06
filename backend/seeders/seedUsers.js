@@ -6,14 +6,14 @@ const seedData = async () => {
   try {
     // Seed Bank Data
     await Bank.create({
-      branch: 'BRI',
-      name: 'Admin',
+      bank: 'BRI',
+      an: 'Admin',
       no_rek: '5267891022',
     });
 
     await Bank.create({
-      branch: 'MANDIRI',
-      name: 'User',
+      bank: 'MANDIRI',
+      an: 'Mitra',
       no_rek: '62818626372',
     });
 
@@ -37,6 +37,12 @@ const seedData = async () => {
       password: hashedPassword,
       email: 'user@example.com',
       role: 'user',
+    });
+    await User.create({
+      name: 'mitra',
+      password: hashedPassword,
+      email: 'mitra@example.com',
+      role: 'mitra',
       bank_id: 2, // Associate this user with Bank B
     });
 

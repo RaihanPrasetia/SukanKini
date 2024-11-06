@@ -10,7 +10,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
 import UserModel from '../../models/UserModel';
 
-function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
+function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
@@ -63,7 +63,7 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
             }
 
             // Check if the user's role is valid (admin or user)
-            if (!loggedInUser.isUser()) {
+            if (!loggedInUser.isMitra()) {
                 toast.error('Data tidak ditemukan.');
                 return;
             }
@@ -71,7 +71,7 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
             // Log the user in and store the token and user details in the context
             contextLogin(token, loggedInUser.getFormattedName(), loggedInUser.role);
             toast.success(`Selamat Bergabung, ${loggedInUser.getFormattedName()}`);
-            navigate('/home');
+            navigate('/mitra/home');
         } catch (error) {
             console.error('Gagal Masuk:', error);
             toast.error(error.message || 'Login gagal. Silakan coba lagi.');
@@ -83,27 +83,17 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
 
     return (
         <>
-            <div className="w-full flex rounded-xl p-4 md:p-0 md:w-full bg-green-500">
-                <div className="flex flex-col justify-between py-5">
-                    <h1 className="items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
-                        Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
-                    </h1>
-                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
-                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
-                </div>
-                <img
-                    src="/assets/images/imgAuth1.png"
-                    alt=""
-                    className="absolute hidden md:block -bottom-2 -left-10 object-cover w-[400px] h-[400px]"
-                />
+            <div className="w-full flex rounded-xl p-2 md:p-0 md:w-full bg-yellow-500">
+
                 <div className="w-full flex flex-col items-center p-6 bg-white rounded-lg">
-                    <h1 className="text-2xl font-bold mb-6 text-green-500 text-center">
+                    <h1 className="text-2xl font-bold mb-6 text-yellow-500 text-center">
                         MASUK KE AKUN SUKANKINI
                     </h1>
                     <form className="w-full space-y-5" onSubmit={handleLogin}>
                         <div className="space-y-4">
                             <div className="flex flex-col space-y-1">
                                 <FormInput
+                                    className="border-yellow-300 focus:ring-yellow-400"
                                     type="email"
                                     placeholder="Email"
                                     value={email}
@@ -116,6 +106,7 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
                             </div>
                             <div className="flex flex-col space-y-1">
                                 <FormInput
+                                    className="border-yellow-300 focus:ring-yellow-400"
                                     type="password"
                                     placeholder="Password"
                                     value={password}
@@ -129,31 +120,33 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
                         </div>
                         <p className="text-sm text-right font-medium text-gray-600">
                             Password akun Anda lupa?{' '}
-                            <span className="text-green-500 cursor-pointer" onClick={onForgotPassword}>
+                            <span className="text-yellow-500 cursor-pointer" onClick={onForgotPassword}>
                                 Dapatkan
                             </span>
                         </p>
-                        <div className="flex items-center space-x-5 justify-center">
-                            <Button title="Masuk" type="submit" className="text-nowrap" />
-                            <Button title="Google" icon={faGoogle} className="text-nowrap" />
+                        <div className="flex items-center space-x-5 w-full justify-center">
+                            <Button title="Masuk Mitra" type="submit" className="text-nowrap bg-yellow-500 hover:text-yellow-500" />
+                            <Button title="Google" icon={faGoogle} className="text-nowrap bg-yellow-500 hover:text-yellow-500" />
                         </div>
                     </form>
                     <p className="text-sm text-center font-medium text-gray-600 my-5">
-                        Anda pengguna baru?{' '}
-                        <span className="text-green-500 cursor-pointer" onClick={onRegister}>
+                        Buat Akun Mitra Anda?{' '}
+                        <span className="text-yellow-500 cursor-pointer" onClick={onRegisterMitra}>
                             Daftar
                         </span>
                     </p>
+
                     <div className="w-full flex items-center my-4">
-                        <div className="flex-1 border-t border-green-500"></div>
-                        <p className="text-md text-center text-green-500 px-4">Atau Masuk Sebagai Mitra</p>
-                        <div className="flex-1 border-t border-green-500"></div>
+                        <div className="flex-1 border-t border-yellow-500"></div>
+                        <p className="text-md text-center text-yellow-500 px-4">Atau Masuk Sebagai Pengguna</p>
+                        <div className="flex-1 border-t border-yellow-500"></div>
                     </div>
 
 
-                    <div className='flex w-full justify-center space-x-4 items-center'>
-                        <Button title="Masuk Mitra" onClick={onLoginMitra} className="text-nowrap" />
+                    <div className='flex w-full justify-center space-x-4 items-center '>
+                        <Button title="Masuk" onClick={onLogin} className="bg-yellow-500 hover:text-yellow-500" />
                     </div>
+
                     <ToastContainer
                         position="top-right"
                         autoClose={5000}
@@ -166,9 +159,21 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
                         pauseOnHover
                     />
                 </div>
+                <div className="flex flex-col justify-between ">
+                    <h1 className="items-start justify-start text-center p-2 text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block py-5">
+                        Selamat datang Mitra Kami! Masuk untuk mulai kembali.
+                    </h1>
+                    <div className="md:h-auto overflow-hidden bg-yellow-500 hidden md:block"></div>
+                    <div className="md:h-auto overflow-hidden bg-yellow-500 hidden md:block"></div>
+                </div>
+                <img
+                    src="/assets/images/imgAuth1.png"
+                    alt=""
+                    className="absolute hidden md:block -bottom-2 -right-10 object-cover w-[400px] h-[400px]"
+                />
             </div>
         </>
     );
 }
 
-export default LoginForm;
+export default LoginMitraForm;
