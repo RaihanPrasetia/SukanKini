@@ -1,9 +1,11 @@
+// KelasPelatihan.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
+import DaftarKelasPopup from './DaftarKelas'; // Import the DaftarKelasPopup component
 
 const classes = [
   {
-    id: 1, // Add an ID for each class
+    id: 1,
     title: "CARDIO",
     image: "/assets/images/kelascardio.jpg",
     location: "Raffles Hotel Jakarta",
@@ -12,7 +14,7 @@ const classes = [
     price: "Mulai 200.000-an",
   },
   {
-    id: 2, // Add an ID for each class
+    id: 2,
     title: "PEMBENTUKKAN OTOT",
     image: "/assets/images/gym.jpeg",
     location: "Abadi Suite Jambi",
@@ -24,16 +26,28 @@ const classes = [
 
 const KelasPelatihan = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedClass, setSelectedClass] = useState(null);
+
+  const openPopup = (classInfo) => {
+    setSelectedClass(classInfo);
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedClass(null);
+  };
 
   return (
     <div className="flex flex-col items-center p-6 bg-gray-50 min-h-screen">
       {/* Header with buttons and search bar */}
       <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl mb-8 space-y-4 md:space-y-0">
         <div className="flex space-x-4">
-          <Link to="/semua-kelas"> {/* Link to navigate to "Semua Kelas" page */}
+          <Link to="/semua-kelas">
             <button className="text-green-700 font-semibold hover:text-green-900">Semua Kelas</button>
           </Link>
-          <Link to="/daftar-pelatih"> {/* Link to navigate to "Daftar Pelatih" page */}
+          <Link to="/daftar-pelatih">
             <button className="text-green-700 font-semibold hover:text-green-900">Daftar Pelatih</button>
           </Link>
           <button className="text-green-700 font-semibold hover:text-green-900">Lokasi</button>
@@ -54,7 +68,7 @@ const KelasPelatihan = () => {
 
       <h1 className="text-3xl font-bold text-center mb-8 text-green-800">DAFTAR KELAS PELATIHAN</h1>
 
-      {/* Single box to display all classes */}
+      {/* Display all classes */}
       <div className="bg-white rounded-lg shadow-md p-6 max-w-6xl w-full">
         {classes
           .filter((classInfo) =>
@@ -74,12 +88,15 @@ const KelasPelatihan = () => {
                 <p className="text-gray-600">Jam Operasi: {classInfo.hours}</p>
                 <p className="text-green-700 font-semibold">Harga: {classInfo.price}</p>
                 <div className="mt-4 flex space-x-4">
-                  <Link to={`/kelas/${classInfo.id}`}> {/* Navigate to the class detail page */}
+                  <Link to={`/kelas/${classInfo.id}`}>
                     <button className="bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition">
                       Lihat Kelas
                     </button>
                   </Link>
-                  <button className="bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition">
+                  <button
+                    onClick={() => openPopup(classInfo)}
+                    className="bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition"
+                  >
                     Daftar Kelas
                   </button>
                 </div>
@@ -87,6 +104,11 @@ const KelasPelatihan = () => {
             </div>
           ))}
       </div>
+
+      {/* Conditionally render the DaftarKelasPopup */}
+      {isPopupOpen && (
+        <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />
+      )}
     </div>
   );
 };

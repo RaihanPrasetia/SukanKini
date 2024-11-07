@@ -1,7 +1,6 @@
 // src/pages/Layouts/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Membuat Context untuk Auth
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,7 +9,6 @@ export const AuthProvider = ({ children }) => {
     const [userRole, setUserRole] = useState(null);
 
     useEffect(() => {
-        // Memeriksa apakah token ada di localStorage
         const token = localStorage.getItem('token');
         const name = localStorage.getItem('name');
         const role = localStorage.getItem('role');
@@ -26,17 +24,15 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // Fungsi untuk login
     const login = (token, name, role) => {
         localStorage.setItem('token', token);
         localStorage.setItem('name', name);
-        localStorage.setItem('role', role); // Menyimpan role di localStorage
+        localStorage.setItem('role', role); // Ensure the role is saved in local storage
         setIsAuthenticated(true);
         setUserName(name);
-        setUserRole(role); // Menyimpan role
+        setUserRole(role); // Set the role state
     };
 
-    // Fungsi untuk logout
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('name');
@@ -46,7 +42,6 @@ export const AuthProvider = ({ children }) => {
         setUserRole(null);
     };
 
-    // Return provider dengan context
     return (
         <AuthContext.Provider value={{ isAuthenticated, userName, userRole, login, logout }}>
             {children}
@@ -54,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-// Hook untuk mengakses AuthContext
+// Correctly export useAuth
 export const useAuth = () => useContext(AuthContext);
 
 export default AuthContext;

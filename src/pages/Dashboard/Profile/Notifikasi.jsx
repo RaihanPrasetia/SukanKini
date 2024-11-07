@@ -53,7 +53,7 @@ const NotificationView = () => {
               <div key={index} className="py-2 border-b last:border-b-0 text-gray-700">
                 {message}
               </div>
-          ))}
+            ))}
         </div>
       </main>
     </div>
