@@ -12,6 +12,7 @@ export default class User {
         createdAt,
         updatedAt,
         deletedAt = null,
+
     }) {
         this.id = id;
         this.name = name;

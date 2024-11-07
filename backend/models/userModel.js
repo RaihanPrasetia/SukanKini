@@ -60,6 +60,11 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: false,
   },
+  isVerified: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,  // Default value to false, indicating unverified
+  },
   bank_id: {
     type: DataTypes.INTEGER,
     allowNull: true,

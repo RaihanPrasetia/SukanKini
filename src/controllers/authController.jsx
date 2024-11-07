@@ -116,9 +116,3 @@ export const registerMitra = async ({ name, email, password, kota, alamat, bank,
         throw new Error('Registration failed. Please try again later.');
     }
 };
-
-
-
-
-
-

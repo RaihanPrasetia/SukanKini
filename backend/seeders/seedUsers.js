@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
-const Bank = require('../models/bankModel'); // Import the Bank model
+const Bank = require('../models/bankModel');
+const Payment = require('../models/paymentModel');  // Import the Payment model
 
 const seedData = async () => {
   try {
@@ -23,7 +24,7 @@ const seedData = async () => {
     const hashedPassword = await bcrypt.hash('12345678', 10);
 
     // Create admin user
-    await User.create({
+    const adminUser = await User.create({
       name: 'admin',
       password: hashedPassword,
       email: 'admin@example.com',
@@ -32,13 +33,15 @@ const seedData = async () => {
     });
 
     // Create regular user
-    await User.create({
+    const regularUser = await User.create({
       name: 'user',
       password: hashedPassword,
       email: 'user@example.com',
       role: 'user',
     });
-    await User.create({
+
+    // Create Mitra user
+    const mitraUser = await User.create({
       name: 'mitra',
       password: hashedPassword,
       email: 'mitra@example.com',
@@ -47,6 +50,30 @@ const seedData = async () => {
     });
 
     console.log('Users seeded successfully.');
+
+    // Seed Payment Data
+    await Payment.create({
+      user_id: adminUser.id, // Payment for the admin user
+      bank_id: 1, // Associated with Bank A
+      bukti: 'path/to/payment-proof-admin.jpg', // Payment proof file path
+      status_pembayaran: 'selesai', // Payment status (completed)
+    });
+
+    await Payment.create({
+      user_id: regularUser.id, // Payment for the regular user
+      bank_id: 1, // Associated with Bank A
+      bukti: 'path/to/payment-proof-user.jpg', // Payment proof file path
+      status_pembayaran: 'proses', // Payment status (in progress)
+    });
+
+    await Payment.create({
+      user_id: mitraUser.id, // Payment for the mitra user
+      bank_id: 2, // Associated with Bank B
+      bukti: 'path/to/payment-proof-mitra.jpg', // Payment proof file path
+      status_pembayaran: 'gagal', // Payment status (failed)
+    });
+
+    console.log('Payments seeded successfully.');
   } catch (error) {
     console.error('Error seeding data:', error);
   }
