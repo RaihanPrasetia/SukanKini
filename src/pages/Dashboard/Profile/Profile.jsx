@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar';
 
-const Profile = () => {
+export default function Profile() {
   // Default state values
   const [name, setName] = useState("Baihaqi Khaizan");
   const [email, setEmail] = useState("Khaizanbaihaqi@gmail.com");
@@ -104,4 +104,3 @@ const Profile = () => {
   );
 };
 
-export default Profile;

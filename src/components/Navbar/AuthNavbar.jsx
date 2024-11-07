@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../pages/Layouts/AuthContext';
 import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons
 
-const AuthNavbar = () => {
+export default function AuthNavbar() {
     const { logout, userName, user } = useAuth(); // Get userName and user from useAuth
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,8 +32,8 @@ const AuthNavbar = () => {
         };
     }, [dropdownOpen]);
 
-    return (
-        <nav className="bg-white shadow-lg py-4 px-16 text-green-500">
+    return (<>
+        <nav className="bg-white shadow-lg py-4 px-16 text-green-500 container mx-auto flex justify-between items-center">
             <div div className="container mx-auto flex justify-between items-center" >
                 <Link to="/dashboard" className="text-2xl font-bold hover:text-green-600 transition duration-300">
                     <span className="text-yellow-300">Sukan</span>Kini
@@ -98,7 +98,8 @@ const AuthNavbar = () => {
 
             </div >
         </nav >
+    </>
+
     );
 };
 
-export default AuthNavbar;

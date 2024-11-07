@@ -8,7 +8,7 @@ import Mitra from '../pages/Layouts/Mitra';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 function AppRoutes() {
-    return (
+    return (<>
         <Routes>
             {/* Public route */}
             <Route path="/" element={<LandingPage />} />
@@ -43,6 +43,8 @@ function AppRoutes() {
 
             {/* Catch-all route for unmatched paths */}
         </Routes>
+    </>
+
     );
 }
 

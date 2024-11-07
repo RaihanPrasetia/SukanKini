@@ -11,25 +11,22 @@ import Profile from '../Dashboard/Profile/Profile';
 import Kelas from '../Dashboard/Profile/Kelas'; // Ensure this is correctly imported
 import DetailKelas from '../Dashboard/Kelas/DetailKelas';
 
-const Dashboard = () => {
-    return (
-        <div className="min-h-screen bg-gray-100">
-            <AuthNavbar />
-            <div>
-                <Routes>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/community" element={<Community />} />
-                    <Route path="/video" element={<VideoCategory />} />
-                    <Route path="/kelas" element={<KelasPelatihan />} />
-                    <Route path="/profile" element={<Profile />}>
-                        <Route path="kelas" element={<Kelas />} />
-                    </Route>
-                    <Route path="/kelas/:id" element={<DetailKelas />} /> {/* Add route for DetailKelas */}
-                </Routes>
-            </div>
-            <Footer />
-        </div>
+export default function Dashboard() {
+    return (<>
+        <AuthNavbar />
+        <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/video" element={<VideoCategory />} />
+            <Route path="/kelas" element={<KelasPelatihan />} />
+            <Route path="/profile" element={<Profile />}>
+                <Route path="kelas" element={<Kelas />} />
+            </Route>
+            <Route path="/kelas/:id" element={<DetailKelas />} /> {/* Add route for DetailKelas */}
+        </Routes>
+        <Footer />
+    </>
+
     );
 };
 
-export default Dashboard;

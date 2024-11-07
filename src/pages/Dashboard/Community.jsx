@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Community = () => {
+export default function Community() {
     const communities = [
         {
             name: 'Komunitas Relaksasi',
@@ -72,4 +72,3 @@ const Community = () => {
     );
 };
 
-export default Community;

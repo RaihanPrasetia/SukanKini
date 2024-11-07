@@ -18,22 +18,22 @@ const VideoCategory = () => {
   return (
     <div className="flex flex-col items-center p-6 bg-gray-50 min-h-screen"> {/* Center the main content */}
       <h1 className="text-3xl font-semibold mb-6 text-green-800">Semua Kategori Video</h1>
-      
+
       {/* Search Input */}
       <div className="relative flex items-center w-full md:w-auto mb-4"> {/* Keep search input aligned left */}
-      <div className="flex justify-start w-full mb-4 relative"> {/* Set relative positioning for the button */}
-  <input
-    type="text"
-    placeholder="Cari Kelas"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500"
-  />
-  <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-700"> {/* Adjust the button's position */}
-    🔍
-  </button>
-</div>
+        <div className="flex justify-start w-full mb-4 relative"> {/* Set relative positioning for the button */}
+          <input
+            type="text"
+            placeholder="Cari Kelas"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500"
+          />
+          <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-700"> {/* Adjust the button's position */}
+            🔍
+          </button>
         </div>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 max-w-4xl w-full"> {/* Centered grid */}
         {filteredCategories.length > 0 ? (

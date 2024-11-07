@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../Layouts/AuthContext';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+export default function Home() {
     const { userName } = useAuth();
 
     return (
@@ -76,4 +76,3 @@ const Home = () => {
     );
 };
 
-export default Home;
