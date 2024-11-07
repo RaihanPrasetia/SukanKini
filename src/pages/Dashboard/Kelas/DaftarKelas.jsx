@@ -37,15 +37,15 @@ const DaftarKelasPopup = ({ onClose, classInfo }) => {
 
         {/* Left Section - Promotional Image/Text with Slide-In Animation */}
         <motion.div
-          className="w-1/2 bg-yellow-100 flex items-center justify-center p-4 text-center"
+          className="w-1/2  flex items-center justify-center p-4 text-center"
           initial={{ x: -300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 100, damping: 25 }}
         >
-          <img 
-            src="/path-to-your-image.jpg" 
-            alt="Promotional" 
-            className="max-w-full h-auto rounded-md transform transition duration-500 ease-in-out hover:scale-105"
+          <img
+            src="/assets/images/kelascardio.jpg"
+            alt="Promotional"
+            className="max-w-full h-full rounded-md transform transition "
           />
         </motion.div>
 

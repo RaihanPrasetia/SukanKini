@@ -17,7 +17,7 @@ export default function Community() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col items-center">
+        <div className="min-h-screen bg-gradient-to-r pt-28 from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col items-center">
             {/* Header */}
             <div className="w-full max-w-5xl px-4 py-4 flex items-center justify-between">
                 <button className="text-yellow-400 text-2xl transform hover:scale-110 transition duration-300">

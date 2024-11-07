@@ -16,7 +16,7 @@ const VideoCategory = () => {
   );
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-50 min-h-screen"> {/* Center the main content */}
+    <div className="flex flex-col items-center pt-28 pb-20 bg-gray-50 min-h-screen"> {/* Center the main content */}
       <h1 className="text-3xl font-semibold mb-6 text-green-800">Semua Kategori Video</h1>
 
       {/* Search Input */}
