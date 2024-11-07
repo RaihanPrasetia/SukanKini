@@ -1,0 +1,174 @@
+// src/components/LoginForm.js
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FormInput from '../assets/FormInput';
+import Button from '../assets/Button';
+import AuthContext from '../../pages/Layouts/AuthContext';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { login } from '../../controllers/authController';
+import UserModel from '../../models/UserModel';
+
+function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+    const { login: contextLogin } = useContext(AuthContext);
+
+    // Validate email and password input
+    const validate = () => {
+        const newErrors = {};
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email) {
+            newErrors.email = 'Masukkan Email';
+            newErrors.email = 'Masukkan Email';
+        } else if (!emailPattern.test(email)) {
+            newErrors.email = 'Format email tidak valid.';
+        }
+
+        if (!password) {
+            newErrors.password = 'Masukkan Password';
+        } else if (password.length < 8) {
+            newErrors.password = 'Password minimal 8 karakter.';
+        }
+
+        return newErrors;
+    };
+
+    // Handle login functionality
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        // Validate email and password input
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        try {
+            // Call the login function to authenticate the user
+            const { token, user } = await login(email, password);
+
+            // Initialize the user data using the User model
+            const loggedInUser = new UserModel(user);
+
+            // Check if the user is blocked
+            if (loggedInUser.isUserBlocked()) {
+                toast.error('Akun Anda diblokir. Silakan hubungi dukungan.');
+                return;
+            }
+
+            // Check if the user's role is valid (admin or user)
+            if (!loggedInUser.isUser()) {
+                toast.error('Data tidak ditemukan.');
+                return;
+            }
+
+            // Log the user in and store the token and user details in the context
+            contextLogin(token, loggedInUser.getFormattedName(), loggedInUser.role);
+            toast.success(`Selamat Bergabung, ${loggedInUser.getFormattedName()}`);
+            navigate('/home');
+        } catch (error) {
+            console.error('Gagal Masuk:', error);
+            toast.error(error.message || 'Login gagal. Silakan coba lagi.');
+        }
+    };
+
+
+
+
+    return (
+        <>
+            <div className="w-full flex rounded-xl p-4 md:p-0 md:w-full bg-green-500">
+                <div className="flex flex-col justify-between py-5">
+                    <h1 className="items-start justify-start text-center text-[18px] md:text-[16px] text-white font-bold mb-4 hidden md:block">
+                        Selamat datang di perjalanan kebugaranmu! Masuk untuk mulai kembali.
+                    </h1>
+                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
+                    <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block"></div>
+                </div>
+                <img
+                    src="/assets/images/imgAuth1.png"
+                    alt=""
+                    className="absolute hidden md:block -bottom-2 -left-10 object-cover w-[400px] h-[400px]"
+                />
+                <div className="w-full flex flex-col items-center p-6 bg-white rounded-lg">
+                    <h1 className="text-2xl font-bold mb-6 text-green-500 text-center">
+                        MASUK KE AKUN SUKANKINI
+                    </h1>
+                    <form className="w-full space-y-5" onSubmit={handleLogin}>
+                        <div className="space-y-4">
+                            <div className="flex flex-col space-y-1">
+                                <FormInput
+                                    type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        setErrors((prev) => ({ ...prev, email: undefined })); // Clear email error on change
+                                    }}
+                                />
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <FormInput
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value);
+                                        setErrors((prev) => ({ ...prev, password: undefined })); // Clear password error on change
+                                    }}
+                                />
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                            </div>
+                        </div>
+                        <p className="text-sm text-right font-medium text-gray-600">
+                            Password akun Anda lupa?{' '}
+                            <span className="text-green-500 cursor-pointer" onClick={onForgotPassword}>
+                                Dapatkan
+                            </span>
+                        </p>
+                        <div className="flex items-center space-x-5 justify-center">
+                            <Button title="Masuk" type="submit" className="text-nowrap" />
+                            <Button title="Google" icon={faGoogle} className="text-nowrap" />
+                        </div>
+                    </form>
+                    <p className="text-sm text-center font-medium text-gray-600 my-5">
+                        Anda pengguna baru?{' '}
+                        <span className="text-green-500 cursor-pointer" onClick={onRegister}>
+                            Daftar
+                        </span>
+                    </p>
+                    <div className="w-full flex items-center my-4">
+                        <div className="flex-1 border-t border-green-500"></div>
+                        <p className="text-md text-center text-green-500 px-4">Atau Masuk Sebagai Mitra</p>
+                        <div className="flex-1 border-t border-green-500"></div>
+                    </div>
+
+
+                    <div className='flex w-full justify-center space-x-4 items-center'>
+                        <Button title="Masuk Mitra" onClick={onLoginMitra} className="text-nowrap" />
+                    </div>
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+export default LoginForm;
