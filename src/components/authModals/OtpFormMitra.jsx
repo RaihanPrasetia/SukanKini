@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-function OtpFormMitra({ onConfirmOTPMitra, onLoginMitra }) {
+function OtpFormMitra({ onConfirmOTPMitra, onRegisterMitra }) {
     const [enteredOtp, setEnteredOtp] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -29,7 +29,7 @@ function OtpFormMitra({ onConfirmOTPMitra, onLoginMitra }) {
     };
 
     return (
-        <div className="w-full flex items-center rounded-lg space-x-6 bg-yellow-500">
+        <div className="w-full flex items-center justify-center rounded-lg space-x-6 bg-yellow-500">
             <img
                 src="/assets/images/authotp.png"
                 alt="OTP Illustration"
@@ -40,8 +40,8 @@ function OtpFormMitra({ onConfirmOTPMitra, onLoginMitra }) {
                     Tinggal satu langkah lagi, nih cek email Anda!
                 </h1>
             </div>
-            <div className='w-full h-full flex flex-col bg-white shadow-lg p-6 rounded-lg'>
-                <h2 className="text-2xl font-bold mb-6 text-center text-green-500">Konfirmasi OTP</h2>
+            <div className='w-full h-full justify-center flex flex-col bg-white shadow-lg p-6 rounded-lg'>
+                <h2 className="text-2xl font-bold mb-6 text-center text-yellow-500">Konfirmasi OTP</h2>
                 <form className="w-full space-y-5" onSubmit={handleSubmitMitra}>
                     <input
                         type="text"
@@ -55,7 +55,7 @@ function OtpFormMitra({ onConfirmOTPMitra, onLoginMitra }) {
                     {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
                     <button
                         type="submit"
-                        className={`bg-green-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`bg-yellow-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? 'Mengonfirmasi...' : 'Konfirmasi'}
@@ -63,8 +63,8 @@ function OtpFormMitra({ onConfirmOTPMitra, onLoginMitra }) {
                 </form>
                 <button
                     type="button"
-                    onClick={onLoginMitra} // Calls the back action when clicked
-                    className="mt-4 text-green-500 underline"
+                    onClick={onRegisterMitra} // Calls the back action when clicked
+                    className="mt-4 text-yellow-500 underline"
                 >
                     Kembali ke Halaman Sebelumnya
                 </button>

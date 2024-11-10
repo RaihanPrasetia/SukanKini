@@ -132,7 +132,7 @@ function Komunitas() {
                 </div>
 
                 <div className="text-center mt-10">
-                    <Link to={'#'} className="text-xl bg-gradient-to-r from-green-500 to-blue-500 py-3 px-6 rounded-xl text-white font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    <Link to={'#'} className="text-xl bg-green-500  py-3 px-6 rounded-xl text-white font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
                         Semua Komunitas
                     </Link>
                 </div>

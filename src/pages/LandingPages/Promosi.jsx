@@ -89,7 +89,7 @@ export default function Promosi() {
                                 <p className="text-gray-500 mt-2">
                                     {promo.description}
                                 </p>
-                                <button className="mt-4 bg-green-500 text-white text-lg font-semibold  px-4 py-2 rounded-xl hover:bg-green-600 transition duration-300">
+                                <button className="mt-4 bg-green-500 text-white text-lg font-semibold  px-6 py-2 rounded-xl hover:bg-green-600 transition duration-300">
                                     {promo.buttonText}
                                 </button>
                             </div>

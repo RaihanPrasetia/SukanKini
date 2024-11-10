@@ -139,7 +139,7 @@ function AuthModal({ isOpen, onClose }) {
                 return (
                     <OtpFormMitra
                         onConfirmOTPMitra={handleConfirmOTPMitra}
-                        onLogin={() => setCurrentForm("login")}
+                        onRegisterMitra={handleRegisterMitra}
                     />
                 );
             default:

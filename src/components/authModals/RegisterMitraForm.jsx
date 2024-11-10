@@ -36,9 +36,9 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
         }
         if (!kota.trim()) newErrors.kota = 'Kota tidak boleh kosong.';
         if (!alamat.trim()) newErrors.alamat = 'Alamat tidak boleh kosong.';
-        if (!bank.trim()) newErrors.bank = 'Nama bank tidak boleh kosong.';
-        if (!no_rek.trim()) newErrors.no_rek = 'Nomor rekening tidak boleh kosong.';
-        if (!an.trim()) newErrors.an = 'Atas nama tidak boleh kosong.';
+        if (!bank.trim()) newErrors.bank = 'Isi Nama bank.';
+        if (!no_rek.trim()) newErrors.no_rek = 'Isi Nomor rekening.';
+        if (!an.trim()) newErrors.an = 'Atas nama';
         return newErrors;
     };
 
@@ -86,30 +86,35 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
                     <h2 className="text-2xl font-bold mb-6 text-center text-yellow-500">Buat Akun Mitra Sukankini</h2>
 
                     <form className="w-full space-y-5" onSubmit={handleRegisMitra}>
-                        <div className="space-y-4">
-                            <FormInput
-                                className="border-yellow-300 focus:ring-yellow-400"
-                                type="text"
-                                placeholder="Nama Pelatihan Anda"
-                                value={name}
-                                onChange={(e) => {
-                                    setName(e.target.value);
-                                    setErrors((prev) => ({ ...prev, name: undefined }));
-                                }}
-                            />
-                            {errors.name && <p className="text-red-500">{errors.name}</p>}
+                        <div className="space-y-2">
+                            <div>
+                                <FormInput
+                                    className="border-yellow-300 focus:ring-yellow-400"
+                                    type="text"
+                                    placeholder="Nama Pelatihan Anda"
+                                    value={name}
+                                    onChange={(e) => {
+                                        setName(e.target.value);
+                                        setErrors((prev) => ({ ...prev, name: undefined }));
+                                    }}
+                                />
+                                {errors.name && <p className="text-red-500">{errors.name}</p>}
+                            </div>
+                            <div>
+                                <FormInput
+                                    className="border-yellow-300 focus:ring-yellow-400"
+                                    type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        setErrors((prev) => ({ ...prev, email: undefined }));
+                                    }}
+                                />
+                                {errors.email && <p className="text-red-500">{errors.email}</p>}
+                            </div>
 
-                            <FormInput
-                                className="border-yellow-300 focus:ring-yellow-400"
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => {
-                                    setEmail(e.target.value);
-                                    setErrors((prev) => ({ ...prev, email: undefined }));
-                                }}
-                            />
-                            {errors.email && <p className="text-red-500">{errors.email}</p>}
+
 
                             <div className="flex gap-4">
                                 <div className="w-full">
@@ -181,30 +186,34 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
                                     {errors.an && <p className="text-red-500">{errors.an}</p>}
                                 </div>
                             </div>
+                            <div>
+                                <FormInput
+                                    className="border-yellow-300 focus:ring-yellow-400"
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value);
+                                        setErrors((prev) => ({ ...prev, password: undefined }));
+                                    }}
+                                />
+                                {errors.password && <p className="text-red-500">{errors.password}</p>}
+                            </div>
 
-                            <FormInput
-                                className="border-yellow-300 focus:ring-yellow-400"
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => {
-                                    setPassword(e.target.value);
-                                    setErrors((prev) => ({ ...prev, password: undefined }));
-                                }}
-                            />
-                            {errors.password && <p className="text-red-500">{errors.password}</p>}
+                            <div>
+                                <FormInput
+                                    className="border-yellow-300 focus:ring-yellow-400"
+                                    type="password"
+                                    placeholder="Konfirmasi Password"
+                                    value={confirmPassword}
+                                    onChange={(e) => {
+                                        setConfirmPassword(e.target.value);
+                                        setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                                    }}
+                                />
+                                {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
+                            </div>
 
-                            <FormInput
-                                className="border-yellow-300 focus:ring-yellow-400"
-                                type="password"
-                                placeholder="Konfirmasi Password"
-                                value={confirmPassword}
-                                onChange={(e) => {
-                                    setConfirmPassword(e.target.value);
-                                    setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
-                                }}
-                            />
-                            {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
                         </div>
 
                         <div className="flex items-center justify-center">
