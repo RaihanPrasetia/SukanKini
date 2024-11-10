@@ -33,13 +33,13 @@ const classDetails = {
 };
 
 const DetailKelas = () => {
-    const { id } = useParams();  // Get the class ID from the URL
-    const navigate = useNavigate();  // For navigation
+    const { id } = useParams(); // Get the class ID from the URL
+    const navigate = useNavigate(); // For navigation
 
-    const kelas = classDetails[id];  // Get the class details based on the ID
+    const kelas = classDetails[id]; // Get the class details based on the ID
 
     const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
-    const [editForm, setEditForm] = useState(kelas || {});  // State for storing form values
+    const [editForm, setEditForm] = useState(kelas || {}); // State for storing form values
 
     const handleProfileClick = (memberId) => {
         // Navigate to member's profile page (you can update the path to match your routing)
@@ -52,7 +52,10 @@ const DetailKelas = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditForm({ ...editForm, [name]: value });
+        setEditForm((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
     const handleSaveChanges = () => {
@@ -64,10 +67,10 @@ const DetailKelas = () => {
 
     if (!kelas) {
         return (
-            <div className="w-full bg-white p-6 rounded-lg shadow-lg min-h-[80vh]">
+            <div className="w-full bg-white p-6 lg:p-16 rounded-lg shadow-lg min-h-[80vh]">
                 <h2 className="text-2xl font-semibold text-center">Kelas Tidak Ditemukan</h2>
                 <button
-                    onClick={() => navigate('/mitra/kelas')}  // Go back to the classes list
+                    onClick={() => navigate('/mitra/kelas')} // Go back to the classes list
                     className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg block mx-auto"
                 >
                     Kembali ke Daftar Kelas
@@ -77,11 +80,11 @@ const DetailKelas = () => {
     }
 
     return (
-        <div className="w-full bg-white p-8 rounded-lg shadow-xl min-h-[80vh]">
+        <div className="w-full bg-white p-6 lg:px-16 py-24 rounded-lg shadow-xl min-h-[80vh]">
             <div className="w-full mx-auto">
                 <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">{kelas.namaKelas}</h2>
-                <div className="flex items-end justify-between w-full">
-                    <div className='flex flex-col'>
+                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between w-full">
+                    <div className='flex flex-col sm:w-1/2'>
                         <p className="text-lg text-gray-600">
                             <strong className="text-gray-800">Kategori:</strong> {kelas.kategori}
                         </p>
@@ -96,8 +99,7 @@ const DetailKelas = () => {
                         </p>
                     </div>
 
-                    <div className='flex '>
-
+                    <div className='flex sm:w-auto'>
                         <button
                             onClick={() => setIsModalOpen(true)} // Open modal when clicked
                             className="mt-4 flex items-center space-x-2 justify-center bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all duration-300"
@@ -108,7 +110,7 @@ const DetailKelas = () => {
                 </div>
 
                 {/* Member Table */}
-                <div className="mt-8">
+                <div className="overflow-x-auto mt-8">
                     <h4 className="text-2xl font-semibold text-gray-800 mb-4">Anggota Kelas</h4>
                     <table className="overflow-x-auto bg-white shadow-md sm:rounded-lg w-full">
                         <thead>
@@ -143,7 +145,7 @@ const DetailKelas = () => {
 
                 <div className="mt-8 text-center">
                     <button
-                        onClick={() => navigate('/mitra/kelas')}  // Go back to the classes list
+                        onClick={() => navigate('/mitra/kelas')} // Go back to the classes list
                         className="mt-4 bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
                     >
                         Kembali ke Daftar Kelas
@@ -154,75 +156,33 @@ const DetailKelas = () => {
             {/* Modal for Editing Class */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 sm:w-1/3">
                         <h3 className="text-xl font-semibold mb-4">Edit Kelas</h3>
-                        <div className="mb-4">
-                            <label htmlFor="namaKelas" className="block text-gray-700">Nama Kelas</label>
-                            <input
-                                type="text"
-                                id="namaKelas"
-                                name="namaKelas"
-                                value={editForm.namaKelas || ''}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded-lg"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="kategori" className="block text-gray-700">Kategori</label>
-                            <input
-                                type="text"
-                                id="kategori"
-                                name="kategori"
-                                value={editForm.kategori || ''}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded-lg"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="jam" className="block text-gray-700">Jam</label>
-                            <input
-                                type="text"
-                                id="jam"
-                                name="jam"
-                                value={editForm.jam || ''}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded-lg"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="hariTanggal" className="block text-gray-700">Hari/Tanggal</label>
-                            <input
-                                type="text"
-                                id="hariTanggal"
-                                name="hariTanggal"
-                                value={editForm.hariTanggal || ''}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded-lg"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="alamat" className="block text-gray-700">Alamat</label>
-                            <input
-                                type="text"
-                                id="alamat"
-                                name="alamat"
-                                value={editForm.alamat || ''}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded-lg"
-                            />
-                        </div>
-                        <div className="flex justify-between">
-                            <button
-                                onClick={handleSaveChanges}
-                                className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600  focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
-                            >
-                                Simpan
-                            </button>
+                        {['namaKelas', 'kategori', 'jam', 'hariTanggal', 'alamat'].map((field) => (
+                            <div className="mb-4" key={field}>
+                                <label htmlFor={field} className="block text-gray-700 capitalize">{field}</label>
+                                <input
+                                    type="text"
+                                    id={field}
+                                    name={field}
+                                    value={editForm[field] || ''}
+                                    onChange={handleInputChange}
+                                    className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:outline-none"
+                                />
+                            </div>
+                        ))}
+                        <div className="flex justify-end space-x-4">
                             <button
                                 onClick={handleModalClose}
-                                className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-700  focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-300"
+                                className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none"
                             >
                                 Batal
+                            </button>
+                            <button
+                                onClick={handleSaveChanges}
+                                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none"
+                            >
+                                Simpan
                             </button>
                         </div>
                     </div>

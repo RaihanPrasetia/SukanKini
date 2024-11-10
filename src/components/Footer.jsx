@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
     return (
         <footer className="bg-gray-900 text-white py-12 lg:px-20 px-6">
-            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center sm:text-left">
+            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-12 text-center sm:text-left">
 
                 {/* Logo and Slogan */}
                 <div className="flex flex-col items-center sm:items-start space-y-3">
@@ -53,6 +53,15 @@ const Footer = () => {
                         <li><Link to='#' className="hover:text-green-500">Karir</Link></li>
                     </ul>
                 </div>
+                <div className="space-y-4 flex flex-col items-center sm:items-start">
+                    <h3 className="text-lg font-semibold text-green-500">Terbaru</h3>
+                    <ul className="space-y-2">
+                        <li><Link to='#' className="hover:text-green-500">Semua Artikel</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Tips</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Event</Link></li>
+                        <li><Link to='#' className="hover:text-green-500">Featured</Link></li>
+                    </ul>
+                </div>
 
                 {/* Customer Service */}
                 <div className="md:col-span-2 lg:col-span-2 space-y-4 text-center sm:text-left">
@@ -69,7 +78,7 @@ const Footer = () => {
                 </div>
 
                 {/* Operational Hours */}
-                <div className="space-y-4 flex flex-col items-center sm:items-start">
+                <div className="space-y-4 flex flex-col  lg:col-span-2 items-center sm:items-start">
                     <h3 className="text-lg font-semibold">Jam Operasional</h3>
                     <p className="text-sm text-gray-400">
                         Senin-Jumat: 06:00 - 23:00 <br />
@@ -79,17 +88,18 @@ const Footer = () => {
                 </div>
 
                 {/* Social Media Links */}
-                <div className="flex justify-center items-center space-x-6 mt-8">
-                    <Link to='#' className="text-green-500 hover:text-white">
+                <div className="flex lg:justify-start justify-center items-start space-x-6 mt-8">
+                    <Link to='#' className="text-pink-500 hover:text-pink-700">
                         <FontAwesomeIcon icon={faInstagram} size="2x" />
                     </Link>
-                    <Link to="#" className="text-green-500 hover:text-white">
+                    <Link to="#" className="text-blue-600 hover:text-blue-800">
                         <FontAwesomeIcon icon={faFacebook} size="2x" />
                     </Link>
-                    <Link to='#' className="text-green-500 hover:text-white">
+                    <Link to='#' className="text-white hover:text-gray-200">
                         <FontAwesomeIcon icon={faTiktok} size="2x" />
                     </Link>
                 </div>
+
             </div>
 
             {/* Copyright */}

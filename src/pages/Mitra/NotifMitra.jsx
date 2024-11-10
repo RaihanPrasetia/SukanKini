@@ -28,8 +28,8 @@ const NotifMitra = () => {
     ];
 
     return (
-        <div className="w-full bg-gray-50 p-6 rounded-lg shadow-lg min-h-[80vh]">
-            <h2 className="text-2xl font-semibold mb-6">Daftar Pemberitahuan Mitra</h2>
+        <div className="w-full bg-gray-50 p-6 rounded-lg shadow-lg min-h-[80vh]  py-24 lg:pt-32">
+            <h2 className="text-3xl font-semibold mb-6">Daftar Pemberitahuan Mitra</h2>
 
             {/* Notification List */}
             <div className="space-y-4">

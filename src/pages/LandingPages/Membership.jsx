@@ -83,7 +83,7 @@ export default function Membership() {
                         </div>
                         <button
                             onClick={openAuthModal}
-                            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 rounded-full transition duration-300 transform hover:scale-105"
+                            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white text-lg font-semibold py-2 rounded-lg transition duration-300 transform hover:scale-105"
                         >
                             Daftar Sekarang
                         </button>

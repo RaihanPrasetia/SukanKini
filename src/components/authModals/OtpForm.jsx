@@ -27,6 +27,9 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
             setIsSubmitting(false);
         }
     };
+    const handleMenuClick = () => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    };
 
     return (
         <div className="w-full flex items-center rounded-lg space-x-6 bg-green-500 ">
@@ -51,6 +54,7 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
                     />
                     {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
                     <button
+                        onClick={handleMenuClick}
                         type="submit"
                         className={`bg-green-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                         disabled={isSubmitting}

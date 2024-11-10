@@ -76,6 +76,11 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
 
     return (
         <>
+            <img
+                src="/assets/images/daftar mitra.png"
+                alt=""
+                className="absolute hidden md:block top-[20%] right-0 object-cover w-[270px] h-[270px]"
+            />
             <div className="w-full flex rounded-xl p-4 md:p-0 md:w-full bg-yellow-500">
                 <div className="w-full flex flex-col items-center bg-white p-6 rounded-lg relative">
                     <h2 className="text-2xl font-bold mb-6 text-center text-yellow-500">Buat Akun Mitra Sukankini</h2>
@@ -230,11 +235,7 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
                     <div className="md:h-auto overflow-hidden bg-green-500 hidden md:block">
                     </div>
                 </div>
-                <img
-                    src="/assets/images/imgAuth2.png"
-                    alt=""
-                    className="absolute hidden md:block -bottom-1 -right-2 object-cover w-[400px] h-[400px]"
-                />
+
 
             </div>
 

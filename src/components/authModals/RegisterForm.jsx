@@ -65,6 +65,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
     };
 
 
+
     return (
         <>
             <div className="w-full flex rounded-xl p-4 md:p-0 md:w-full bg-green-500">

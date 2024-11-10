@@ -167,9 +167,9 @@ function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
                     <div className="md:h-auto overflow-hidden bg-yellow-500 hidden md:block"></div>
                 </div>
                 <img
-                    src="/assets/images/imgAuth1.png"
+                    src="/assets/images/daftar mitra.png"
                     alt=""
-                    className="absolute hidden md:block -bottom-2 -right-10 object-cover w-[400px] h-[400px]"
+                    className="absolute hidden md:block top-5 right-0 object-cover w-[280px] h-[300px]"
                 />
             </div>
         </>

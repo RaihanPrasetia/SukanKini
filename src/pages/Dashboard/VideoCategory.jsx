@@ -17,25 +17,25 @@ const VideoCategory = () => {
 
   return (
     <div className="flex flex-col items-center pt-28 pb-20 bg-gray-50 min-h-screen"> {/* Center the main content */}
-      <h1 className="text-3xl font-semibold mb-6 text-green-800">Semua Kategori Video</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-green-800 text-center">Semua Kategori Video</h1>
 
       {/* Search Input */}
-      <div className="relative flex items-center w-full md:w-auto mb-4"> {/* Keep search input aligned left */}
-        <div className="flex justify-start w-full mb-4 relative"> {/* Set relative positioning for the button */}
+      <div className="w-full flex justify-center mb-8 px-4">
+        <div className="relative w-full max-w-lg">
           <input
             type="text"
             placeholder="Cari Kelas"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500"
+            className="border border-gray-300 rounded-full px-4 py-2 w-full focus:outline-none focus:border-green-500"
           />
-          <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-700"> {/* Adjust the button's position */}
+          <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-700">
             🔍
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 max-w-4xl w-full"> {/* Centered grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full px-4">
         {filteredCategories.length > 0 ? (
           filteredCategories.map((category, index) => (
             <div
@@ -45,7 +45,7 @@ const VideoCategory = () => {
               <img
                 src={category.image}
                 alt={category.title}
-                className="w-full h-60 object-cover rounded-xl"
+                className="w-full h-56 sm:h-64 md:h-72 object-cover rounded-xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <button className="text-white text-5xl font-semibold opacity-90">

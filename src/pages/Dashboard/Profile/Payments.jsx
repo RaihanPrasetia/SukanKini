@@ -17,7 +17,7 @@ function Payments() {
   };
 
   return (
-    <div className="p-4">
+    <div className="lg:p-6 p-0">
       <h1 className="text-2xl font-bold text-green-500 mb-4">Pembayaran</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">

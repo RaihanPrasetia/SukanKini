@@ -6,8 +6,8 @@ function Sidebar() {
     window.scrollTo(0, 0); // Scroll to the top of the page
   };
   return (
-    <div className="flex flex-col space-y-4 w-full md:w-1/4 p-4 bg-white rounded-lg shadow-lg">
-      <div className="sticky top-[90px] space-y-4 flex flex-col">
+    <div className="lg:flex lg:flex-col  space-y-4 w-full md:w-1/4 p-4 bg-white rounded-lg shadow-lg">
+      <div className="sticky top-[90px] grid grid-cols-2 lg:space-y-4 gap-4 lg:gap-0 lg:flex lg:flex-col">
         <NavLink
           to="/profile"
           onClick={handleMenuClick}

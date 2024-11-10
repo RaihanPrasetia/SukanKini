@@ -61,8 +61,8 @@ const Pembayaran = () => {
     };
 
     return (
-        <div className="w-full bg-gray-50 p-6 rounded-lg shadow-lg min-h-[80vh]">
-            <h2 className="text-2xl font-semibold mb-6 text-green-600">Daftar Pembayaran Member</h2>
+        <div className="w-full bg-gray-50 p-6  py-24 lg:pt-32 rounded-lg shadow-lg min-h-[80vh]">
+            <h2 className="text-3xl font-semibold mb-6 text-green-600">Daftar Pembayaran Member</h2>
 
             {/* Responsive Table Container */}
             <div className="overflow-x-auto bg-white shadow-md sm:rounded-lg">

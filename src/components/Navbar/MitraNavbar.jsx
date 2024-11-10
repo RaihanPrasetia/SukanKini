@@ -11,6 +11,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     const location = useLocation(); // Hook to get the current location
 
     const handleLogout = () => {
+        handleMenuClick();
         logout();
         navigate('/');
     };
@@ -36,9 +37,12 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     const isActive = (path) => {
         return location.pathname.startsWith(path) ? 'bg-green-500 text-white hover:bg-green-600' : 'text-gray-700 hover:bg-green-400 hover:text-white';
     };
+    const handleMenuClick = () => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    };
 
     return (
-        <div className="flex">
+        <div className="flex fixed top-0 w-full">
             {/* Sidebar */}
             <div
                 className={`fixed top-0 left-0 h-full w-64 bg-white p-2 text-green-500 transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -51,27 +55,32 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                 </div>
                 <ul className="mt-4 text-center space-y-5">
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/home')}`}>
-                        <Link to="/mitra/home">Home</Link>
+                        <Link
+                            onClick={handleMenuClick}
+                            to="/mitra/home"
+                        >
+                            Home
+                        </Link>
                     </li>
 
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/kelas')}`}>
-                        <Link to="/mitra/kelas">Kelas</Link>
+                        <Link onClick={handleMenuClick} to="/mitra/kelas">Kelas</Link>
                     </li>
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/notif')}`}>
-                        <Link to="/mitra/notif">Pemberitahuan</Link>
+                        <Link onClick={handleMenuClick} to="/mitra/notif">Pemberitahuan</Link>
                     </li>
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/pembayaran')}`}>
-                        <Link to="/mitra/pembayaran">Pembayaran</Link>
+                        <Link onClick={handleMenuClick} to="/mitra/pembayaran">Pembayaran</Link>
                     </li>
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/komunitas')}`}>
-                        <Link to="/mitra/komunitas">Komunitas</Link>
+                        <Link onClick={handleMenuClick} to="/mitra/komunitas">Komunitas</Link>
                     </li>
                 </ul>
             </div>
 
             {/* Navbar */}
             <nav
-                className={`flex items-center justify-between px-16 w-full bg-white py-4 shadow-md transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'
+                className={`flex  items-center justify-between px-16 w-full bg-white py-4 shadow-md transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'
                     }`}
             >
                 <div className='flex items-center justify-center space-x-5'>
@@ -113,13 +122,14 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                                 className="h-12 w-12 rounded-full"
                             />
                         )}
-                        <span className='text-green-500 font-bold text-xl'>{userName || "Profile"}</span> {/* Display userName here */}
+                        <span className='text-green-500 font-bold text-xl hidden lg:block'>{userName || "Profile"}</span> {/* Display userName here */}
                     </div>
 
                     {/* Dropdown Menu for Profile and Logout */}
                     {dropdownOpen && (
                         <div className="absolute right-0 top-[60px] mt-2 w-40 bg-white rounded-md shadow-lg p-2 z-10">
                             <Link
+                                onClick={handleMenuClick}
                                 to="/mitra/profile"
                                 className="block px-4 py-2 text-gray-700 hover:bg-green-300 transition duration-200 rounded-md"
                             >

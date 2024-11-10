@@ -5,7 +5,7 @@ const KelasHome = () => {
     return (
         <>
             {/* Explore Classes Section */}
-            <div className="w-full px-20 py-16 bg-white">
+            <div className="w-full lg:px-20 lg:py-16 p-6 bg-white">
                 <div className="w-full text-center space-y-4">
                     <h2 className="text-3xl md:text-4xl font-bold text-green-600 transition-transform duration-500 transform hover:scale-105">
                         Jelajahi Semua Kelas
@@ -17,7 +17,7 @@ const KelasHome = () => {
 
                 {/* Categories Section */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:flex md:flex-wrap md:justify-center mt-8">
-                    {['Cardio', 'Dance', 'Mind & Body', 'Strength'].map((category) => (
+                    {['Semua', 'Dance', 'Cardio', 'Strength'].map((category) => (
                         <button
                             key={category}
                             className="px-6 py-3 border-2 border-green-500 text-green-700 rounded-xl hover:bg-green-500 hover:text-white transition duration-300 transform hover:scale-105 shadow-md"
@@ -57,7 +57,7 @@ const KelasHome = () => {
 
                 {/* Action Button */}
                 <div className="flex justify-center mt-8">
-                    <button className="px-10 py-4 bg-indigo-700 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-800 hover:shadow-xl transition duration-200">
+                    <button className="px-5 py-3 bg-green-500 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-white hover:text-green-500 hover:shadow-xl transition duration-200">
                         <Link to='/kelas'>Lihat Kelas</Link>
                     </button>
                 </div>

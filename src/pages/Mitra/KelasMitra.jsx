@@ -59,9 +59,9 @@ const KelasMitra = () => {
     };
 
     return (
-        <div className="w-full bg-white p-6 rounded-lg shadow-lg min-h-[80vh]">
-            <div className="flex justify-between mb-5">
-                <h2 className="text-2xl font-semibold">Daftar Kelas</h2>
+        <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[80vh]">
+            <div className="flex flex-col lg:flex-row justify-between mb-5">
+                <h2 className="text-3xl font-semibold mb-4 lg:mb-0">Daftar Kelas</h2>
                 {/* Button with Icon */}
                 <button
                     className="flex items-center bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-300"
@@ -74,8 +74,8 @@ const KelasMitra = () => {
 
             {/* Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                <div className="fixed  inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white mx-6 p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
                         <h3 className="text-xl font-semibold mb-4">Buat Kelas</h3>
                         <form onSubmit={handleFormSubmit}>
                             <div className="mb-4">
@@ -153,37 +153,39 @@ const KelasMitra = () => {
                 </div>
             )}
 
-            <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg shadow-lg mt-6">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="px-4 py-2 border border-gray-300">Nama Kelas</th>
-                        <th className="px-4 py-2 border border-gray-300">Kategori</th>
-                        <th className="px-4 py-2 border border-gray-300">Jam</th>
-                        <th className="px-4 py-2 border border-gray-300">Hari/Tanggal</th>
-                        <th className="px-4 py-2 border border-gray-300">Alamat</th>
-                        <th className="px-4 py-2 border border-gray-300">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {classData.map((kelas) => (
-                        <tr key={kelas.id}>
-                            <td className="px-4 py-2 border border-gray-300">{kelas.namaKelas}</td>
-                            <td className="px-4 py-2 border border-gray-300">{kelas.kategori}</td>
-                            <td className="px-4 py-2 border border-gray-300">{kelas.jam}</td>
-                            <td className="px-4 py-2 border border-gray-300">{kelas.hariTanggal}</td>
-                            <td className="px-4 py-2 border border-gray-300">{kelas.alamat}</td>
-                            <td className="px-4 py-2 border border-gray-300 text-center">
-                                <button
-                                    className="text-white bg-blue-500 py-2 px-6 rounded-lg hover:text-white hover:bg-blue-600"
-                                    onClick={() => handleViewDetails(kelas.id)}  // On click, navigate to the details page
-                                >
-                                    Lihat
-                                </button>
-                            </td>
+            <div className="overflow-x-auto mt-6">
+                <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg shadow-lg">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="px-4 py-2 border border-gray-300">Nama Kelas</th>
+                            <th className="px-4 py-2 border border-gray-300">Kategori</th>
+                            <th className="px-4 py-2 border border-gray-300">Jam</th>
+                            <th className="px-4 py-2 border border-gray-300">Hari/Tanggal</th>
+                            <th className="px-4 py-2 border border-gray-300">Alamat</th>
+                            <th className="px-4 py-2 border border-gray-300">Aksi</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {classData.map((kelas) => (
+                            <tr key={kelas.id}>
+                                <td className="px-4 py-2 border border-gray-300">{kelas.namaKelas}</td>
+                                <td className="px-4 py-2 border border-gray-300">{kelas.kategori}</td>
+                                <td className="px-4 py-2 border border-gray-300">{kelas.jam}</td>
+                                <td className="px-4 py-2 border border-gray-300">{kelas.hariTanggal}</td>
+                                <td className="px-4 py-2 border border-gray-300">{kelas.alamat}</td>
+                                <td className="px-4 py-2 border border-gray-300 text-center">
+                                    <button
+                                        className="text-white bg-blue-500 py-2 px-6 rounded-lg hover:text-white hover:bg-blue-600"
+                                        onClick={() => handleViewDetails(kelas.id)}  // On click, navigate to the details page
+                                    >
+                                        Lihat
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

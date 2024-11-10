@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AuthModal from '../../components/Modals';
+import { FaArrowDown } from 'react-icons/fa';
 
 export default function Home() {
     const [offsetY, setOffsetY] = useState(0);
@@ -22,6 +23,16 @@ export default function Home() {
     const buttonVariants = {
         hidden: { scale: 0.8, opacity: 0 },
         visible: { scale: 1, opacity: 1, transition: { duration: 0.3 } },
+    };
+
+    const scrollToAbout = () => {
+        const kelasSection = document.getElementById("about");
+        if (kelasSection) {
+            window.scrollTo({
+                top: kelasSection.offsetTop + 10, // Menggeser sedikit ke atas (50px)
+                behavior: "smooth",
+            });
+        }
     };
 
     return (
@@ -52,7 +63,7 @@ export default function Home() {
                     <motion.div className="flex flex-col md:flex-row items-start space-x-0 md:space-x-4 mb-8">
                         <motion.button
                             onClick={() => setIsOpen(true)} // Open modal on click
-                            className="bg-yellow-500 text-white py-2 px-6 rounded-xl hover:bg-yellow-600 transition duration-300 mb-4 md:mb-0"
+                            className="bg-yellow-500 text-white py-2 text-lg font-semibold px-6 rounded-xl hover:bg-yellow-600 transition duration-300 mb-4 md:mb-0"
                             initial="hidden"
                             animate="visible"
                             variants={buttonVariants}
@@ -61,7 +72,7 @@ export default function Home() {
                         </motion.button>
 
                         <motion.button
-                            className="flex items-center text-white bg-transparent border-2 border-white py-2 px-6 rounded-xl hover:bg-white hover:text-blue-800 transition duration-300"
+                            className="flex items-center text-white text-lg font-semibold bg-transparent border-2 border-white py-2 px-6 rounded-xl hover:bg-white hover:text-blue-800 transition duration-300"
                             initial="hidden"
                             animate="visible"
                             variants={buttonVariants}
@@ -73,6 +84,12 @@ export default function Home() {
                         </motion.button>
                     </motion.div>
                 </motion.div>
+                <button
+                    onClick={scrollToAbout}
+                    className="absolute bottom-5 p-3 left-[50%] text-white bg-green-500 hover:bg-green-500 bg-opacity-40 border border-green-500 rounded-full font-semibold shadow-lg transform transition-all hover:scale-105 focus:outline-none animate-bounce"
+                >
+                    <FaArrowDown size={18} /> {/* Ikon panah ke bawah */}
+                </button>
             </div>
 
             {/* Auth Modal */}

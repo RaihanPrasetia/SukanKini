@@ -61,7 +61,11 @@ function Navbar() {
                         <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} className="w-6 h-6" />
                     </button>
 
-                    <div className={`lg:flex lg:items-center ${isMenuOpen ? 'block' : 'hidden'} lg:relative lg:top-auto`}>
+                    {/* Mobile menu should be transparent at the top, white when scrolled */}
+                    <div
+                        className={`lg:flex ${isMenuOpen ? `block absolute w-full mt-16 -top-1 right-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'} -top-1` : 'hidden'
+                            } lg:relative lg:w-auto`}
+                    >
                         <div className="grid grid-cols-2 gap-4 lg:flex lg:space-x-4 p-4 lg:p-0">
                             {['about', 'promosi', 'komunitas', 'kelas', 'pelatih', 'client'].map((section) => (
                                 <button

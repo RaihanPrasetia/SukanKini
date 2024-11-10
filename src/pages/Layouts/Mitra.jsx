@@ -18,7 +18,7 @@ const Mitra = () => {
             {/* Pass setSidebarOpen and sidebarOpen as props to MitraNavbar */}
             <MitraNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             <div
-                className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'
+                className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64 ml-0' : 'ml-0'
                     }`}
             >
                 {/* Main content */}

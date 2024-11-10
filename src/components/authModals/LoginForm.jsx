@@ -79,7 +79,9 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
     };
 
 
-
+    const handleMenuClick = () => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    };
 
     return (
         <>
@@ -134,7 +136,7 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
                             </span>
                         </p>
                         <div className="flex items-center space-x-5 justify-center">
-                            <Button title="Masuk" type="submit" className="text-nowrap" />
+                            <Button title="Masuk" type="submit" className="text-nowrap" onClick={handleMenuClick} />
                             <Button title="Google" icon={faGoogle} className="text-nowrap" />
                         </div>
                     </form>

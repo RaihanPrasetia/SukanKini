@@ -13,7 +13,7 @@ export default function Button({ title, icon, link, onClick, type, className }) 
 
     // Base styles for the button
     const baseStyles =
-        "flex items-center space-x-2 bg-green-500 text-white px-6 font-semibold py-2 rounded-md transition duration-300";
+        "flex items-center space-x-2 bg-green-500 text-white px-6 text-lg font-semibold py-2 rounded-lg transition duration-300";
     const hoverStyles =
         "hover:bg-white hover:shadow-lg  hover:text-green-500";
     const buttonStyles = `${baseStyles} ${hoverStyles} ${className || ''}`;

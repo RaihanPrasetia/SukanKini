@@ -1,8 +1,10 @@
 // PaymentPopup.js
 import React from 'react';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-const PaymentPopup = ({ onClose }) => {
+const PaymentPopup = ({ onClose, totalHarga, bankTujuan, namaPemilik, nomorRek }) => {
+  const navigate = useNavigate();
 
   // Function to handle payment and show SweetAlert success
   const handlePayment = () => {
@@ -12,13 +14,14 @@ const PaymentPopup = ({ onClose }) => {
       icon: 'success',
       confirmButtonText: 'Tutup',
       customClass: {
-        popup: 'rounded-lg', // Rounded corners for the popup
-        title: 'font-bold text-green-700', // Custom title style
+        popup: 'rounded-lg',
+        title: 'font-bold text-green-700',
         confirmButton: 'bg-green-500 text-white hover:bg-green-600 font-medium',
       }
     }).then(() => {
-      // Optionally perform any action after the payment process is done, e.g., closing modal
-      onClose();
+      handleMenuClick();
+      // Navigate to profile/payment after closing the modal
+      navigate('/profile/pembayaran');
     });
   };
 
@@ -29,54 +32,60 @@ const PaymentPopup = ({ onClose }) => {
       html: `
         <div class="text-center">
           <p class="text-lg font-semibold mb-4">Segera Selesaikan Pembayaran</p>
-          <img src="/path-to-your-image.jpg" alt="Promo" class="w-3/4 mb-4 rounded-md" />
-          <p class="text-lg font-semibold mb-2">BCA</p>
-          <input type="text" value="123456835 A/N Ahmad Hussein" readonly class="swal2-input text-center mb-4 w-full max-w-[300px] mx-auto" />
-          <input type="text" value="Rp. 150.000" readonly class="swal2-input text-center mb-6 w-full max-w-[300px] mx-auto" />
+          <p class="text-lg font-semibold mb-2">${bankTujuan}</p>
+          <p class="text-lg font-semibold mb-2">No. Rekening: ${nomorRek}</p>
+          <div class="flex items-center justify-center space-x-2 mb-4">
+            <span class="font-semibold">A/N:</span>
+            <span class="font-medium">${namaPemilik}</span>
+          </div>
+          <p class="text-lg font-semibold text-green-700">Total Pembayaran: Rp. ${totalHarga}</p>
         </div>
       `,
-      showConfirmButton: false, // Disable default confirm button
-      showCancelButton: true, // Show the cancel button
-      cancelButtonText: 'Tutup',
+
+      showConfirmButton: false,
+      showCancelButton: true,
+      cancelButtonText: 'Batal',
       customClass: {
         htmlContainer: 'swal2-html-container py-6 px-6',
         input: 'swal2-input w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 text-center',
-        cancelButton: 'bg-gray-500 text-white hover:bg-gray-600 font-medium py-2 px-4 rounded-md', // Customize the cancel button
+        cancelButton: 'bg-red-500 text-white hover:bg-red-600 font-medium py-2 px-4 rounded-md',
       },
       didOpen: () => {
-        // Adding event listener to custom button in SweetAlert modal
         const paymentButton = document.createElement('button');
         paymentButton.textContent = 'Bayar Sekarang';
         paymentButton.classList.add(
-          'bg-green-500', 
-          'text-white', 
-          'py-2', 
-          'px-4', 
-          'rounded-md', 
-          'hover:bg-green-600', 
-          'transition', 
-          'font-medium', 
-          'mt-4', 
-          'mx-auto', // Center horizontally
-          'block' // Ensure it behaves as a block element for centering
+          'bg-green-500',
+          'text-white',
+          'py-2',
+          'px-4',
+          'rounded-md',
+          'hover:bg-white',
+          'hover:text-green-500',
+          'transition',
+          'font-medium',
+          'mt-4',
+          'mx-auto',
+          'block'
         );
-        
-        // Attach click event to the custom button inside SweetAlert modal
+
         paymentButton.addEventListener('click', handlePayment);
 
-        // Append the button to the SweetAlert modal content
         const swalContent = document.querySelector('.swal2-html-container');
         swalContent.appendChild(paymentButton);
       }
     });
   };
 
+  const handleMenuClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <button
       onClick={showPaymentDetails}
-      className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition font-medium"
+      className="bg-green-500 text-white py-2 px-4 rounded-md hover:text-green-500 hover:bg-white transition font-medium"
     >
-      Bayar Sekarang
+      Lanjut Ke Pembayaran
     </button>
   );
 };

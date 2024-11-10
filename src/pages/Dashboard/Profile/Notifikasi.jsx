@@ -15,7 +15,7 @@ function Notifikasi() {
   }, []);
 
   return (
-    <div className="p-6 bg-gray-50 ">
+    <div className="lg:p-6 p-0">
       <h1 className="text-3xl font-bold text-green-600 mb-6 text-center animate__animated animate__fadeIn">Pemberitahuan</h1>
       <div className="space-y-4">
         {notifications.length > 0 ? (
