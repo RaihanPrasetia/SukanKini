@@ -22,10 +22,10 @@ function Komunitas() {
 
     // Smooth fade-in and scale effect with staggered delay
     const fadeInSmooth = {
-        initial: { opacity: 0, x: 50, scale: 0.95 },
+        initial: { opacity: 0, y: 50, scale: 0.95 },
         animate: {
             opacity: isInView ? 1 : 0,
-            x: isInView ? 0 : 50,
+            y: isInView ? 0 : 50,
             scale: isInView ? 1 : 0.95,
         },
         transition: { duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96], delay: 0.5 },
@@ -33,13 +33,13 @@ function Komunitas() {
 
     // Staggered animations for text with smoother delay
     const textVariants = {
-        initial: { opacity: 0, x: 30, scale: 0.9 },
+        initial: { opacity: 0, y: -50, scale: 0.9 },
         animate: {
             opacity: isInView ? 1 : 0,
-            x: isInView ? 0 : 20,
+            y: isInView ? 0 : -50,
             scale: isInView ? 1 : 0,
         },
-        transition: { duration: 0.8, ease: 'easeInOut', delay: 0.8 },
+        transition: { duration: 1.2, ease: 'easeInOut', delay: 0.8 },
     };
 
     return (

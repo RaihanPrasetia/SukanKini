@@ -48,7 +48,7 @@ export default function AuthNavbar() {
                 {/* Hamburger Menu for Mobile */}
                 <div className="md:hidden">
                     <button
-                        className={`text-3xl ${scrolled ? 'text-green-500' : 'text-white'}`}
+                        className={`text-3xl ${scrolled ? 'text-white' : 'text-green-500'}`}
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
                         <FaBars />

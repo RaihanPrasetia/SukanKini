@@ -47,15 +47,13 @@ const Dashboard = () => {
             </div>
             <Footer />
 
-            {/* Fixed Chat Button in top-right */}
             <div
                 onClick={toggleChat}
                 className="fixed bottom-6 right-6 bg-blue-500 text-white rounded-tr-full rounded-l-full p-4 shadow-lg cursor-pointer hover:bg-blue-600 transition-all duration-300"
             >
-                <FaComments size={24} /> {/* Using the React Icon for the chat */}
+                <FaComments size={24} />
             </div>
 
-            {/* Chat Window with Framer Motion for smooth animation */}
             {isChatOpen && (
                 <motion.div
                     className="fixed bottom-0 right-0 w-full h-full bg-black bg-opacity-50 z-50"
