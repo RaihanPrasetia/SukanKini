@@ -43,7 +43,7 @@ const DetailKelas = () => {
                     {/* Back Button */}
                     <button
                         onClick={() => navigate(-1)}
-                        className="text-yellow-500 hover:text-yellow-700 mb-4 flex items-center text-2xl absolute lg:top-4 bottom-4 md:top-10 left-4 md:left-16">
+                        className="text-green-500 hover:text-green-700 mb-4 flex items-center text-2xl absolute lg:top-4 bottom-4 md:top-10 left-4 md:left-16">
                         <AiOutlineLeft className="text-3xl md:text-5xl" />
                     </button>
 

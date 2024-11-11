@@ -32,6 +32,7 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
+            <Route path="/admin/dashboard" element={<LandingPage />} />
             <Route
                 path="/mitra/*"
                 element={

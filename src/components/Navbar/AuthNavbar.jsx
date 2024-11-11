@@ -41,7 +41,7 @@ export default function AuthNavbar() {
         >
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/dashboard" className="text-2xl font-bold  hover:text-green-600 transition duration-300">
+                <Link to="/dashboard" className="text-2xl font-bold  hover:text-yellow-500 transition duration-300">
                     <span className="text-yellow-300">Sukan</span>Kini
                 </Link>
 
@@ -66,7 +66,7 @@ export default function AuthNavbar() {
                     <Link
                         to="/home"
                         onClick={handleMenuClick}
-                        className={`flex items-center text-lg hover:text-green-600 transition ${isActive('/home')}`}
+                        className={`flex items-center text-lg hover:text-yellow-500 transition ${isActive('/home')}`}
                     >
                         <FaHome className="h-5 w-5 mr-2" />
                         Home
@@ -74,7 +74,7 @@ export default function AuthNavbar() {
                     <Link
                         to="/kelas"
                         onClick={handleMenuClick}
-                        className={`flex items-center text-lg hover:text-green-600 transition ${isActive('/kelas')}`}
+                        className={`flex items-center text-lg hover:text-yellow-500 transition ${isActive('/kelas')}`}
                     >
                         <FaGraduationCap className="h-5 w-5 mr-2" />
                         Kelas Pelatihan
@@ -82,7 +82,7 @@ export default function AuthNavbar() {
                     <Link
                         to="/community"
                         onClick={handleMenuClick}
-                        className={`flex items-center text-lg hover:text-green-600 transition ${isActive('/community')}`}
+                        className={`flex items-center text-lg hover:text-yellow-500 transition ${isActive('/community')}`}
                     >
                         <FaUsers className="h-5 w-5 mr-2" />
                         Community
@@ -90,7 +90,7 @@ export default function AuthNavbar() {
                     <Link
                         to="/video"
                         onClick={handleMenuClick}
-                        className={`flex items-center text-lg hover:text-green-600 transition ${isActive('/video')}`}
+                        className={`flex items-center text-lg hover:text-yellow-500 transition ${isActive('/video')}`}
                     >
                         <FaVideo className="h-5 w-5 mr-2" />
                         Video Tutorial
@@ -98,7 +98,7 @@ export default function AuthNavbar() {
                     <Link
                         to="/profile"
                         onClick={handleMenuClick}
-                        className={`block lg:hidden items-center text-lg hover:text-green-600 transition ${isActive('/profile')}`}
+                        className={`block lg:hidden items-center text-lg hover:text-yellow-500 transition ${isActive('/profile')}`}
                     >
                         <FaUser className="inline mr-2" />
                         Profile
@@ -114,7 +114,7 @@ export default function AuthNavbar() {
 
                 {/* Profile and Logout Section */}
                 <div className="relative hidden lg:flex items-center cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                    <div className="flex items-center text-lg hover:text-green-600 transition space-x-2">
+                    <div className="flex items-center text-lg hover:text-yellow-500 transition space-x-2">
                         {user?.photoURL ? (
                             <img src={user.photoURL} alt="Profile" className="h-8 w-8 rounded-full" />
                         ) : (
