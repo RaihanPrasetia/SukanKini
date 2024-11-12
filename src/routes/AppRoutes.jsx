@@ -6,6 +6,10 @@ import Dashboard from '../pages/Layouts/Dashboard';
 import Admin from '../pages/Layouts/Admin';
 import Mitra from '../pages/Layouts/Mitra';
 import ProtectedRoute from '../components/ProtectedRoute';
+import AdminDashboard from '../pages/Admin/AdminDashboard';
+import Profile from '../pages/Admin/Profile';
+import Pembayaran from '../pages/Admin/Pembayaran';
+
 
 function AppRoutes() {
     return (<>
@@ -32,7 +36,10 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
-            <Route path="/admin/dashboard" element={<LandingPage />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/profile" element={<Profile />} />
+            <Route path="/admin/pembayaran" element={<Pembayaran />} />
+
             <Route
                 path="/mitra/*"
                 element={
