@@ -24,9 +24,9 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-full bg-gray-100">
             <AuthNavbar />
-            <div className="container mx-auto min-h-[80vh]">
+            <div className="w-full">
                 <Routes>
                     {/* Main routes */}
                     <Route path="/home" element={<Home />} />

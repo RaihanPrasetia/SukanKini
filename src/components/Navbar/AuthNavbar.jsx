@@ -36,9 +36,10 @@ export default function AuthNavbar() {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full py-4 px-6 md:px-16 z-40 container mx-auto flex justify-between items-center transition-all duration-200 ${scrolled ? 'bg-green-500 shadow-lg text-white' : 'bg-transparent text-green-500'
-                }`}
-        >
+    className={`fixed top-0 left-0 w-full py-4 px-6 md:px-16 z-40 flex justify-between items-center transition-all duration-200 ${scrolled ? 'bg-green-500 shadow-lg text-white' : 'bg-transparent text-green-500'
+        }`}
+>
+
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/dashboard" className="text-2xl font-bold  hover:text-yellow-500 transition duration-300">

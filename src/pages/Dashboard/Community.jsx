@@ -18,8 +18,8 @@ export default function Community() {
     ];
 
     const textVariants = {
-        hidden: { opacity: 0, x: 20, scale: 0.7 },
-        visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.7, ease: 'easeOut' } },
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
     };
 
     const buttonVariants = {
@@ -30,7 +30,7 @@ export default function Community() {
     return (
         <div className="min-h-screen bg-gradient-to-r pt-28 from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col items-center">
             {/* Header */}
-            <div className="w-full max-w-5xl px-4 py-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <div className="w-full max-w-6xl px-4 py-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
                 <motion.button
                     className="text-yellow-400 text-2xl transform hover:scale-110 transition duration-300"
                     initial="hidden"
@@ -66,7 +66,7 @@ export default function Community() {
                 {communities.map((community, index) => (
                     <motion.div
                         key={index}
-                        className="w-full sm:w-72 bg-gray-800 rounded-xl shadow-xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                        className="w-full sm:w-72 bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
                         initial="hidden"
                         animate="visible"
                         variants={textVariants}

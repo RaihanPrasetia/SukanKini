@@ -14,15 +14,15 @@ export default function Home() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Animation variants
+    // Smoother animation variants
     const textVariants = {
         hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+        visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: "easeInOut" } },
     };
 
     const buttonVariants = {
         hidden: { scale: 0.8, opacity: 0 },
-        visible: { scale: 1, opacity: 1, transition: { duration: 0.3 } },
+        visible: { scale: 1, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } },
     };
 
     const scrollToAbout = () => {
@@ -47,7 +47,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-black opacity-50"></div>
 
                 <motion.div
-                    className="relative text-left text-white max-w-2xl md:ml-16" // Add margin-left for spacing
+                    className="relative text-left text-white max-w-2xl md:ml-16"
                     style={{ transform: `translateY(${offsetY * 0.1}px)` }} // Text parallax
                     initial="hidden"
                     animate="visible"
