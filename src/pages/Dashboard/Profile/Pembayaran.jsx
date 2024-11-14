@@ -44,7 +44,7 @@ const orderData = [
     sesi: 'Sesi 3',
     namaMitra: 'Hotel swiss bel',
   },
-  // Anda bisa menambahkan lebih banyak data di sini
+  // Tambahkan lebih banyak data jika perlu
 ];
 
 export default function Pembayaran() {
@@ -62,82 +62,49 @@ export default function Pembayaran() {
   };
 
   return (
-    <div className="items-center justify-center p-4 flex flex-col rounded-lg  ">
-      <h3 className="text-green-600 font-bold text-2xl mb-4 text-center animate__animated animate__fadeIn">
+    <div className="items-center justify-center p-6 flex flex-col rounded-lg bg-gray-100 shadow-xl w-full h-full max-w-none mx-auto animate__animated animate__fadeInUp">
+
+      <h3 className="text-blue-600 font-bold text-3xl mb-4 text-center animate__animated animate__zoomIn">
         INFORMASI PESANAN
       </h3>
-      <p className="text-gray-600 mb-6 text-center animate__animated animate__fadeIn animate__delay-1s">
+      <p className="text-gray-700 mb-8 text-center animate__animated animate__fadeInUp animate__delay-1s">
         Nikmati kelas dan fasilitas yang telah Anda pilih!
       </p>
-      <div className="w-full mx-auto items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
         {orderData.map((order, index) => (
-          <div
-            key={index}
-            className="bg-white p-4 rounded-lg border-2 items-center  flex gap-4 border-gray-200 shadow-md transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
-          >
-            {/* Foto Pemesan */}
-            <div className="flex justify-center ">
-              <img
-                src={order.fotoPemesan}
-                alt="Foto Pemesan"
-                className="w-max h-36 rounded-lg object-cover border-2 border-gray-300"
-              />
+          <div key={index} className="bg-white p-6 rounded-lg border border-gray-300 shadow-lg">
+            <div className="flex flex-col items-center">
+              <img src={order.fotoPemesan} alt="Foto Pemesan"
+                className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-200" />
+              <span className={`px-3 py-1 rounded-full text-sm font-medium text-white ${
+                order.statusPembayaran === 'Lunas' ? 'bg-green-500' 
+                : order.statusPembayaran === 'Diproses' ? 'bg-yellow-500'
+                : 'bg-red-500'
+              }`}>
+                {order.statusPembayaran}
+              </span>
             </div>
-            <div className="flex flex-col w-full">
-              <div className="text-end">
-                <span
-                  className={`px-4 py-1 rounded-full text-[14px] font-medium  text-white ${order.statusPembayaran === 'Lunas'
-                    ? 'bg-green-500'
-                    : order.statusPembayaran === 'Diproses'
-                      ? 'bg-yellow-500'
-                      : order.statusPembayaran === 'Ditolak'
-                        ? 'bg-red-500'
-                        : 'bg-gray-500'
-                    }`}
-                >
-                  {order.statusPembayaran}
-                </span>
-              </div>
-
-              <div className="animate__animated animate__fadeIn animate__delay-2s flex justify-between items-center">
-                <p className="font-semibold text-md w-1/2 text-[14px]">Nama Mitra</p>
-                <p className="text-gray-800 w-1/2 text-left text-[14px]">
-                  : {order.namaMitra}
-                </p>
-              </div>
-              <div className="animate__animated animate__fadeIn animate__delay-2s flex justify-between items-center">
-                <p className="font-semibold text-md w-1/2 text-[14px]">Kelas</p>
-                <p className="text-gray-800 w-1/2 text-left text-[14px]">
-                  : {order.kelas}
-                </p>
-              </div>
-              <div className="animate__animated animate__fadeIn animate__delay-2s flex justify-between items-center">
-                <p className="font-semibold text-md w-1/2 text-[14px]">Tanggal Pembayaran</p>
-                <p className="text-gray-800 w-1/2 text-left text-[14px]">
-                  : {order.tanggalPesanan}
-                </p>
-              </div>
-              <div className="animate__animated animate__fadeIn animate__delay-2s flex justify-between items-center">
-                <p className="font-semibold text-md w-1/2 text-[14px]">Metode Pembayaran</p>
-                <p className="text-gray-800 w-1/2 text-left text-[14px]">
-                  : {order.metodePembayaran}
-                </p>
-              </div>
-              <div className="animate__animated animate__fadeIn animate__delay-2s flex justify-between items-center">
-                <p className="font-semibold text-md w-1/2 text-[14px]">Total</p>
-                <p className="text-gray-800 w-1/2 text-left text-[14px]">
-                  : {order.jumlah}
-                </p>
-              </div>
-
-              <div className="mt-4 text-center flex gap-2">
-                <button
-                  className="px-3 py-1 rounded-lg text-[16px] font-semibold bg-blue-500 text-white"
-                  onClick={() => openModal(order)}
-                >
-                  <span>Detail Pesanan</span>
-                </button>
-              </div>
+            <div className="mt-4">
+              {[
+                { label: "Nama Mitra", value: order.namaMitra },
+                { label: "Kelas", value: order.kelas },
+                { label: "Tanggal Pembayaran", value: order.tanggalPesanan },
+                { label: "Metode Pembayaran", value: order.metodePembayaran },
+                { label: "Total", value: order.jumlah },
+              ].map((item, index) => (
+                <div key={index} className="flex justify-between py-1 border-b border-gray-200 last:border-none">
+                  <p className="text-gray-600 font-semibold text-sm">{item.label}</p>
+                  <p className="text-gray-800 text-sm">: {item.value}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <button
+                className="px-5 py-2 rounded-full text-lg font-semibold bg-blue-600 text-white shadow-md hover:bg-blue-700 transition duration-300 animate__animated animate__fadeIn"
+                onClick={() => openModal(order)}
+              >
+                Detail Pesanan
+              </button>
             </div>
           </div>
         ))}

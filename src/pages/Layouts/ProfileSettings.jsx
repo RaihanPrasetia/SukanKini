@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer';
 
 const Dashboard = () => {
     return (
-        <div className="min-h-full flex flex-col">
+        <div className="w-full h-screen flex flex-col">
             {/* Navbar */}
             <Navbar />
 

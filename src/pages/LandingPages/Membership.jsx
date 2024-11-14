@@ -37,16 +37,26 @@ export default function Membership() {
     return (
         <div className="p-8 md:p-8 flex flex-col lg:flex-row justify-center items-center">
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-green-500">
+                <motion.h2
+                    className="text-3xl font-bold text-green-500"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                >
                     Bergabunglah Sebagai Mitra dan Nikmati Keuntungannya!
-                </h2>
-                <div className="mt-4 p-4 bg-white rounded-lg shadow-md inline-flex items-center">
+                </motion.h2>
+                <motion.div
+                    className="mt-4 p-4 bg-white rounded-lg shadow-md inline-flex items-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.6 }}
+                >
                     <ul className="text-green-700 list-disc pl-4">
                         <li className="text-left">
                             Buat Kelas Sendiri dan Raih Lebih Banyak Keanggotaan!
                         </li>
                     </ul>
-                </div>
+                </motion.div>
             </div>
 
             <div className="grid gap-2 lg:gap-5 md:grid-cols-2 grid-cols-1 w-full lg:grid-cols-2 lg:w-full">
@@ -54,9 +64,9 @@ export default function Membership() {
                     <motion.div
                         key={`${plan.id}-${planIndex}`}
                         className="bg-white rounded-lg shadow-lg p-4 relative lg:w-full h-48 flex flex-col justify-between"
-                        initial={{ opacity: 0, scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.6, ease: 'easeInOut', delay: id * 0.2 }}
                     >
                         <div className="flex items-center justify-between">
@@ -81,12 +91,14 @@ export default function Membership() {
                                 </span>
                             )}
                         </div>
-                        <button
+                        <motion.button
                             onClick={openAuthModal}
                             className="w-full bg-yellow-400 hover:bg-yellow-500 text-white text-lg font-semibold py-2 rounded-lg transition duration-300 transform hover:scale-105"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
                         >
                             Daftar Sekarang
-                        </button>
+                        </motion.button>
                     </motion.div>
                 ))}
             </div>

@@ -34,16 +34,16 @@ const ClientTestimonials = () => {
         </p>
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-8">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {testimonials.map((testimonial, index) => (
           <div
             key={index}
-            className="bg-white shadow-md rounded-lg p-8 text-center transition-transform transform hover:scale-105"
+            className="bg-white shadow-md rounded-lg p-8 text-center transition-all transform hover:scale-105 hover:shadow-xl hover:bg-gray-50 duration-300"
           >
             <img
               src={testimonial.image}
               alt={testimonial.name}
-              className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+              className="w-20 h-20 rounded-full mx-auto mb-4 object-cover transition-transform duration-300 transform hover:scale-110"
             />
             <h3 className="font-semibold text-xl text-gray-800">{testimonial.name}</h3>
             <p className="text-gray-500 text-sm">{testimonial.role}</p>

@@ -11,7 +11,7 @@ export default function Promosi() {
 
         const observer = new IntersectionObserver(
             ([entry]) => setIsInView(entry.isIntersecting),
-            { threshold: 0.5 }
+            { threshold: 0.3 }
         );
 
         if (currentSection) {
@@ -40,7 +40,7 @@ export default function Promosi() {
         },
         {
             title: "Promo 3",
-            description: "Bonus merchandise untuk pembelian paket pelatihan, dan mendaftar sebagi mitra kami.",
+            description: "Bonus merchandise untuk pembelian paket pelatihan, dan mendaftar sebagai mitra kami.",
             buttonText: "Pesan Sekarang",
             imageUrl: "/assets/images/promo/promo 3.jpeg"
         }
@@ -51,9 +51,9 @@ export default function Promosi() {
             <Membership />
             <div ref={sectionRef} id="promosi" className="bg-gray-50 py-20 px-5 lg:px-20">
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                    transition={{ duration: 1, ease: 'easeInOut' }}
                     className="text-center mb-8"
                 >
                     <h2 className="text-3xl lg:text-4xl font-bold text-green-600">
@@ -65,18 +65,18 @@ export default function Promosi() {
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 1, ease: 'easeInOut' }}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                     {promos.map((promo, index) => (
                         <motion.div
                             key={index}
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.03 }}
                             initial={{ opacity: 0, y: 20 }}
                             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                            transition={{ duration: 0.5, ease: "easeInOut", delay: index * 0.1 }}
+                            transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.2 }}
                             className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl"
                         >
                             <img
@@ -89,7 +89,7 @@ export default function Promosi() {
                                 <p className="text-gray-500 mt-2">
                                     {promo.description}
                                 </p>
-                                <button className="mt-4 bg-green-500 text-white text-lg font-semibold  px-6 py-2 rounded-xl hover:bg-green-600 transition duration-300">
+                                <button className="mt-4 bg-green-500 text-white text-lg font-semibold px-6 py-2 rounded-xl hover:bg-green-600 transition-colors duration-300">
                                     {promo.buttonText}
                                 </button>
                             </div>

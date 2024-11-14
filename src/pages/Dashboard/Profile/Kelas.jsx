@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiMapPin, FiClock, FiCalendar } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 const Kelas = () => {
   const [classDetails] = useState([
@@ -19,7 +20,6 @@ const Kelas = () => {
       hari: 'Senin',
       image: '/assets/images/kelas_yoga.jpeg',
     },
-    // Tambahkan kelas lain jika diperlukan
   ]);
 
   const [favoriteClass] = useState([
@@ -44,85 +44,102 @@ const Kelas = () => {
       location: 'Zen Studio',
       time: '15.00 - 16.00 WIB',
       image: '/assets/images/kelas_yoga.jpeg',
-    }
-  ]
-  );
+    },
+  ]);
 
   return (
-    <div className="w-full mx-auto lg:p-8  rounded-3xl transform transition duration-500 ">
-      {/* Kelas Hari Ini - Menggunakan Mapping */}
-      <h1 className="text-4xl font-bold  text-green-800">Kelas Hari Ini</h1>
-      <p className='mb-6 text-xl'>Jangan lupa kelas hari ini</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="w-full mx-auto lg:p-8 rounded-3xl transform transition duration-500">
+
+      {/* Kelas Hari Ini Section */}
+      <motion.div
+        className="text-center mb-12"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1 className="text-4xl font-bold text-green-800 mb-2">Kelas Hari Ini</h1>
+        <p className="text-xl text-gray-600">Jangan lupa kelas hari ini!</p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {classDetails.map((kelas) => (
-          <div key={kelas.id} className="bg-white p-5 flex rounded-lg duration-1000 transition-transform transform hover:scale-110 shadow-lg border border-green-300">
-            <div className="relative w-1/3 mr-4">
+          <motion.div
+            key={kelas.id}
+            className="bg-white p-5 rounded-lg shadow-xl border border-green-300 transition-transform transform hover:scale-105 hover:shadow-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: kelas.id * 0.1 }}
+          >
+            <div className="relative w-full mb-4">
               <img
                 src={kelas.image}
                 alt={`${kelas.name} Class`}
-                className="w-full h-full object-cover transform transition duration-500 hover:scale-110"
+                className="w-full h-48 object-cover rounded-lg"
               />
-              <span className="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+              <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                 {kelas.name}
               </span>
             </div>
-            <div className="w-2/3 flex flex-col justify-center">
+            <div className="flex flex-col justify-center">
               <h4 className="text-lg font-semibold text-green-800 mb-1">{kelas.name}</h4>
               <p className="text-gray-600 text-sm flex items-center mb-1">
-                <FiMapPin className="h-5 w-5 mr-1 text-green-600" />
+                <FiMapPin className="h-5 w-5 mr-2 text-green-600" />
                 {kelas.location}
               </p>
-              <p className="text-gray-600 text-sm flex items-center">
-                <FiClock className="h-5 w-5 mr-1 text-green-600" />
+              <p className="text-gray-600 text-sm flex items-center mb-1">
+                <FiClock className="h-5 w-5 mr-2 text-green-600" />
                 {kelas.time}
               </p>
-              <p className="text-gray-600 text-sm flex items-center">
-                <FiCalendar className="h-5 w-5 mr-1 text-green-600" />
+              <p className="text-gray-600 text-sm flex items-center mb-3">
+                <FiCalendar className="h-5 w-5 mr-2 text-green-600" />
                 {kelas.hari}
               </p>
-              <button className="mt-2 bg-green-600 text-white font-semibold px-4 py-1 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
+              <button className="mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
                 Lihat Detail Kelas
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      {/* Kelas Favorit */}
-      <div className="text-center mt-6">
-        <h3 className="text-4xl font-bold text-green-800">Semua Kelas Saya</h3>
-        <p className="text-gray-700 text-xl">
-          Jangan Lupa untuk melihat jadwal kelas anda yang lain.
-        </p>
-      </div>
+      {/* Kelas Favorit Section */}
+      <motion.div
+        className="text-center mt-16 mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <h3 className="text-4xl font-bold text-green-800 mb-2">Semua Kelas Saya</h3>
+        <p className="text-gray-700 text-xl">Jangan lupa untuk melihat jadwal kelas lainnya!</p>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-6">
         {favoriteClass.map((favorite) => (
-          <div
+          <motion.div
             key={favorite.id}
-            className="bg-white p-6 rounded-lg shadow-lg border border-yellow-300 text-center duration-1000 transition-transform transform hover:scale-110"
+            className="bg-white p-6 rounded-lg shadow-xl border border-yellow-300 text-center transition-transform transform hover:scale-105 hover:shadow-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: favorite.id * 0.1 }}
           >
-            <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+            <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
               <img
                 src={favorite.image}
                 alt={`${favorite.name} Class`}
-                className="w-full h-full object-cover transform transition duration-500 hover:scale-110"
+                className="w-full h-full object-cover rounded-lg"
               />
-              <span className="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+              <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                 {favorite.name}
               </span>
             </div>
-            <h4 className="text-xl font-semibold text-green-800 mb-2">
-              {favorite.name}
-            </h4>
-            <p className="text-gray-600 text-sm mb-1">{favorite.location}</p>
+            <h4 className="text-xl font-semibold text-green-800 mb-2">{favorite.name}</h4>
+            <p className="text-gray-600 text-sm mb-2">{favorite.location}</p>
             <p className="text-gray-600 text-sm">{favorite.time}</p>
             <button className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
               Lihat Detail Kelas
             </button>
-          </div>
+          </motion.div>
         ))}
-
       </div>
     </div>
   );

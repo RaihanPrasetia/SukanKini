@@ -21,6 +21,7 @@ const App = () => {
           src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="User Avatar"
           className="rounded-full border-4 border-indigo-500 mb-4"
+          style={{ width: '75px', height: '75px' }}
         />
         <h2 className="text-2xl font-bold text-gray-700">Tegar</h2>
         <p className="text-gray-400 mb-6">Admin</p>

@@ -51,32 +51,30 @@ function Navbar() {
 
     return (
         <>
-            <nav className={`fixed top-0 left-0 right-0 z-50 px-4 lg:px-16 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'} p-4`}>
+            <nav className={`fixed top-0 left-0 right-0 z-50 px-4 lg:px-16 ${isScrolled ? 'bg-white shadow-lg transition-all duration-300' : 'bg-transparent'} p-4`}>
                 <div className="container mx-auto flex justify-between items-center">
-                    <div className={`text-xl font-bold ${isScrolled ? 'text-green-500' : 'text-white'}`}>
+                    <div className={`text-xl font-bold transition-colors duration-300 ${isScrolled ? 'text-green-500' : 'text-white'}`}>
                         <Link to="#" onClick={() => scrollToSection('home')}>SukanKini</Link>
                     </div>
 
-                    <button onClick={toggleMenu} className={`lg:hidden focus:outline-none ${isScrolled ? 'text-green-500' : 'text-white'}`}>
+                    <button onClick={toggleMenu} className={`lg:hidden focus:outline-none transition-colors duration-300 ${isScrolled ? 'text-green-500' : 'text-white'}`}>
                         <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} className="w-6 h-6" />
                     </button>
 
-                    {/* Mobile menu should be transparent at the top, white when scrolled */}
                     <div
-                        className={`lg:flex ${isMenuOpen ? `block absolute w-full mt-16 -top-1 right-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'} -top-1` : 'hidden'
-                            } lg:relative lg:w-auto`}
+                        className={`lg:flex ${isMenuOpen ? `block absolute w-full mt-16 -top-1 right-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'} transition-all duration-300` : 'hidden'} lg:relative lg:w-auto`}
                     >
                         <div className="grid grid-cols-2 gap-4 lg:flex lg:space-x-4 p-4 lg:p-0">
                             {['about', 'promosi', 'komunitas', 'kelas', 'pelatih', 'client'].map((section) => (
                                 <button
                                     key={section}
                                     onClick={() => scrollToSection(section)}
-                                    className={`relative py-3 px-4 transition duration-300 rounded-lg ${isScrolled ? 'text-green-600 hover:bg-green-100' : 'text-white hover:bg-green-600'}`}
+                                    className={`relative py-3 px-4 transition-all duration-300 ease-in-out rounded-lg ${isScrolled ? 'text-green-600 hover:bg-green-100' : 'text-white hover:bg-green-600'}`}
                                     aria-label={`Scroll to ${section}`}
                                 >
                                     {section.charAt(0).toUpperCase() + section.slice(1)}
                                     {activeSection === section && (
-                                        <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-green-600" />
+                                        <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-green-600 transition-all duration-300 ease-in-out" />
                                     )}
                                 </button>
                             ))}
@@ -84,7 +82,7 @@ function Navbar() {
                     </div>
 
                     <div className="fixed bottom-10 left-6 lg:static">
-                        <button onClick={openAuthModal} className="bg-blue-500 text-white lg:bg-green-500 py-2 px-4 rounded-xl font-semibold transition">
+                        <button onClick={openAuthModal} className="bg-blue-500 text-white lg:bg-green-500 py-2 px-4 rounded-xl font-semibold transition-all duration-300 ease-in-out hover:bg-blue-600">
                             Gabung Sekarang
                         </button>
                     </div>
@@ -93,7 +91,7 @@ function Navbar() {
                 {activeSection !== 'home' && (
                     <button
                         onClick={() => scrollToSection('home')}
-                        className="fixed bottom-10 right-6 bg-blue-500 text-white p-2 rounded-full shadow-lg transition hover:bg-slate-100 hover:text-blue-500"
+                        className="fixed bottom-10 right-6 bg-blue-500 text-white p-2 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:bg-slate-100 hover:text-blue-500"
                         aria-label="Scroll to home"
                     >
                         <FontAwesomeIcon icon={faArrowUp} className="w-6 h-4" />
