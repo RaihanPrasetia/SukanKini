@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../config');
 const User = require('./userModel');  // Import the User model
 const Bank = require('./bankModel');
+const Class = require('./classModel');
 
 const Payment = sequelize.define('Payment', {
     id: {
@@ -10,6 +11,7 @@ const Payment = sequelize.define('Payment', {
         autoIncrement: true,
         allowNull: false,
     },
+
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -35,12 +37,36 @@ const Payment = sequelize.define('Payment', {
         allowNull: false,  // The path to the payment proof (could be a URL or file path)
     },
     status_pembayaran: {
-        type: DataTypes.ENUM('proses', 'selesai', 'gagal'),
+        type: DataTypes.ENUM('Diproses', 'Diterima', 'Ditolak'),
         allowNull: false,
-        defaultValue: 'proses', // Default to 'pending'
+        defaultValue: 'Diproses', // Default to 'pending'
+    },
+    createdBy: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+    },
+    class_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: Class,
+            key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
     },
 }, {
-    timestamps: true, // Automatically adds createdAt and updatedAt fields
+    timestamps: true,
+    paranoid: true, // Enables soft deletes
+    deletedAt: 'deletedAt', // Automatically adds createdAt and updatedAt fields
 });
+
+
 
 module.exports = Payment;

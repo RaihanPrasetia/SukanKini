@@ -1,28 +1,34 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config');
+const Class = require('./classModel');
 const User = require('./userModel');
 
-
-const Bank = sequelize.define('Bank', {
+const ClassSchedule = sequelize.define('ClassSchedule', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
-    an: {
+    class_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Class,
+            key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+    },
+    hari: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    no_rek: {
-        type: DataTypes.STRING,
+    jam: {
+        type: DataTypes.TIME,
         allowNull: false,
-        unique: true,
     },
-    brand: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
+
     createdBy: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -32,13 +38,13 @@ const Bank = sequelize.define('Bank', {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-    },
+    }
 }, {
     timestamps: true,
-    paranoid: true, // Enables soft deletes
-    deletedAt: 'deletedAt', // Automatically adds createdAt and updatedAt fields
+    paranoid: true,
+    deletedAt: 'deletedAt',
 });
 
 
 
-module.exports = Bank;
+module.exports = ClassSchedule;

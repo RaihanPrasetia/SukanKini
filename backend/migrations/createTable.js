@@ -1,24 +1,39 @@
+const sequelize = require('../../config');
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
 const Payment = require('../models/paymentModel');  // Import the Payment model
+const Category = require('../models/categoryModel');  // Import the Payment model
+const Class = require('../models/classModel');
+const ClassSchedule = require('../models/classScheduleModel');
+const Trainer = require('../models/trainerModel');
+
+Object.keys(require.cache).forEach((key) => {
+  delete require.cache[key];
+});
 
 const migrate = async () => {
+  const transaction = await sequelize.transaction();
   try {
-    // Drop tables in the correct order
-    await Payment.drop();  // Drop Payment table first (if it exists)
-    await User.drop();  // Drop User table
-    await Bank.drop();  // Drop Bank table
+    await Payment.drop({ transaction });
+    await ClassSchedule.drop({ transaction });
+    await Class.drop({ transaction });
+    await Category.drop({ transaction });
+    await Trainer.drop({ transaction });
+    await Bank.drop({ transaction });
+    await User.drop({ transaction });
 
-    // Recreate the tables with the updated foreign key constraints
-    await Bank.sync({ force: true });
-    console.log('Bank table created successfully.');
+    await User.sync({ force: true, transaction });
+    await Bank.sync({ force: true, transaction });
+    await Trainer.sync({ force: true, transaction });
+    await Category.sync({ force: true, transaction });
+    await Class.sync({ force: true, transaction });
+    await ClassSchedule.sync({ force: true, transaction });
+    await Payment.sync({ force: true, transaction });
 
-    await User.sync({ force: true });
-    console.log('User table created successfully.');
-
-    await Payment.sync({ force: true });  // Create the Payment table
-    console.log('Payment table created successfully.');
+    await transaction.commit();
+    console.log('All tables created successfully.');
   } catch (error) {
+    await transaction.rollback();
     console.error('Error creating tables:', error);
   }
 };

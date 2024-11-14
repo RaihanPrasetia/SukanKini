@@ -2,13 +2,13 @@ const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
-const { Bank } = require('../models');
+const Bank = require('../models/bankModel');
 require('dotenv').config();
 
 
 
 const register = async (req, res) => {
-  const { name, email, password, phone_number, age, height, weight, kota, alamat, } = req.body;
+  const { name, email, password, phone_number, age, height, weight, kota, alamat, image_path } = req.body;
 
   try {
     // Validate required fields
@@ -55,8 +55,10 @@ const register = async (req, res) => {
       age,
       height,
       weight,
-      role: 'user', // Default role
-      isBlocked: false, // Default to not blocked
+      role: 'user',
+      isVerified: true,
+      isBlocked: false,
+      image_path,
     });
 
     // Exclude the id and password from the response
@@ -77,13 +79,13 @@ const register = async (req, res) => {
 
 const registerMitra = async (req, res) => {
   const {
-    name, email, password, phone_number, an, bank, no_rek, kota, alamat, age, height, weight
+    name, email, password, phone_number, an, brand, no_rek, kota, alamat, age, height, weight
   } = req.body;
 
   try {
     // Validate required fields
-    if (!name || !email || !password || !an || !bank || !no_rek) {
-      return res.status(400).json({ message: 'Name, email, password, phone number, and bank details (an, bank, no_rek) are required.' });
+    if (!name || !email || !password || !an || !brand || !no_rek) {
+      return res.status(400).json({ message: 'Name, email, password, phone number, and bank details (an, brand, no_rek) are required.' });
     }
 
     // Validate email format
@@ -117,12 +119,8 @@ const registerMitra = async (req, res) => {
       return res.status(400).json({ message: 'Bank account number already exists.' });
     }
 
-    // Create a new bank record if no duplicate found
-    const newBank = await Bank.create({
-      an,           // Account Name
-      bank,         // Bank Name
-      no_rek,       // Account Number
-    });
+    // Create a new bank record with the current user's id as createdBy
+
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -136,12 +134,21 @@ const registerMitra = async (req, res) => {
       phone_number,
       height,
       weight,
-      bank_id: newBank.id,  // Associate the bank_id with the newly created bank
       kota,
       alamat,
-      role: 'mitra',  // Default role
+      role: 'mitra',
+      isVerified: false,
       isBlocked: false,  // Default to not blocked
     });
+
+    await Bank.create({
+      an,           // Account Name
+      brand,        // Bank Name
+      no_rek,       // Bank Account Number
+      createdBy: newUser.id,  // Initially set to null to be updated later
+    });
+
+    // Update the bank's createdBy field to reference the user who created it
 
     // Exclude the id and password from the response
     const { id, password: _, ...userData } = newUser.dataValues; // Exclude id and password
@@ -163,40 +170,43 @@ const registerMitra = async (req, res) => {
 
 
 
+
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Check if both email and password are provided
+    // Periksa apakah email dan password disediakan
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required.' });
+      return res.status(400).json({ message: 'Email dan password harus diisi.' });
     }
 
-    // Find the user by email
+    // Temukan pengguna berdasarkan email
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(400).json({ message: 'Email anda belum terdaftar, Silahkan daftar terlebih dahulu.' });
+      return res.status(400).json({ message: 'Email Anda belum terdaftar. Silakan daftar terlebih dahulu.' });
     }
 
-    // Check if the user account is blocked
+
+
+    // Periksa apakah akun pengguna diblokir
     if (user.isBlocked) {
-      return res.status(403).json({ message: 'Your account is blocked. Please contact support.' });
+      return res.status(403).json({ message: 'Akun Anda diblokir. Silakan hubungi dukungan.' });
     }
 
-    // Compare the provided password with the hashed password
+    // Cocokkan password yang diberikan dengan password yang telah di-hash
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
+      return res.status(400).json({ message: 'Email atau password salah.' });
     }
 
-    // Generate a JWT token
+    // Buat token JWT
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
-    // Respond with the token and a success message
+    // Berikan respons token dan data pengguna yang aman
     res.status(200).json({
-      message: 'User logged in successfully.',
+      message: 'Login berhasil.',
       token,
       user: {
         id: user.id,
@@ -206,17 +216,20 @@ const login = async (req, res) => {
         age: user.age,
         weight: user.weight,
         height: user.height,
+        image_path: user.image_path,
         isBlocked: user.isBlocked,
+        isVerified: user.isVerified,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        deletedAt: user.deletedAt,
       },
     });
   } catch (error) {
-    console.error('Error during user login:', error); // Log the error for debugging
-    res.status(500).json({ message: 'An error occurred during login. Please try again later.' });
+    console.error('Error during user login:', error);
+    res.status(500).json({ message: 'Terjadi kesalahan saat login. Silakan coba lagi nanti.' });
   }
 };
+
+
 const cekemail = async (req, res) => {
   const { email } = req.body;
 

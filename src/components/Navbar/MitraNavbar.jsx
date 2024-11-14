@@ -35,7 +35,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     }, [dropdownOpen]);
 
     const isActive = (path) => {
-        return location.pathname.startsWith(path) ? 'bg-green-500 text-white hover:bg-green-600' : 'text-gray-700 hover:bg-green-400 hover:text-white';
+        return location.pathname.startsWith(path) ? 'bg-white text-green-500 ' : 'text-white hover:bg-green-400 hover:text-white';
     };
     const handleMenuClick = () => {
         window.scrollTo(0, 0); // Scroll to the top of the page
@@ -45,11 +45,11 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="flex fixed top-0 w-full">
             {/* Sidebar */}
             <div
-                className={`fixed top-0 left-0 h-full w-64 bg-white p-2 text-green-500 transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed top-0 left-0 h-full w-64 bg-green-600 p-2 text-white transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     } z-50`}
             >
                 <div className="py-5 text-center text-lg font-bold border-b border-green-500">
-                    <Link to="/mitra/home" className="text-2xl font-bold hover:text-green-600 transition duration-300 text-green-500">
+                    <Link to="/mitra/home" className="text-2xl font-bold  transition duration-300 text-white">
                         <span className="text-yellow-300">Sukan</span>Kini
                     </Link>
                 </div>
@@ -80,13 +80,13 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
 
             {/* Navbar */}
             <nav
-                className={`flex  items-center justify-between px-16 w-full bg-white py-4 shadow-md transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'
+                className={`flex  items-center justify-between px-16 w-full bg-green-500 text-white py-4 shadow-md transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'
                     }`}
             >
                 <div className='flex items-center justify-center space-x-5'>
 
                     <button
-                        className="text-green-500 hover:text-green-600 focus:outline-none"
+                        className="text-white  focus:outline-none"
                         onClick={() => setSidebarOpen(!sidebarOpen)}
                     >
                         {/* Icon for the sidebar toggle */}
@@ -122,7 +122,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                                 className="h-12 w-12 rounded-full"
                             />
                         )}
-                        <span className='text-green-500 font-bold text-xl hidden lg:block'>{userName || "Profile"}</span> {/* Display userName here */}
+                        <span className='text-white font-bold text-xl hidden lg:block'>{userName || "Profile"}</span> {/* Display userName here */}
                     </div>
 
                     {/* Dropdown Menu for Profile and Logout */}

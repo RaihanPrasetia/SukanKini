@@ -174,13 +174,13 @@ const DetailKelas = () => {
                         <div className="flex justify-end space-x-4">
                             <button
                                 onClick={handleModalClose}
-                                className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none"
+                                className="bg-red-500 text-white py-2 px-4 text-[16px] font-semibold rounded-md hover:bg-red-600 focus:outline-none"
                             >
                                 Batal
                             </button>
                             <button
                                 onClick={handleSaveChanges}
-                                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none"
+                                className="bg-green-600 text-white py-2 px-4 text-[16px] font-semibold rounded-md hover:bg-green-700 focus:outline-none"
                             >
                                 Simpan
                             </button>

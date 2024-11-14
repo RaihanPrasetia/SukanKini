@@ -2,27 +2,19 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../config');
 const User = require('./userModel');
 
-
-const Bank = sequelize.define('Bank', {
+const Category = sequelize.define('Category', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
-    an: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    no_rek: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
     },
-    brand: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
+
     createdBy: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -32,7 +24,8 @@ const Bank = sequelize.define('Bank', {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-    },
+    }
+
 }, {
     timestamps: true,
     paranoid: true, // Enables soft deletes
@@ -40,5 +33,4 @@ const Bank = sequelize.define('Bank', {
 });
 
 
-
-module.exports = Bank;
+module.exports = Category;

@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config');
-const Bank = require('./bankModel'); // Import the Bank model
+const Bank = require('./bankModel');
 
 const User = sequelize.define('User', {
   id: {
@@ -65,16 +65,11 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: false,  // Default value to false, indicating unverified
   },
-  bank_id: {
-    type: DataTypes.INTEGER,
+
+  image_path: {
+    type: DataTypes.STRING,
     allowNull: true,
-    references: {
-      model: Bank,
-      key: 'id',
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
-  },
+  }
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
   paranoid: true, // Enables soft deletes

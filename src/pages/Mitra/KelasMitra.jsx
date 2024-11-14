@@ -133,7 +133,7 @@ const KelasMitra = () => {
                                     required
                                 />
                             </div>
-                            <div className="flex justify-between">
+                            <div className="flex justify-end space-x-4">
                                 <button
                                     type="button"
                                     className="py-2 px-6 bg-red-500 text-white rounded-lg hover:bg-red-600"
