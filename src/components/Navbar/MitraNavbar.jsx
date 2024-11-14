@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../pages/Layouts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons

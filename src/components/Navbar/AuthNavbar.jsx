@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../pages/Layouts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt, FaBars, FaUser } from 'react-icons/fa';
 
 export default function AuthNavbar() {

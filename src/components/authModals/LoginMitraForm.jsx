@@ -5,7 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
-import AuthContext from '../../pages/Layouts/AuthContext';
+import AuthContext from '../../contexts/AuthContext';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
 import UserModel from '../../models/UserModel';

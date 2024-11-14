@@ -7,7 +7,7 @@ import OtpForm from './authModals/OtpForm';
 import { register, registerMitra } from '../controllers/authController';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useAuth } from '../pages/Layouts/AuthContext'; // Ensure to use your custom hook
+import { useAuth } from '../contexts/AuthContext'; // Ensure to use your custom hook
 import LoginMitraForm from './authModals/LoginMitraForm';
 import RegisterMitraForm from './authModals/RegisterMitraForm';
 import OtpFormMitra from './authModals/OtpFormMitra';

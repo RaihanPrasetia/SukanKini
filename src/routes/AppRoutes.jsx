@@ -5,7 +5,7 @@ import LandingPage from '../pages/Layouts/LandingPage';
 import Dashboard from '../pages/Layouts/Dashboard';
 import Admin from '../pages/Layouts/Admin';
 import Mitra from '../pages/Layouts/Mitra';
-import ProtectedRoute from '../components/ProtectedRoute';
+import ProtectedRoute from '../contexts/ProtectedRoute';
 import AdminDashboard from '../pages/Admin/AdminDashboard';
 import Profile from '../pages/Admin/Profile';
 import Pembayaran from '../pages/Admin/Pembayaran';

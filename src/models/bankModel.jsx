@@ -4,6 +4,7 @@ export default class Bank {
         an,
         bank,
         no_rek,
+        createdBy,
         createdAt,
         updatedAt,
         deletedAt = null,
@@ -12,6 +13,7 @@ export default class Bank {
         this.an = an;
         this.bank = bank;
         this.no_rek = no_rek;
+        this.createdABy = createdBy;
         this.createdAt = new Date(createdAt);
         this.updatedAt = new Date(updatedAt);
         this.deletedAt = deletedAt ? new Date(deletedAt) : null;
