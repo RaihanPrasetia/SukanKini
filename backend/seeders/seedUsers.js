@@ -6,6 +6,7 @@ const ClassSchedule = require('../models/classScheduleModel');
 const Category = require('../models/categoryModel');
 const Class = require('../models/classModel');
 const Trainer = require('../models/trainerModel');
+const Membership = require('../models/membershipsModel');
 
 const seedData = async () => {
   try {
@@ -20,6 +21,8 @@ const seedData = async () => {
       email: 'admin@example.com',
       role: 'admin',
       isVerified: true,
+      gender: 'Laki-Laki',
+      age: 20,
     });
 
     // Create regular user
@@ -30,6 +33,11 @@ const seedData = async () => {
       kota: 'Jambi',
       alamat: 'Jalan Merpati Blok.D No.2 Kel.Selamat',
       isVerified: true,
+      gender: 'Laki-Laki',
+      age: 20,
+      height: 170,
+      weight: 72,
+      phone_number: '0857912635271',
     });
 
     // Create Mitra user
@@ -41,6 +49,9 @@ const seedData = async () => {
       alamat: 'Astone Hotel',
       kota: 'Jambi',
       isVerified: true,
+      gender: 'Perempuan',
+      age: 45,
+      phone_number: '0857912635276',
     });
 
     console.log('Users seeded successfully.');
@@ -145,7 +156,8 @@ const seedData = async () => {
       bank_id: 1, // Associated with Bank A
       bukti: 'bukti1.jpg', // Payment proof file path
       status_pembayaran: 'Diterima',
-      createdBy: mitraUser.id // Payment status (completed)
+      createdBy: mitraUser.id,
+      total: 250000 // Payment status (completed)
     });
 
     await Payment.create({
@@ -153,14 +165,18 @@ const seedData = async () => {
       bank_id: 2, // Associated with Bank A
       bukti: 'path/to/payment-proof-user.jpg', // Payment proof file path
       status_pembayaran: 'Diproses',
-      createdBy: regularUser.id // Payment status (in progress)
+      createdBy: regularUser.id,
+      class_id: 1,
+      total: 150000
     });
     await Payment.create({
       user_id: mitraUser.id, // Payment for the regular user
       bank_id: 2, // Associated with Bank A
       bukti: 'path/to/payment-proof-user.jpg', // Payment proof file path
       status_pembayaran: 'Ditolak',
-      createdBy: regularUser.id // Payment status (in progress)
+      createdBy: regularUser.id,
+      class_id: 1,
+      total: 150000
     });
 
     await Payment.create({
@@ -168,8 +184,22 @@ const seedData = async () => {
       bank_id: 2, // Associated with Bank B
       bukti: 'path/to/payment-proof-mitra.jpg', // Payment proof file path
       status_pembayaran: 'Diterima',
-      createdBy: regularUser.id  // Payment status (failed)
+      createdBy: regularUser.id,
+      class_id: 2,
+      total: 200000
     });
+
+    await Membership.create({
+      user_id: regularUser.id,
+      class_id: 1,
+      status: 'active'
+    })
+
+    await Membership.create({
+      user_id: regularUser.id,
+      class_id: 2,
+      status: 'active'
+    })
 
     console.log('Payments seeded successfully.');
   } catch (error) {

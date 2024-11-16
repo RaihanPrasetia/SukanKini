@@ -11,6 +11,7 @@ const authenticateJWT = (req, res, next) => {
         const decoded = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
         req.user = decoded;
         req.userId = decoded.id;
+        req.userRole = decoded.role;
         next();
     } catch (error) {
         return res.status(400).json({ message: ' Bad Request.' });

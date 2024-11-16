@@ -22,7 +22,7 @@ const profil = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { email, username, password, age, weight, height, phone_number } = req.body;
+    const { email, name, password, age, weight, height, phone_number, gender, kota, alamat } = req.body;
 
     if (req.user.id !== parseInt(id)) {
         return res.status(403).json({ message: 'Forbidden: You can only update your own profile.' });
@@ -43,11 +43,14 @@ const updateUser = async (req, res) => {
         }
 
         if (email) user.email = email;
-        if (username) user.username = username;
+        if (name) user.name = name;
         if (password) user.password = await bcrypt.hash(password, 10);
         if (age) user.age = age;
         if (weight) user.weight = weight;
         if (height) user.height = height;
+        if (kota) user.kota = kota;
+        if (alamat) user.alamat = alamat;
+        if (gender) user.gender = gender;
 
         await user.save();
 

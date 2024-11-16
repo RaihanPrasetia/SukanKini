@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config');
-const Bank = require('./bankModel');
 
 const User = sequelize.define('User', {
   id: {
@@ -68,6 +67,10 @@ const User = sequelize.define('User', {
 
   image_path: {
     type: DataTypes.STRING,
+    allowNull: true,
+  },
+  gender: {
+    type: DataTypes.ENUM('Laki-Laki', 'Perempuan'),
     allowNull: true,
   }
 }, {

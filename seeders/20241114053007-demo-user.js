@@ -14,6 +14,7 @@ module.exports = {
         alamat: 'Jl. Merdeka No.1',
         height: 175,
         weight: 70,
+        gender: 'Laki-Laki',
         role: 'user', // Contoh role, sesuaikan dengan data Anda
         isBlocked: false,
         isVerified: true,

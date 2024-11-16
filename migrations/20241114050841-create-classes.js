@@ -58,6 +58,11 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,  // Menambahkan nilai default untuk updatedAt
       },
+      image_path: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: 'imagekelas.jpg'
+      },
       deletedAt: {
         type: Sequelize.DATE,
         allowNull: true,  // Kolom deletedAt untuk soft delete

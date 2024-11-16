@@ -8,13 +8,13 @@ function About() {
 
     // Animation variants for the main content
     const fadeInRight = {
-        hidden: { opacity: 0, x: 100, scale: 0.95 },
+        hidden: { opacity: 0, x: 50, scale: 0.95 },
         visible: { opacity: 1, x: 0, scale: 1 },
         transition: { duration: 1.2, ease: 'easeOut' },
     };
 
     const fadeInLeft = {
-        hidden: { opacity: 0, x: -100, scale: 0.95 },
+        hidden: { opacity: 0, x: -50, scale: 0.95 },
         visible: { opacity: 1, x: 0, scale: 1 },
         transition: { duration: 1.2, ease: 'easeOut' },
     };

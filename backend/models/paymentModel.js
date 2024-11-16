@@ -54,12 +54,17 @@ const Payment = sequelize.define('Payment', {
     class_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: null,
         references: {
             model: Class,
             key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
+    },
+    total: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
     },
 }, {
     timestamps: true,

@@ -14,8 +14,10 @@ export const getUserProfile = async (token) => {
         });
 
         console.log("Response Data:", response.data);
-        const userData = response.data;
-        const user = new User(userData); // Menggunakan model User untuk struktur data
+
+        const userData = response.data.user;
+
+        const user = new User(userData);
 
         return user;
     } catch (error) {
@@ -23,4 +25,36 @@ export const getUserProfile = async (token) => {
         throw error;
     }
 };
+
+export const editUserProfile = async (token, updatedData) => {
+    try {
+        const { id, ...userData } = updatedData;
+
+        const response = await axios.put(`${apiUrl}/user/update/${id}`, userData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'api_key': apiKey,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        // Log the entire response object for more details
+        console.log("Full Response:", response);
+
+        // Check if the response has the expected user data
+        if (response.data && response.data.user) {
+            console.log("Updated User Data:", response.data.user);
+            return response.data.user;
+        } else {
+            console.error("Unexpected response format", response);
+            throw new Error("Unexpected response format from server");
+        }
+    } catch (error) {
+        console.error("Failed to update user profile:", error.response || error.message);
+        throw error;
+    }
+};
+
+
+
 

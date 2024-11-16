@@ -10,6 +10,7 @@ export default class User {
         alamat = null,
         height = null,
         weight = null,
+        gender = null,
         role,
         isBlocked = false,
         isVerified = false,
@@ -24,6 +25,7 @@ export default class User {
         this.phone_number = phone_number;
         this.age = age;
         this.kota = kota;
+        this.gender = gender;
         this.alamat = alamat;
         this.height = height;
         this.weight = weight;
@@ -64,35 +66,5 @@ export default class User {
     // Method to return a formatted name (capitalize first letter)
     getFormattedName() {
         return this.name ? this.name.charAt(0).toUpperCase() + this.name.slice(1) : 'No name available';
-    }
-
-    // Method to get phone number with fallback
-    getPhoneNumber() {
-        return this.phone_number || 'No phone number available';
-    }
-
-    // Method to get address with fallback
-    getAddress() {
-        return this.alamat || 'No address available';
-    }
-
-    // Method to get location (kota) with fallback
-    getLocation() {
-        return this.kota || 'No city available';
-    }
-
-    // Method to get formatted date of creation
-    getFormattedCreatedAt() {
-        return this.createdAt ? this.createdAt.toLocaleDateString() : 'No date available';
-    }
-
-    // Method to get formatted date of last update
-    getFormattedUpdatedAt() {
-        return this.updatedAt ? this.updatedAt.toLocaleDateString() : 'No date available';
-    }
-
-    // Method to get user image with fallback
-    getProfileImage() {
-        return this.image_path || 'https://via.placeholder.com/150';
     }
 }

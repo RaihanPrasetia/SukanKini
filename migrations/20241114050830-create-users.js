@@ -12,17 +12,17 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false, // Menambahkan aturan tidak boleh null
+        allowNull: false,
       },
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true, // Menambahkan aturan unique pada email
+        unique: true,
       },
       phone_number: {
         type: Sequelize.STRING,
         allowNull: true,
-        unique: true, // Menambahkan aturan unique pada nomor telepon
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -48,6 +48,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      gender: {
+        type: Sequelize.ENUM('Laki-Laki', 'Perempuan'),
+        allowNull: true,
+      },
+
       role: {
         type: Sequelize.ENUM('admin', 'user', 'mitra'),
         allowNull: false,
