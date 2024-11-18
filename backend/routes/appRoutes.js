@@ -5,6 +5,9 @@ const classRoutes = require('./mitra/classRoutes');
 const paymentMitra = require('./mitra/paymentMitra');
 const bankMitra = require('./mitra/bankMitra');
 const trainerMitra = require('./mitra/trainerMitra');
+const categoryMitra = require('./mitra/categoryMitra');
+const classUser = require('./user/classUser');
+const paymentUser = require('./user/paymentUser');
 
 const router = express.Router();
 
@@ -16,5 +19,8 @@ router.use('/mitra', classRoutes);
 router.use('/mitra', paymentMitra);
 router.use('/mitra', bankMitra);
 router.use('/mitra', trainerMitra);
+router.use('/mitra', categoryMitra);
+router.use(classUser);
+router.use(paymentUser);
 
 module.exports = router;

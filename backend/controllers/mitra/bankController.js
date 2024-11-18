@@ -24,6 +24,25 @@ const createBank = async (req, res) => {
     }
 };
 
+const getBankById = async (req, res) => {
+    try {
+        const bankId = req.params.id; // ID Bank dari URL params
+
+        const bank = await Bank.findOne({
+            where: { id: bankId },
+        });
+
+        if (!bank) {
+            return res.status(404).json({ message: 'Bank not found or you are not authorized to view this bank' });
+        }
+
+        res.status(200).json({ bank });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to retrieve bank', error: error.message });
+    }
+};
+
 
 const getUserBanks = async (req, res) => {
     try {
@@ -108,5 +127,5 @@ const deleteBank = async (req, res) => {
 };
 
 
-module.exports = { createBank, getUserBanks, updateBank, deleteBank };
+module.exports = { createBank, getUserBanks, updateBank, deleteBank, getBankById };
 

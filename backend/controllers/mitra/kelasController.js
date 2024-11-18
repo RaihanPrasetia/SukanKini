@@ -30,7 +30,7 @@ const getUserClasses = async (req, res) => {
                     ]
                 }
             ],
-            attributes: ['id', 'name', 'alamat', 'category_id', 'trainer_id', 'image_path', 'createdAt', 'updatedAt']
+            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt']
         });
 
         if (classes.length === 0) {
@@ -72,7 +72,7 @@ const getClassById = async (req, res) => {
                     ]
                 }
             ],
-            attributes: ['id', 'name', 'alamat', 'category_id', 'trainer_id', 'image_path', 'createdBy', 'createdAt', 'updatedAt']
+            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdBy', 'createdAt', 'updatedAt']
         });
 
         if (!classData) {
@@ -95,7 +95,7 @@ const createClass = async (req, res) => {
         console.log('File:', req.file); // Debugging
 
         const userId = req.userId; // User ID from JWT
-        const { name, alamat, category_id, trainer_id } = req.body;
+        const { name, alamat, category_id, trainer_id, price } = req.body;
         const schedules = req.body.schedules ? JSON.parse(req.body.schedules) : []; // Parse schedules
         const imagePath = req.file ? `${req.file.filename}` : null;
 
@@ -116,6 +116,7 @@ const createClass = async (req, res) => {
             alamat,
             category_id,
             trainer_id,
+            price,
             image_path: imagePath,
             createdBy: userId // Ensure user is the creator
         });
@@ -144,7 +145,7 @@ const updateClass = async (req, res) => {
     try {
         const classId = req.params.id;  // Get classId from request parameters
         const userId = req.userId;  // Get the authenticated userId
-        const { name, alamat, category_id, trainer_id, schedules } = req.body;
+        const { name, alamat, category_id, trainer_id, schedules, price, } = req.body;
 
         // Find the class by ID
         const classData = await Class.findOne({
@@ -171,6 +172,7 @@ const updateClass = async (req, res) => {
         classData.alamat = alamat || classData.alamat;
         classData.category_id = category_id || classData.category_id;
         classData.trainer_id = trainer_id || classData.trainer_id;
+        classData.price = price || classData.price;
 
         // Update image if a new file is uploaded
         if (req.file) {

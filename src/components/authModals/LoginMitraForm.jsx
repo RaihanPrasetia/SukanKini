@@ -8,7 +8,6 @@ import Button from '../assets/Button';
 import AuthContext from '../../contexts/AuthContext';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
-import UserModel from '../../models/UserModel';
 
 function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
     const [email, setEmail] = useState('');
@@ -42,7 +41,6 @@ function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Validate email and password input
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -50,31 +48,17 @@ function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
         }
 
         try {
-            // Call the login function to authenticate the user
             const { token, user } = await login(email, password);
+            localStorage.setItem('token', token);
+            localStorage.setItem('name', user.name);
+            localStorage.setItem('role', user.role);
+            contextLogin(token, user.name, user.role); // Mengupdate context
 
-            // Initialize the user data using the User model
-            const loggedInUser = new UserModel(user);
-
-            // Check if the user is blocked
-            if (loggedInUser.isUserBlocked()) {
-                toast.error('Akun Anda diblokir. Silakan hubungi dukungan.');
-                return;
-            }
-
-            // Check if the user's role is valid (admin or user)
-            if (!loggedInUser.isMitra()) {
-                toast.error('Data tidak ditemukan.');
-                return;
-            }
-
-            // Log the user in and store the token and user details in the context
-            contextLogin(token, loggedInUser.getFormattedName(), loggedInUser.role);
-            toast.success(`Selamat Bergabung, ${loggedInUser.getFormattedName()}`);
-            navigate('/mitra/home');
+            toast.success(`Welcome, ${user.name}`);
+            navigate('/mitra/home'); // Navigasi ke halaman yang tepat setelah login
         } catch (error) {
-            console.error('Gagal Masuk:', error);
-            toast.error(error.message || 'Login gagal. Silakan coba lagi.');
+            console.error('Login failed:', error);
+            toast.error(error.message || 'Login failed. Please try again.');
         }
     };
 

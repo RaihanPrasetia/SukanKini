@@ -63,6 +63,10 @@ module.exports = {
         allowNull: true,
         defaultValue: 'imagekelas.jpg'
       },
+      price: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       deletedAt: {
         type: Sequelize.DATE,
         allowNull: true,  // Kolom deletedAt untuk soft delete

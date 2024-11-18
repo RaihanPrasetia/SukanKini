@@ -104,6 +104,7 @@ const seedData = async () => {
       alamat: mitraUser.kota + ', ' + mitraUser.alamat,
       trainer_id: 1,
       createdBy: mitraUser.id,
+      price: 500000
     })
     await Class.create({
       name: 'Kelas Zumba Bersama Natasha',
@@ -111,6 +112,7 @@ const seedData = async () => {
       alamat: mitraUser.kota + ', ' + mitraUser.alamat,
       trainer_id: 2,
       createdBy: mitraUser.id,
+      price: 300000
     })
     await ClassSchedule.bulkCreate([
       {

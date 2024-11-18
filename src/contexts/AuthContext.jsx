@@ -7,29 +7,34 @@ export const AuthProvider = ({ children }) => {
     const [userName, setUserName] = useState(null);
     const [userRole, setUserRole] = useState(null);
 
+    // Load authentication state from localStorage when the component mounts
     useEffect(() => {
+        refreshAuth(); // Call refreshAuth during initialization
+    }, []);
+
+    // Function to refresh authentication state
+    const refreshAuth = () => {
         const token = localStorage.getItem('token');
         const name = localStorage.getItem('name');
         const role = localStorage.getItem('role');
 
         if (token) {
             setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
         }
-        if (name) {
-            setUserName(name);
-        }
-        if (role) {
-            setUserRole(role);
-        }
-    }, []);
+
+        setUserName(name || null);
+        setUserRole(role || null);
+    };
 
     const login = (token, name, role) => {
         localStorage.setItem('token', token);
         localStorage.setItem('name', name);
-        localStorage.setItem('role', role); // Ensure the role is saved in local storage
+        localStorage.setItem('role', role);
         setIsAuthenticated(true);
         setUserName(name);
-        setUserRole(role); // Set the role state
+        setUserRole(role);
     };
 
     const logout = () => {
@@ -42,13 +47,18 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userName, userRole, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, userName, userRole, login, logout, refreshAuth }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-// Correctly export useAuth
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
+};
 
 export default AuthContext;

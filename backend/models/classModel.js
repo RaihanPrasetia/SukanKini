@@ -40,6 +40,10 @@ const Class = sequelize.define('Class', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    price: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
 
     createdBy: {
         type: DataTypes.INTEGER,

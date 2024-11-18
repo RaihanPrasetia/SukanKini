@@ -5,7 +5,6 @@ const fs = require('fs');
 const { Op } = require('sequelize');
 
 
-// Tentukan path folder tujuan
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const dir = path.join(__dirname, '../../../public/bukti');
@@ -76,12 +75,42 @@ const getUserPayments = async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve payment records.', error: error.message });
     }
 };
+const getStatusPayments = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+
+        const payments = await Payment.findAll({
+            where: {
+                [Op.or]: [
+                    { user_id: 1 },
+                    { createdBy: userId }
+                ]
+            },
+            include: [
+                { model: Bank, as: 'bank', attributes: ['an', 'no_rek', 'brand'] },
+                { model: Class, as: 'class', attributes: ['name', 'category_id'] },
+                { model: User, as: 'from', attributes: ['name', 'email', 'phone_number'] },
+            ],
+            attributes: ['id', 'bukti', 'status_pembayaran', 'total'],
+            order: [['createdAt', 'DESC']],
+        });
+
+        if (!payments || payments.length === 0) {
+            return res.status(404).json({ message: 'No payment records found for this user.' });
+        }
+
+        res.status(200).json({ payments });
+    } catch (error) {
+        console.error(error);  // Print error details for debugging
+        res.status(500).json({ message: 'Failed to retrieve payment records.', error: error.message });
+    }
+};
 
 const createPayment = async (req, res) => {
     try {
         const userId = req.userId;
         const { bank_id, total } = req.body;
-
         if (!bank_id || !total) {
             return res.status(400).json({ message: 'Missing required fields: bank_id, total' });
         }
@@ -95,7 +124,7 @@ const createPayment = async (req, res) => {
         if (req.file) {
             buktiPath = `${req.file.filename}`;
 
-            const dir = path.join(__dirname, '../../public/uploads/payments');
+            const dir = path.join(__dirname, '../../../public/bukti');
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
@@ -160,5 +189,6 @@ module.exports = {
     getUserPayments,
     createPayment,
     updatePaymentStatus,
+    getStatusPayments,
     upload
 };
