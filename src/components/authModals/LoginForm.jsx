@@ -8,7 +8,7 @@ import Button from '../assets/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
-import UserModel from '../../models/UserModel';
+import UserModel from '../../constructors/UserModel';
 
 function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
     const [email, setEmail] = useState('');

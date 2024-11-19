@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Bank from '../models/bankModel';
+import Bank from '../constructors/bankModel';
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiKey = process.env.REACT_APP_API_KEY;
 

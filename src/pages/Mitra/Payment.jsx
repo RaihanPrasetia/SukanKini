@@ -2,23 +2,59 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import bankService from "../../service/bankService";
 import paymentService from "../../service/paymentService"; // Import service
+import { useAuth } from '../../contexts/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function HomeMitra({ sidebarOpen }) {
+import { FaUser, FaSignOutAlt } from 'react-icons/fa'
+
+export default function HomeMitra() {
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const [selectedPromo, setSelectedPromo] = useState(null);
     const [paymentProof, setPaymentProof] = useState(null);
     const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
-    const [paymentStatus, setPaymentStatus] = useState(null); // Payment status state
-    const [bankInfo, setBankInfo] = useState(null); // Tambahkan state untuk informasi bank
+    const [bankInfo, setBankInfo] = useState(null); // State untuk informasi bank
+    const [payments, setPayments] = useState([]);
+    const { logout, userName, user } = useAuth();
+    const navigate = useNavigate();
 
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    // Get userName and user from useAuth
+    const handleLogout = () => {
+        handleMenuClick();
+        logout();
+        navigate('/');
+    };
+    const handleMenuClick = () => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.profile-dropdown')) {
+                setDropdownOpen(false);
+            }
+        };
+
+        if (dropdownOpen) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [dropdownOpen]);
     const promos = [
         { id: 1, name: "Promo A", price: 100000 },
         { id: 2, name: "Promo B", price: 150000 },
         { id: 3, name: "Promo C", price: 200000 },
     ];
 
+    // Fungsi untuk memeriksa status pembayaran pertama
+    const isFirstPaymentPending = payments.length > 0 && payments[0].paymentStatus === "Diproses";
+
     useEffect(() => {
-        // Mendapatkan informasi bank dengan ID tertentu
+        // Fetch informasi bank
         const fetchBankInfo = async () => {
             try {
                 const bankData = await bankService.getBankById(1); // Ganti dengan ID bank yang relevan
@@ -38,7 +74,23 @@ export default function HomeMitra({ sidebarOpen }) {
             }
         };
 
+        // Fetch data pembayaran
+        const fetchPayments = async () => {
+            try {
+                const paymentData = await paymentService.getPayments();
+                setPayments(paymentData);
+            } catch (error) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Gagal mengambil data pembayaran.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
+        };
+
         fetchBankInfo();
+        fetchPayments();
     }, []);
 
     const openPaymentModal = () => setIsPaymentModalOpen(true);
@@ -53,6 +105,7 @@ export default function HomeMitra({ sidebarOpen }) {
     };
 
     const handlePaymentSubmit = async () => {
+        // Validasi jika promo atau bukti pembayaran belum dipilih
         if (!selectedPromo || !paymentProof) {
             Swal.fire({
                 title: "Perhatian",
@@ -64,56 +117,111 @@ export default function HomeMitra({ sidebarOpen }) {
         }
 
         try {
+            // Mengirim data pembayaran ke service
             const response = await paymentService.createPayment({
                 bankId: bankInfo.id,
                 total: selectedPromo.price,
                 paymentProof,
             });
 
-            Swal.fire({
-                title: "Sukses",
-                text: response.message,
-                icon: "success",
-                confirmButtonText: "OK",
-            });
+            // Debugging: Cek response untuk mengetahui struktur data yang dikembalikan
+            console.log(response);  // Hapus ini setelah perbaikan
 
-            // Set payment completion status after successful payment
-            setIsPaymentCompleted(true);  // Mark payment as completed
+            // Cek apakah ada payment data dalam response
+            if (response && response.payment) {
+                Swal.fire({
+                    title: "Sukses",
+                    text: `Pembayaran berhasil untuk promo ${selectedPromo.name}.`,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
 
-            // Fetch the payment status after submission
-            fetchPaymentStatus(response.paymentId);
+                // Set status pembayaran selesai
+                setIsPaymentCompleted(true);
+
+                // Refresh data pembayaran setelah sukses
+                const updatedPayments = await paymentService.getPayments();
+                setPayments(updatedPayments);
+
+                closePaymentModal(); // Menutup modal pembayaran
+            } else {
+                // Jika respons tidak sesuai dengan format yang diharapkan
+                Swal.fire({
+                    title: "Error",
+                    text: "Pembayaran gagal. Coba lagi nanti.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
 
         } catch (error) {
+            // Menangani error saat request API gagal
+            console.error("Error during payment submission:", error);
+
             Swal.fire({
                 title: "Error",
-                text: error.message,
+                text: error.message || "Terjadi kesalahan saat memproses pembayaran. Coba lagi nanti.",
                 icon: "error",
                 confirmButtonText: "OK",
             });
         }
     };
 
-    // Fetch payment status
-    const fetchPaymentStatus = async (paymentId) => {
-        try {
-            const status = await paymentService.getPaymentStatus(paymentId);
-            setPaymentStatus(status);
-        } catch (error) {
-            Swal.fire({
-                title: "Error",
-                text: "Failed to fetch payment status",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        }
-    };
-
-    return (
-        <div
-            className={`flex flex-col bg-gray-100 items-start justify-start px-4 sm:p-16 py-24 lg:pt-32 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-0"
-                }`}
+    return (<>
+        <nav
+            className='flex  items-center justify-end px-16 w-full bg-green-500 text-white py-4 shadow-md transition-all duration-300 '
         >
-            {!isPaymentCompleted ? (
+
+            {/* Profile and Logout Section */}
+            <div
+                className="relative flex items-center profile-dropdown"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+                <div className="flex items-center text-lg hover:text-green-600 transition duration-300 space-x-2 cursor-pointer">
+                    {user?.photoURL ? (
+                        <img src={user.photoURL} alt="Profile" className="h-8 w-8 rounded-full" />
+                    ) : (
+                        <img
+                            src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Default Profile"
+                            className="h-12 w-12 rounded-full"
+                        />
+                    )}
+                    <span className='text-white font-bold text-xl hidden lg:block'>{userName || "Profile"}</span> {/* Display userName here */}
+                </div>
+
+                {/* Dropdown Menu for Profile and Logout */}
+                {dropdownOpen && (
+                    <div className="absolute right-0 top-[60px] mt-2 w-40 bg-white rounded-md shadow-lg p-2 z-10">
+                        <Link
+                            onClick={handleMenuClick}
+                            to="/mitra/profile"
+                            className="block px-4 py-2 text-gray-700 hover:bg-green-300 transition duration-200 rounded-md"
+                        >
+                            <FaUser className='inline mr-2' />
+                            Profile
+                        </Link>
+                        <button
+                            onClick={handleLogout}
+                            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-300 transition duration-200 rounded-md"
+                        >
+                            <FaSignOutAlt className="inline mr-2" />
+                            Logout
+                        </button>
+                    </div>
+                )}
+            </div>
+        </nav>
+        <div
+            className='flex flex-col bg-gray-100 items-start justify-start px-4 sm:p-16 py-24 lg:pt-32 transition-all duration-300 '
+        >
+            {isFirstPaymentPending ? (
+                <div className="flex flex-col w-full bg-yellow-500 rounded-lg shadow-lg p-6 mb-3">
+                    <h1 className="text-xl md:text-2xl w-[80%] font-bold text-white text-left">
+                        Pembayaran Anda sedang ditinjau oleh admin. Silakan menunggu konfirmasi lebih lanjut.
+                    </h1>
+                </div>
+            ) : !isPaymentCompleted ? (
                 <div className="flex flex-col w-full bg-red-500 rounded-lg shadow-lg p-6 mb-3">
                     <h1 className="text-xl md:text-2xl w-[80%] font-bold text-white text-left">
                         Untuk melanjutkan, silakan lakukan pembayaran terlebih dahulu dengan memilih promo yang tersedia.
@@ -127,15 +235,8 @@ export default function HomeMitra({ sidebarOpen }) {
                 </div>
             )}
 
-            {paymentStatus && (
-                <div className="flex flex-col w-full bg-blue-500 rounded-lg shadow-lg p-6 mb-3">
-                    <h1 className="text-xl md:text-2xl w-[80%] font-bold text-white text-left">
-                        Status Pembayaran: {paymentStatus}
-                    </h1>
-                </div>
-            )}
-
-            {!isPaymentCompleted && (
+            {/* Hanya tampilkan promo jika pembayaran pertama tidak diproses */}
+            {!isFirstPaymentPending && (
                 <div className="w-full sm:w-1/3 lg:w-max p-6 rounded-2xl bg-opacity-75 bg-white text-white shadow-lg">
                     <h2 className="text-2xl font-semibold mb-4 text-center text-black">Promo</h2>
                     <div className="flex gap-4">
@@ -155,6 +256,41 @@ export default function HomeMitra({ sidebarOpen }) {
                     </button>
                 </div>
             )}
+
+            {/* Tabel Data Pembayaran */}
+            <div className="mt-6 w-full bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-xl font-semibold mb-4 text-center">Riwayat Pembayaran</h2>
+                <table className="w-full table-auto border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th className="border border-gray-300 px-4 py-2">No</th>
+                            <th className="border border-gray-300 px-4 py-2">Bukti</th>
+                            <th className="border border-gray-300 px-4 py-2">Total</th>
+                            <th className="border border-gray-300 px-4 py-2">Status Pembayaran</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {payments.map((payment, index) => (
+                            <tr key={payment.id}>
+                                <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
+                                <td className="border border-gray-300 px-4 py-2 text-center">
+                                    {payment.paymentProof ? (
+                                        <img
+                                            src={`/bukti/${payment.paymentProof}`}
+                                            alt={`Bukti Pembayaran ${payment.id}`}
+                                            className="w-20 h-20 object-cover rounded-lg"
+                                        />
+                                    ) : (
+                                        <span className="text-red-500">No Proof</span>
+                                    )}
+                                </td>
+                                <td className="border border-gray-300 px-4 py-2">Rp. {payment.total}</td>
+                                <td className="border border-gray-300 px-4 py-2">{payment.paymentStatus}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             {isPaymentModalOpen && bankInfo && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -206,5 +342,8 @@ export default function HomeMitra({ sidebarOpen }) {
                 </div>
             )}
         </div>
+    </>
+
     );
 }
+

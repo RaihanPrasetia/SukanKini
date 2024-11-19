@@ -1,5 +1,5 @@
 import axios from "axios";
-import Payment from "../models/paymentModel"; // Assuming this is a constructor function for Payment
+import Payment from "../constructors/paymentModel"; // Assuming this is a constructor function for Payment
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -67,7 +67,7 @@ const getPaymentStatus = async (paymentId) => {
 
         // Check if the response contains payments data
         if (response.data && response.data.payments) {
-            return response.data.payments.map(payment => new Payment(payment)); // Mapping each payment response to the Payment model
+            return new Payment(response.data.payment);
         } else {
             throw new Error("No payment data found.");
         }
