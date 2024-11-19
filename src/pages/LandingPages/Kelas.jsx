@@ -12,7 +12,7 @@ const Kelas = () => {
       const windowHeight = window.innerHeight;
       setIsInView(rect.top <= windowHeight - 100 && rect.bottom >= 0);
     }
-  }, 100); // Throttle to fire the event every 100ms
+  }, 100);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -33,7 +33,6 @@ const Kelas = () => {
       ref={sectionRef}
       className="flex flex-col justify-center items-center px-6 lg:px-20 space-y-8 py-16 w-full"
     >
-      {/* Heading Section */}
       <motion.div
         className="w-full text-center"
         initial={{ opacity: 0, y: 20 }}
@@ -48,7 +47,6 @@ const Kelas = () => {
         </p>
       </motion.div>
 
-      {/* Category Buttons */}
       <motion.div
         className="grid grid-cols-2 gap-4 w-full md:flex md:flex-wrap md:justify-center"
         initial={{ opacity: 0 }}

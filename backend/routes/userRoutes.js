@@ -10,6 +10,5 @@ const { deleteUser, updateUser, profil } = require('../controllers/userControlle
 router.post('/delete/:id', authenticateJWT, deleteUser);
 router.put('/update/:id', upload.none(), authenticateJWT, updateUser);
 router.get('/profil', authenticateJWT, profil);
-router.get('/profil', authenticateJWT, profil);
 
 module.exports = router; 

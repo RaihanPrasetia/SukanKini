@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
             fs.mkdirSync(dir, { recursive: true });
         }
 
-        cb(null, dir); // Tentukan direktori penyimpanan file
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         // Gunakan angka acak sebagai nama file

@@ -11,18 +11,15 @@ const register = async (req, res) => {
   const { name, email, password, phone_number, age, height, weight, kota, alamat, image_path } = req.body;
 
   try {
-    // Validate required fields
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email, and password are required.' });
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: 'Invalid email format.' });
     }
 
-    // Validate password length
     if (password.length < 8) {
       return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
     }
@@ -61,18 +58,16 @@ const register = async (req, res) => {
       image_path,
     });
 
-    // Exclude the id and password from the response
-    const { id, password: _, ...userData } = newUser.dataValues; // Exclude id and password
+    const { id, password: _, ...userData } = newUser.dataValues;
     const token = jwt.sign(
-      { id: newUser.id, role: newUser.role }, // Use newUser to get the id and role
+      { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    // Return success response
     res.status(201).json({ message: 'User registered successfully.', token, user: userData });
   } catch (error) {
-    console.error('Error during user registration:', error); // Log the error for debugging
+    console.error('Error during user registration:', error);
     res.status(500).json({ message: 'An error occurred during registration. Please try again later.' });
   }
 };
@@ -165,11 +160,6 @@ const registerMitra = async (req, res) => {
     res.status(500).json({ message: 'An error occurred during registration. Please try again later.' });
   }
 };
-
-
-
-
-
 
 const login = async (req, res) => {
   const { email, password } = req.body;

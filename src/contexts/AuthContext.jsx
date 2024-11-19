@@ -7,25 +7,33 @@ export const AuthProvider = ({ children }) => {
     const [userName, setUserName] = useState(null);
     const [userRole, setUserRole] = useState(null);
 
-    // Load authentication state from localStorage when the component mounts
     useEffect(() => {
-        refreshAuth(); // Call refreshAuth during initialization
+        // Load token and role from localStorage
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        const name = localStorage.getItem('name');
+
+        if (token && role && name) {
+            setIsAuthenticated(true);
+            setUserRole(role);
+            setUserName(name);
+        }
     }, []);
 
-    // Function to refresh authentication state
     const refreshAuth = () => {
         const token = localStorage.getItem('token');
         const name = localStorage.getItem('name');
         const role = localStorage.getItem('role');
 
-        if (token) {
+        if (token && role) {
             setIsAuthenticated(true);
+            setUserName(name);
+            setUserRole(role);
         } else {
             setIsAuthenticated(false);
+            setUserName(null);
+            setUserRole(null);
         }
-
-        setUserName(name || null);
-        setUserRole(role || null);
     };
 
     const login = (token, name, role) => {
@@ -61,4 +69,3 @@ export const useAuth = () => {
     return context;
 };
 
-export default AuthContext;

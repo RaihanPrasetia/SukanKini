@@ -1,11 +1,11 @@
 // src/components/LoginForm.js
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
-import AuthContext from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
 import UserModel from '../../models/UserModel';
@@ -15,7 +15,7 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
-    const { login: contextLogin } = useContext(AuthContext);
+    const { login: contextLogin } = useAuth();
 
     // Validate email and password input
     const validate = () => {

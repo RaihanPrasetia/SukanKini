@@ -24,7 +24,7 @@ const Profile = () => {
         const token = localStorage.getItem("token");
         const userData = await getUserProfile(token);
         setUser(userData);
-
+        console.log("Data User", userData)
         // Set initial values for the form
         setName(userData.name || "");
         setEmail(userData.email || "");

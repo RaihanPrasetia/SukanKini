@@ -19,7 +19,6 @@ const profil = async (req, res) => {
     }
 };
 
-
 const updateUser = async (req, res) => {
     const { id } = req.params;
     const { email, name, password, age, weight, height, phone_number, gender, kota, alamat } = req.body;

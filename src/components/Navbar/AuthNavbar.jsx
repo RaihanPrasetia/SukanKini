@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt, FaBars, FaUser } from 'react-icons/fa';
 
 export default function AuthNavbar() {
-    const { logout, userName, user } = useAuth();
+    const { logout, user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -36,9 +36,9 @@ export default function AuthNavbar() {
 
     return (
         <nav
-    className={`fixed top-0 left-0 w-full py-4 px-6 md:px-16 z-40 flex justify-between items-center transition-all duration-200 ${scrolled ? 'bg-green-500 shadow-lg text-white' : 'bg-transparent text-green-500'
-        }`}
->
+            className={`fixed top-0 left-0 w-full py-4 px-6 md:px-16 z-40 flex justify-between items-center transition-all duration-200 ${scrolled ? 'bg-green-500 shadow-lg text-white' : 'bg-transparent text-green-500'
+                }`}
+        >
 
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
@@ -125,7 +125,6 @@ export default function AuthNavbar() {
                                 className="h-12 w-12 rounded-full"
                             />
                         )}
-                        <span>{userName || 'Profile'}</span>
                     </div>
 
                     {dropdownOpen && (

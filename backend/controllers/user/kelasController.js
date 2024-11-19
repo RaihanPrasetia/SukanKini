@@ -34,7 +34,6 @@ const getUserMemberships = async (req, res) => {
     }
 };
 
-// Set locale ke bahasa Indonesia
 
 const getClassNow = async (req, res) => {
     try {

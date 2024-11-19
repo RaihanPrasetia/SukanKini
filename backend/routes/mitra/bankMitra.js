@@ -6,10 +6,10 @@ const upload = multer();
 const { createBank, getUserBanks, updateBank, deleteBank, getBankById } = require('../../controllers/mitra/bankController'); // Controller yang sudah dibuat
 
 // Routes
-router.post('/banks/create', upload.none(), authenticateJWT, createBank);  // Membuat bank baru
-router.get('/banks', authenticateJWT, getUserBanks);  // Mendapatkan semua bank milik user
-router.get('/banks/:id', authenticateJWT, getBankById);  // Mendapatkan semua bank milik user
-router.put('/banks/update/:id', upload.none(), authenticateJWT, updateBank);  // Mengupdate bank
-router.delete('/banks/delete/:id', upload.none(), authenticateJWT, deleteBank);  // Menghapus bank
+router.post('/banks/create', upload.none(), authenticateJWT, createBank);
+router.get('/banks', authenticateJWT, getUserBanks);
+router.get('/banks/:id', authenticateJWT, getBankById);
+router.put('/banks/update/:id', upload.none(), authenticateJWT, updateBank);
+router.delete('/banks/delete/:id', upload.none(), authenticateJWT, deleteBank);
 
 module.exports = router;

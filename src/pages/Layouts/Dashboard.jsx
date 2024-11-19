@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, } from 'react-router-dom';
 import { FaComments } from 'react-icons/fa';
 import AuthNavbar from '../../components/Navbar/AuthNavbar';
 import Footer from '../../components/Footer';
@@ -14,32 +14,10 @@ import Notifikasi from '../Dashboard/Profile/Notifikasi';
 import DetailKelas from '../Dashboard/Kelas/DetailKelas';
 import { AiOutlineClose } from 'react-icons/ai';
 import { motion } from 'framer-motion';
-import { useAuth } from '../../contexts/AuthContext';
 
 const Dashboard = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
-    const { isAuthenticated, userRole, refreshAuth } = useAuth(); // Assuming refreshAuth reloads auth state
-    const navigate = useNavigate();
-    const location = useLocation();
 
-    // Refresh auth state when the component mounts
-
-    useEffect(() => {
-        refreshAuth(); // Sinkronisasi state
-    }, [refreshAuth]);
-
-    useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/');
-        } else if (userRole !== 'user') {
-            navigate('/');
-        }
-    }, [isAuthenticated, userRole, navigate]);
-
-    // Log the current location for debugging
-    useEffect(() => {
-        console.log('Current location:', location.pathname);
-    }, [location]);
 
     // Toggle chat visibility
     const toggleChat = () => {

@@ -1,18 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Import createRoot
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
 import App from './App';
 import './index.css';
 
+// Ambil elemen root dari DOM
+const rootElement = document.getElementById('root');
 
-ReactDOM.render(
+// Buat instance root
+const root = createRoot(rootElement);
+
+// Render aplikasi menggunakan createRoot
+root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <App />
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
