@@ -1,4 +1,3 @@
-// VideoTutorial.js
 import React from 'react';
 
 const VideoTutorial = () => {
@@ -14,8 +13,8 @@ const VideoTutorial = () => {
 
     return (
         <section className="w-full lg:px-20 lg:py-16 p-6 bg-white">
-            <div className="text-center space-y-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-green-600 transition-transform duration-500 transform hover:scale-105">
+            <div className="text-center space-y-6">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-green-600 transition-transform duration-500 transform hover:scale-105">
                     Video Tutorial
                 </h2>
                 <p className="text-gray-600 mt-2 text-lg md:text-xl transition-opacity duration-300 hover:opacity-80">
@@ -28,16 +27,16 @@ const VideoTutorial = () => {
                 {videos.map((video, index) => (
                     <div
                         key={index}
-                        className="relative w-full h-64 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+                        className="relative w-full h-64 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer"
                     >
-                        <a href={video.link}>
+                        <a href={video.link} className="relative block w-full h-full">
                             <img
                                 src={video.thumbnailUrl}
                                 alt={video.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-                            <div className="absolute bottom-0 w-full text-white text-lg font-semibold py-4 text-center">
+                            <div className="absolute bottom-0 w-full text-white text-lg font-semibold py-4 text-center bg-gradient-to-t from-black to-transparent">
                                 {video.title}
                             </div>
                         </a>
@@ -46,8 +45,8 @@ const VideoTutorial = () => {
             </div>
 
             {/* Action Button */}
-            <div className="flex justify-center mt-8">
-                <button className="px-5 py-3 bg-green-500 text-lg text-white font-semibold rounded-lg shadow-lg hover:bg-white hover:text-green-500 hover:shadow-xl transition duration-200">
+            <div className="flex justify-center mt-12">
+                <button className="px-6 py-3 bg-green-600 text-lg text-white font-semibold rounded-full shadow-xl hover:opacity-90 transform transition-all duration-300">
                     <a href="/video-tutorials">Lihat Semua Video</a>
                 </button>
             </div>

@@ -17,98 +17,100 @@ export default function Community() {
         },
     ];
 
-    const textVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.3,
+            },
+        },
     };
 
-    const buttonVariants = {
-        hidden: { opacity: 0, scale: 0.9 },
-        visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r pt-28 from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col items-center">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-800 to-indigo-900 pt-28 text-white flex flex-col items-center">
             {/* Header */}
-            <div className="w-full max-w-6xl px-4 py-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <div className="w-full max-w-6xl px-6 py-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
                 <motion.button
-                    className="text-yellow-400 text-2xl transform hover:scale-110 transition duration-300"
-                    initial="hidden"
-                    animate="visible"
-                    variants={buttonVariants}
+                    className="text-yellow-400 text-3xl transform hover:scale-110 transition duration-300"
+                    whileHover={{ scale: 1.1 }}
                 >
                     <i className="fas fa-arrow-left"></i>
                 </motion.button>
-                <motion.div className="flex items-center space-x-4" initial="hidden" animate="visible" variants={buttonVariants}>
-                    <button className="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 md:px-6 py-2 rounded-full shadow-lg hover:opacity-90 transition duration-300">
+                <motion.div
+                    className="flex items-center space-x-6"
+                    initial="hidden"
+                    animate="visible"
+                    variants={containerVariants}
+                >
+                    <button className="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-3 rounded-full shadow-xl hover:opacity-90 transition duration-300 transform hover:scale-105">
                         Berita & Pemberitahuan
                     </button>
-                    <button className="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 md:px-6 py-2 rounded-full shadow-lg hover:opacity-90 transition duration-300">
+                    <button className="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-3 rounded-full shadow-xl hover:opacity-90 transition duration-300 transform hover:scale-105">
                         Tanya Komunitas
                     </button>
                 </motion.div>
                 <motion.div
-                    className="relative w-full md:w-64"
+                    className="relative w-full md:w-72"
                     initial="hidden"
                     animate="visible"
-                    variants={textVariants}
+                    variants={itemVariants}
                 >
                     <input
                         type="text"
                         placeholder="Cari Komunitas..."
-                        className="w-full px-4 py-2 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
+                        className="w-full px-6 py-3 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 shadow-lg"
                     />
                 </motion.div>
             </div>
 
             {/* Community Cards */}
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 mt-12 px-4 pb-8">
+            <motion.div
+                className="flex flex-wrap justify-center gap-8 mt-12 px-4 pb-8"
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+            >
                 {communities.map((community, index) => (
                     <motion.div
                         key={index}
-                        className="w-full sm:w-72 bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
-                        initial="hidden"
-                        animate="visible"
-                        variants={textVariants}
+                        className="w-full sm:w-80 bg-gradient-to-tr from-gray-800 to-gray-700 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                        variants={itemVariants}
                     >
                         <img
                             src={community.image}
                             alt={community.name}
-                            className="w-full h-48 object-cover transition duration-300 hover:opacity-90"
+                            className="w-full h-60 object-cover transition duration-300 hover:opacity-90"
                         />
                         <div className="p-6 text-center">
-                            <motion.h2
-                                className="text-2xl font-semibold text-gray-200"
-                                initial="hidden"
-                                animate="visible"
-                                variants={textVariants}
-                            >
-                                {community.name}
-                            </motion.h2>
+                            <h2 className="text-3xl font-bold text-white">{community.name}</h2>
                             <motion.button
-                                className="mt-4 w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 transform hover:scale-105"
-                                initial="hidden"
-                                animate="visible"
-                                variants={buttonVariants}
+                                className="mt-4 px-8 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105"
+                                whileHover={{ scale: 1.1 }}
                             >
                                 Bergabung
                             </motion.button>
                         </div>
                     </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
-            {/* Footer or Additional Info */}
-            <div className="mt-10 text-center px-4">
-                <motion.p
-                    className="text-gray-400 text-sm"
-                    initial="hidden"
-                    animate="visible"
-                    variants={textVariants}
-                >
+            {/* Footer */}
+            <motion.div
+                className="mt-12 text-center px-6"
+                initial="hidden"
+                animate="visible"
+                variants={itemVariants}
+            >
+                <p className="text-gray-300 text-lg">
                     Temukan komunitas yang tepat untuk Anda dan mulai perjalanan kebugaran Anda hari ini!
-                </motion.p>
-            </div>
+                </p>
+            </motion.div>
         </div>
     );
-};
+}

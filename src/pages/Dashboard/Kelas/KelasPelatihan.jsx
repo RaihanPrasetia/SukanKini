@@ -1,4 +1,3 @@
-// KelasPelatihan.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DaftarKelasPopup from './DaftarKelas'; // Import the DaftarKelasPopup component
@@ -39,9 +38,11 @@ const KelasPelatihan = () => {
     setIsPopupOpen(false);
     setSelectedClass(null);
   };
+
   const handleDetailClick = () => {
     window.scrollTo(0, 0); // Scroll to the top of the page
   };
+
   const scrollToKelas = () => {
     const kelasSection = document.getElementById("daftarkelas");
     if (kelasSection) {
@@ -54,108 +55,108 @@ const KelasPelatihan = () => {
 
   return (
     <>
-      <section className="w-full min-h-[40vh]">
+      {/* Hero Section */}
+      <section className="w-full min-h-[70vh] relative">
         <div
-          className="flex flex-col items-center justify-center lg:px-16 px-6 py-10 h-screen bg-cover bg-center"
+          className="flex flex-col items-center justify-center text-center p-10 absolute inset-0 bg-cover bg-center rounded-lg"
           style={{
-            backgroundImage: "url('/assets/images/bg-kelas.jpeg')",
-          }}
-        >
-          <div className="flex flex-col items-center justify-center text-center space-y-4 pb-10">
-            <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-              Ayo Jadi Lebih Sehat dan Bugar!
-            </h1>
-            <p className="mt-4 text-lg md:text-3xl font-semibold text-white">
-              Temukan Kelas Kebugaran yang Paling Tepat untukmu
-            </p>
-            <p className="mt-2 text-sm md:text-base text-white opacity-80">
-              Kami punya berbagai pilihan kelas kebugaran yang siap membantumu mencapai tujuan fitnessmu. Yuk, mulai sekarang!
-            </p>
-          </div>
+            backgroundImage: "url('https://images.unsplash.com/photo-1728486145245-d4cb0c9c3470?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+          }}>
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black opacity-40 rounded-lg"></div>
+
+          <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg z-10">
+            Ayo Jadi Lebih Sehat dan Bugar!
+          </h1>
+          <p className="mt-4 text-xl sm:text-2xl font-semibold text-white drop-shadow-lg z-10">
+            Temukan Kelas Kebugaran yang Paling Tepat untukmu
+          </p>
+          <p className="mt-2 text-sm sm:text-base text-white drop-shadow-lg z-10">
+            Kami punya berbagai pilihan kelas kebugaran yang siap membantumu mencapai tujuan fitnessmu. Yuk, mulai sekarang!
+          </p>
           <button
             onClick={scrollToKelas}
-            className="absolute bottom-5 p-3 text-white bg-green-500 hover:bg-green-500 bg-opacity-75 border border-green-500 rounded-full font-semibold shadow-lg transform transition-all hover:scale-105 focus:outline-none animate-bounce"
+            className="absolute bottom-5 p-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-semibold shadow-lg transform transition-all hover:scale-105 focus:outline-none animate-bounce z-10"
           >
-            <FaArrowDown size={18} /> {/* Ikon panah ke bawah */}
+            <FaArrowDown size={18} />
           </button>
 
         </div>
-      </section>
-      <section id='daftarkelas' className="flex flex-col items-center  py-16 lg:px-20 px-6  min-h-screen">
 
-        {/* Header with buttons and search bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl mb-8 space-y-4 md:space-y-0">
-          <div className="flex space-x-4">
+      </section>
+
+      {/* Daftar Kelas Section */}
+      <section id="daftarkelas" className="py-16 px-6 lg:px-20 min-h-screen bg-gray-50">
+        <div
+          className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl mb-8 space-y-4 md:space-y-0">
+          <div className="flex space-x-6">
             <Link to="/semua-kelas">
-              <button className="text-green-700 font-semibold hover:text-green-900">Semua Kelas</button>
+              <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
+                Semua Kelas
+              </button>
             </Link>
             <Link to="/daftar-pelatih">
-              <button className="text-green-700 font-semibold hover:text-green-900">Pilih Category</button>
+              <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
+                Pilih Kategori
+              </button>
             </Link>
-            <button className="text-green-700 font-semibold hover:text-green-900">Lokasi</button>
+            <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
+              Lokasi
+            </button>
           </div>
           <div className="relative flex items-center w-full md:w-auto">
-            <input
-              type="text"
-              placeholder="Cari Kelas"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500"
+            <input type="text" placeholder="Cari Kelas" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none
+        focus:border-green-500 transition-all"
             />
-            <button className="absolute right-2 text-green-500 hover:text-green-700">
+            <button className="absolute right-2 text-green-500 hover:text-green-700 transition-all">
               🔍
             </button>
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-center mb-8 text-green-800">DAFTAR KELAS PELATIHAN</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-green-800">
+          DAFTAR KELAS PELATIHAN
+        </h1>
 
         {/* Display all classes */}
-        <div className="  w-full">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {classes
             .filter((classInfo) =>
               classInfo.title.toLowerCase().includes(searchTerm.toLowerCase())
             )
             .map((classInfo) => (
-              <div key={classInfo.id} className="flex bg-white p-6 rounded-lg flex-col md:flex-row mb-6">
-                <img
-                  src={classInfo.image}
-                  alt={classInfo.title}
-                  className="w-full md:w-1/3 h-56 object-cover rounded-lg"
-                />
-                <div className="p-4 flex flex-col justify-between">
-                  <h2 className="text-xl font-bold mb-2">{classInfo.title}</h2>
-                  <p className="text-green-700 font-semibold">{classInfo.location}</p>
-                  <p className="text-gray-600">{classInfo.address}</p>
-                  <p className="text-gray-600">Jam Operasi: {classInfo.hours}</p>
-                  <p className="text-green-700 font-semibold">Harga: {classInfo.price}</p>
-                  <div className="mt-4 flex space-x-4">
-                    <Link to={`/kelas/${classInfo.id}`}
-                      onClick={handleDetailClick}>
-                      <button className="bg-blue-500 text-white px-4 py-2 text-[16px] font-semibold rounded-lg shadow hover:bg-blue-600 transition">
-                        Lihat Kelas
-                      </button>
-                    </Link>
+              <div key={classInfo.id}
+                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all transform hover:scale-105">
+                <img src={classInfo.image} alt={classInfo.title} className="w-full h-56 object-cover rounded-lg mb-4" />
+                <h2 className="text-xl font-semibold mb-2">{classInfo.title}</h2>
+                <p className="text-green-700 font-semibold">{classInfo.location}</p>
+                <p className="text-gray-600 text-sm">{classInfo.address}</p>
+                <p className="text-gray-600 text-sm">Jam Operasi: {classInfo.hours}</p>
+                <p className="text-green-700 font-semibold">Harga: {classInfo.price}</p>
+                <div className="mt-4 flex space-x-4">
+                  <Link to={`/kelas/${classInfo.id}`} onClick={handleDetailClick}>
                     <button
-                      onClick={() => openPopup(classInfo)}
-                      className="bg-green-500 text-white text-[16px] font-semibold px-4 py-2 rounded-lg shadow hover:bg-green-600 transition"
-                    >
-                      Daftar Kelas
+                      className="bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition-all">
+                      Lihat Kelas
                     </button>
-                  </div>
+                  </Link>
+                  <button onClick={() => openPopup(classInfo)}
+                    className="bg-green-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-green-600
+            transition-all"
+                  >
+                    Daftar Kelas
+                  </button>
                 </div>
               </div>
             ))}
         </div>
 
         {/* Conditionally render the DaftarKelasPopup */}
-        {isPopupOpen && (
-          <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />
-        )}
+        {isPopupOpen &&
+          <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />}
       </section>
     </>
-
-
   );
 };
 
