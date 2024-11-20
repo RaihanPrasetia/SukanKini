@@ -11,7 +11,7 @@ const Dashboard = () => {
             <AuthNavbar />
             <div className="container mx-auto p-4">
                 <Routes>
-                    <Route element={<Home />} />
+                    <Route path="home" element={<Home />} />
                     <Route path="settings" element={<Settings />} />
                 </Routes>
             </div>

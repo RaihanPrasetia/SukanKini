@@ -8,7 +8,9 @@ import Admin from './pages/Layouts/Admin';
 import Mitra from './pages/Layouts/Mitra';
 import Payment from './pages/Mitra/Payment';
 import AdminDashboard from './pages/Admin/AdminDashboard';
-import Profile from './pages/Admin/Profile';
+import ProfileMitra from './pages/Admin/ProfileMitra';
+import ProfileUser from './pages/Admin/ProfileUser';
+import ProfileTrainer from './pages/Admin/ProfileTrainer';
 import Pembayaran from './pages/Admin/Pembayaran';
 
 function AppRoutes() {
@@ -66,15 +68,15 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/pembayaran" element={<Pembayaran />} />
       {isAuthenticated ? (
         <>
           {userRole === 'user' && <Route path="*" element={<Dashboard />} />}
           {userRole === 'admin' && (
             <>
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/profile" element={<Profile />} />
-              <Route path="/admin/pembayaran" element={<Pembayaran />} />
+
             </>
           )}
           {userRole === 'mitra' && (
