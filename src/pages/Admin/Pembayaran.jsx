@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaTachometerAlt, FaUserFriends, FaUser, FaBoxOpen, FaSearch } from 'react-icons/fa';
 
 const App = () => {
   const [data, setData] = useState([
@@ -28,80 +29,90 @@ const App = () => {
     setViewedItem(null);
   };
 
-  const sidebarItems = ['Dashboard', 'Profil Karyawan', 'Pembayaran', 'Logout'];
+  const sidebarItems = [
+    { label: 'Dashboard', icon: '📄', page: 'dashboard' },
+    { label: 'Profil Mitra', icon: '👥', page: 'profilMitra' },
+    { label: 'Profil User', icon: '👤', page: 'profilUser' },
+    { label: 'Profil Trainer', icon: '🎓', page: 'profilTrainer' },
+    { label: 'Category', icon: '📦' },
+    { label: 'Pembayaran', icon: '💰', page: 'pembayaran' },
+    { label: 'Logout', icon: '🚪', page: 'logout' },
+  ];
 
   const filteredData = data.filter((item) =>
     item.nama.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="flex min-h-screen bg-gray-200">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-xl p-6 rounded-r-2xl flex flex-col items-center">
+      <aside className="w-64 bg-gradient-to-r from-blue-500 to-indigo-600 p-6 rounded-r-2xl flex flex-col items-center">
         <img
           src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="User Avatar"
-          className="rounded-full border-4 border-indigo-500 mb-4"
+          className="rounded-full border-4 border-white mb-4"
           style={{ width: '75px', height: '75px' }}
         />
-        <h2 className="text-2xl font-bold text-gray-700">Tegar</h2>
-        <p className="text-gray-400 mb-6">Admin</p>
-        <nav className="w-full space-y-3">
+        <h2 className="text-2xl font-bold text-white">Tegar</h2>
+        <p className="text-gray-200 mb-6">Admin</p>
+        <nav className="w-full space-y-4">
           {sidebarItems.map((item, index) => (
             <button
               key={index}
-              className="w-full flex items-center text-gray-700 px-4 py-2 text-lg hover:bg-indigo-100 hover:text-indigo-700 rounded-lg transition-all duration-300 ease-in-out"
+              className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
             >
-              <span className="mr-2">📄</span> {item}
+              <span className="mr-3 text-xl">{item.icon}</span> {item.label}
             </button>
           ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-4">DATA PEMBAYARAN</h1>
+      <main className="flex-1 p-8 bg-white rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">DATA PEMBAYARAN</h1>
 
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <div className="flex items-center mb-4">
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="flex items-center mb-6">
             <input
               type="text"
               placeholder="Cari nama..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-l px-4 py-2 w-full"
+              className="border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-r">🔍</button>
+            <button className="bg-indigo-600 text-white px-6 py-2 rounded-r-lg hover:bg-indigo-700 transition-all duration-200 ease-in">
+              <FaSearch />
+            </button>
           </div>
 
-          <table className="table-auto w-full border border-gray-200">
+          <table className="table-auto w-full border-collapse">
             <thead>
               <tr>
-                <th className="border px-4 py-2">No</th>
-                <th className="border px-4 py-2">Nama</th>
-                <th className="border px-4 py-2">Email</th>
-                <th className="border px-4 py-2">No Telepon</th>
-                <th className="border px-4 py-2">Status</th>
-                <th className="border px-4 py-2">Aksi</th>
+                <th className="border-b px-4 py-2 text-left">No</th>
+                <th className="border-b px-4 py-2 text-left">Nama</th>
+                <th className="border-b px-4 py-2 text-left">Email</th>
+                <th className="border-b px-4 py-2 text-left">No Telepon</th>
+                <th className="border-b px-4 py-2 text-left">Status</th>
+                <th className="border-b px-4 py-2 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {filteredData.map((item, index) => (
-                <tr key={item.id}>
-                  <td className="border px-4 py-2 text-center">{index + 1}</td>
-                  <td className="border px-4 py-2">{item.nama}</td>
-                  <td className="border px-4 py-2">{item.email}</td>
-                  <td className="border px-4 py-2">{item.noTelepon}</td>
-                  <td className="border px-4 py-2">{item.status}</td>
-                  <td className="border px-4 py-2 text-center">
-                    <div className="flex space-x-2 justify-center">
-                      <button className="bg-green-400 text-white px-2 py-1 rounded" onClick={() => handleApprove(item.id)}>
+                <tr key={item.id} className="hover:bg-gray-100">
+                  <td className="border-b px-4 py-2 text-center">{index + 1}</td>
+                  <td className="border-b px-4 py-2">{item.nama}</td>
+                  <td className="border-b px-4 py-2">{item.email}</td>
+                  <td className="border-b px-4 py-2">{item.noTelepon}</td>
+                  <td className="border-b px-4 py-2">{item.status}</td>
+                  <td className="border-b px-4 py-2 text-center">
+                    <div className="flex space-x-3 justify-center">
+                      <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all duration-200" onClick={() => handleApprove(item.id)}>
                         Disetujui
                       </button>
-                      <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => handleReject(item.id)}>
+                      <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-200" onClick={() => handleReject(item.id)}>
                         Ditolak
                       </button>
-                      <button className="bg-blue-400 text-white px-2 py-1 rounded" onClick={() => handleView(item)}>
+                      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-200" onClick={() => handleView(item)}>
                         Lihat
                       </button>
                     </div>
@@ -113,31 +124,21 @@ const App = () => {
         </div>
 
         {viewedItem && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full">
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center">
+            <div className="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-indigo-600">Detail Pembayaran</h2>
-                <button onClick={handleClose} className="text-gray-500 hover:text-gray-700">&times;</button>
+                <h2 className="text-2xl font-semibold text-indigo-600">Detail Pembayaran</h2>
+                <button onClick={handleClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
               </div>
 
               <div className="space-y-4">
-                <p className="text-[16px] font-medium text-gray-800"><strong>Nama:</strong> <span className="font-normal text-gray-600">{viewedItem.nama}</span></p>
-                <p className="text-[16px] font-medium text-gray-800"><strong>Email:</strong> <span className="font-normal text-gray-600">{viewedItem.email}</span></p>
-                <p className="text-[16px] font-medium text-gray-800"><strong>No Telepon:</strong> <span className="font-normal text-gray-600">{viewedItem.noTelepon}</span></p>
-                <p className="text-[16px] font-medium text-gray-800"><strong>Status:</strong> <span className="font-normal text-gray-600">{viewedItem.status}</span></p>
-                <p className="text-[16px] font-medium text-gray-800"><strong>Bank Tujuan:</strong> <span className="font-normal text-gray-600">{viewedItem.bankTujuan}</span></p>
-                <p className="text-[16px] font-medium text-gray-800"><strong>Total Pembayaran:</strong> <span className="font-normal text-gray-600">{viewedItem.total}</span></p>
-              </div>
-
-              <div className="mt-6">
-                <p className="text-[16px] font-medium text-gray-800"><strong>Bukti Pembayaran:</strong></p>
-                {viewedItem.buktiPembayaran && (
-                  <img
-                    src={`https://via.placeholder.com/150?text=${viewedItem.buktiPembayaran}`}
-                    alt="Bukti Pembayaran"
-                    className="mt-4 rounded-lg shadow-md transition-transform transform hover:scale-105 duration-300"
-                  />
-                )}
+                <p><strong>Nama:</strong> {viewedItem.nama}</p>
+                <p><strong>Email:</strong> {viewedItem.email}</p>
+                <p><strong>No Telepon:</strong> {viewedItem.noTelepon}</p>
+                <p><strong>Status:</strong> {viewedItem.status}</p>
+                <p><strong>Bank Tujuan:</strong> {viewedItem.bankTujuan}</p>
+                <p><strong>Bukti Pembayaran:</strong> <img src={viewedItem.buktiPembayaran} alt="Bukti Pembayaran" className="w-32 h-32 object-cover" /></p>
+                <p><strong>Total:</strong> {viewedItem.total}</p>
               </div>
             </div>
           </div>

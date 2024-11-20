@@ -7,8 +7,11 @@ import Admin from './pages/Layouts/Admin';
 import Mitra from './pages/Layouts/Mitra';
 import Payment from './pages/Mitra/Payment';
 import AdminDashboard from './pages/Admin/AdminDashboard';
-import Profile from './pages/Admin/Profile';
+import ProfileMitra from './pages/Admin/ProfileMitra';
+import ProfileUser from './pages/Admin/ProfileUser';
+import ProfileTrainer from './pages/Admin/ProfileTrainer';
 import Pembayaran from './pages/Admin/Pembayaran';
+import Category from './pages/Admin/Category';
 import ProtectedRoute from './contexts/ProtectedRoute'; // Import ProtectedRoute
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -65,38 +68,14 @@ function App() {
           />
 
           {/* Rute untuk pengguna dengan role "admin" */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute requiredRole="admin">
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/dashboard"
-            element={
-              <ProtectedRoute requiredRole="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/profile"
-            element={
-              <ProtectedRoute requiredRole="admin">
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/pembayaran"
-            element={
-              <ProtectedRoute requiredRole="admin">
-                <Pembayaran />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/profilemitra" element={<ProfileMitra />} />
+          <Route path="/admin/profileuser" element={<ProfileUser />} />
+          <Route path="/admin/profiletrainer" element={<ProfileTrainer />} />
+          <Route path="/admin/category" element={<Category />} />
+          <Route path="/admin/pembayaran" element={<Pembayaran />} />
+
 
           {/* Rute untuk pengguna dengan role "mitra" */}
           <Route
