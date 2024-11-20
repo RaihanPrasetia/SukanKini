@@ -117,17 +117,13 @@ export default function HomeMitra() {
         }
 
         try {
-            // Mengirim data pembayaran ke service
             const response = await paymentService.createPayment({
                 bankId: bankInfo.id,
                 total: selectedPromo.price,
                 paymentProof,
             });
 
-            // Debugging: Cek response untuk mengetahui struktur data yang dikembalikan
-            console.log(response);  // Hapus ini setelah perbaikan
 
-            // Cek apakah ada payment data dalam response
             if (response && response.payment) {
                 Swal.fire({
                     title: "Sukses",
@@ -136,10 +132,8 @@ export default function HomeMitra() {
                     confirmButtonText: "OK",
                 });
 
-                // Set status pembayaran selesai
                 setIsPaymentCompleted(true);
 
-                // Refresh data pembayaran setelah sukses
                 const updatedPayments = await paymentService.getPaymentStatus();
                 setPayments(updatedPayments);
 

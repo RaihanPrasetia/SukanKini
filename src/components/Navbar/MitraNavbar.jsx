@@ -6,7 +6,7 @@ import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome ico
 
 const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const { logout, userName, user } = useAuth(); // Get userName and user from useAuth
+    const { logout, user } = useAuth(); // Get userName and user from useAuth
     const navigate = useNavigate();
     const location = useLocation(); // Hook to get the current location
 
@@ -122,7 +122,6 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                                 className="h-12 w-12 rounded-full"
                             />
                         )}
-                        <span className='text-white font-bold text-xl hidden lg:block'>{userName || "Profile"}</span> {/* Display userName here */}
                     </div>
 
                     {/* Dropdown Menu for Profile and Logout */}

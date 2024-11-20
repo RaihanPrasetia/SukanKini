@@ -13,7 +13,6 @@ export const getUserProfile = async (token) => {
             },
         });
 
-        console.log("Response Data:", response.data);
 
         const userData = response.data.user;
 
@@ -39,11 +38,9 @@ export const editUserProfile = async (token, updatedData) => {
         });
 
         // Log the entire response object for more details
-        console.log("Full Response:", response);
 
         // Check if the response has the expected user data
         if (response.data && response.data.user) {
-            console.log("Updated User Data:", response.data.user);
             return response.data.user;
         } else {
             console.error("Unexpected response format", response);

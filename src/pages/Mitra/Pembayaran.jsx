@@ -26,7 +26,6 @@ const Pembayaran = () => {
                     bank: payment.bank || {},
                 }));
                 setPayments(formattedPayments);
-                console.log(formattedPayments);
             } catch (error) {
                 Swal.fire({
                     title: "Error",

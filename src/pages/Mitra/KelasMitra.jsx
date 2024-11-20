@@ -13,26 +13,24 @@ const KelasMitra = () => {
         name: '',
         category: '',
         trainer: '',
-        schedules: [], // Jadwal akan disimpan sebagai array
+        schedules: [],
         address: '',
         price: '',
-        image_path: null, // File gambar
+        image_path: null,
     });
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editingClass, setEditingClass] = useState(null); // For editing class data
+    const [editingClass, setEditingClass] = useState(null);
 
     const [newSchedule, setNewSchedule] = useState({ hari: '', jam: '' });
     const [classes, setClasses] = useState([]);
-    const [categories, setCategories] = useState([]); // State for categories
-    const [trainers, setTrainers] = useState([]); // State for trainers
+    const [categories, setCategories] = useState([]);
+    const [trainers, setTrainers] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // Fetch classes data function
 
     const handleEdit = async (kelas) => {
-        setEditingClass(kelas); // Set class data to editing state
+        setEditingClass(kelas);
         try {
-            // Fetch categories and trainers when editing a class
             const [categoryData, trainerData] = await Promise.all([
                 categoryService.getCategory(),
                 trainerService.getTrainer(),
@@ -40,17 +38,16 @@ const KelasMitra = () => {
             setCategories(categoryData);
             setTrainers(trainerData);
 
-            // Populate the form data with the class information
             setFormData({
                 name: kelas.name,
-                category: kelas.category.id, // Assuming category has an 'id' field
-                trainer: kelas.trainer.id,   // Assuming trainer has an 'id' field
+                category: kelas.category.id,
+                trainer: kelas.trainer.id,
                 address: kelas.address,
-                schedules: kelas.schedules || [],  // Ensuring schedules exist
+                schedules: kelas.schedules || [],
                 price: kelas.price,
-                image_path: kelas.image_path || '', // Default empty if no image
+                image_path: kelas.image_path || '',
             });
-            setIsEditModalOpen(true); // Open the modal after data is set
+            setIsEditModalOpen(true);
         } catch (error) {
             Swal.fire({
                 title: 'Error',
@@ -67,20 +64,19 @@ const KelasMitra = () => {
         try {
             setLoading(true);
 
-            const classId = editingClass?.id; // Ensure the classId exists
+            const classId = editingClass?.id;
 
 
             const formDataToSubmit = {
                 name: formData.name,
-                category_id: parseInt(formData.category),  // Convert to integer
+                category_id: parseInt(formData.category),
                 alamat: formData.address,
                 schedules: formData.schedules,
-                trainer_id: parseInt(formData.trainer),  // Convert to integer
+                trainer_id: parseInt(formData.trainer),
                 image_path: formData.image_path,
                 price: formData.price
             };
 
-            console.log("Sending data to API:", formDataToSubmit);
 
             await classService.updateClass(classId,
                 formDataToSubmit.name,
@@ -130,7 +126,6 @@ const KelasMitra = () => {
             try {
                 const classData = await classService.getClasses();
                 setClasses(classData); // Update state with new class data
-                console.log("Classes fetched:", classData); // Check the data in console
             } catch (error) {
                 Swal.fire({
                     title: 'Error',

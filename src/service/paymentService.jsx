@@ -64,8 +64,6 @@ const getPayments = async () => {
             },
         });
 
-        // Check if the response contains payments data
-        console.log(response.data.payments) // Mapping each payment response to the Payment model
         if (response.data && response.data.payments) {
             return response.data.payments.map(payment => new Payment(payment));
         } else {
