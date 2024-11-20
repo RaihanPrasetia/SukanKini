@@ -1,51 +1,33 @@
 // App.jsx
 import React, { useState } from 'react';
-import { FaSearch, FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-const App = () => {
-  const sidebarItems = [
-    { label: 'Dashboard', icon: '📄', page: 'dashboard' },
-    { label: 'Profil Mitra', icon: '👥', page: 'profilMitra' },
-    { label: 'Profil User', icon: '👤', page: 'profilUser' },
-    { label: 'Profil Trainer', icon: '🎓', page: 'profilTrainer' },
-    { label: 'Category', icon: '📦' },
-    { label: 'Pembayaran', icon: '💰', page: 'pembayaran' },
-    { label: 'Logout', icon: '🚪', page: 'logout' },
+export default function ProfilUser() {
+
+  const initialUserData = [
+    {
+      id: 1,
+      name: 'User A',
+      email: 'userA@example.com',
+      phone: '081234567890',
+      role: 'Admin',
+    },
+    {
+      id: 2,
+      name: 'User B',
+      email: 'userB@example.com',
+      phone: '081298765432',
+      role: 'Editor',
+    },
+    {
+      id: 3,
+      name: 'User C',
+      email: 'userC@example.com',
+      phone: '081334455667',
+      role: 'Viewer',
+    },
   ];
 
-  return (
-    <div className="flex min-h-screen bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-r from-blue-500 to-indigo-600 p-6 rounded-r-2xl flex flex-col items-center">
-        <img
-          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="User Avatar"
-          className="rounded-full border-4 border-white mb-4"
-          style={{ width: '75px', height: '75px' }}
-        />
-        <h2 className="text-2xl font-bold text-white">Tegar</h2>
-        <p className="text-gray-200 mb-6">Admin</p>
-        <nav className="w-full space-y-4">
-          {sidebarItems.map((item, index) => (
-            <button
-              key={index}
-              className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
-            >
-              <span className="mr-3 text-xl">{item.icon}</span> {item.label}
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8 space-y-8">
-        <ProfilUser />
-      </main>
-    </div>
-  );
-};
-
-const ProfilUser = () => {
   const [userData, setUserData] = useState(initialUserData);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -101,9 +83,8 @@ const ProfilUser = () => {
             {filteredUsers.map((user, index) => (
               <tr
                 key={user.id}
-                className={`${
-                  index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                } hover:bg-gray-200`}
+                className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                  } hover:bg-gray-200`}
               >
                 <td className="p-4">{index + 1}</td>
                 <td className="p-4">{user.name}</td>
@@ -133,28 +114,3 @@ const ProfilUser = () => {
   );
 };
 
-const initialUserData = [
-  {
-    id: 1,
-    name: 'User A',
-    email: 'userA@example.com',
-    phone: '081234567890',
-    role: 'Admin',
-  },
-  {
-    id: 2,
-    name: 'User B',
-    email: 'userB@example.com',
-    phone: '081298765432',
-    role: 'Editor',
-  },
-  {
-    id: 3,
-    name: 'User C',
-    email: 'userC@example.com',
-    phone: '081334455667',
-    role: 'Viewer',
-  },
-];
-
-export default App;

@@ -1,50 +1,13 @@
 import React, { useState } from 'react';
 import { FaSearch, FaPlusCircle, FaEdit, FaTrashAlt, FaUserTie, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 
-const App = () => {
-  const sidebarItems = [
-    { label: 'Dashboard', icon: '📄', page: 'dashboard' },
-    { label: 'Profil Mitra', icon: '👥', page: 'profilMitra' },
-    { label: 'Profil User', icon: '👤', page: 'profilUser' },
-    { label: 'Profil Trainer', icon: '🎓', page: 'profilTrainer' },
-    { label: 'Category', icon: '📦' },
-    { label: 'Pembayaran', icon: '💰', page: 'pembayaran' },
-    { label: 'Logout', icon: '🚪', page: 'logout' },
+
+export default function ProfilMitra() {
+  const initialMitraData = [
+    { id: 1, name: 'Mitra A', email: 'mitra@a.com', address: 'Alamat A', phone: '081234567890' },
+    { id: 2, name: 'Mitra B', email: 'mitra@b.com', address: 'Alamat B', phone: '081234567891' },
+    { id: 3, name: 'Mitra C', email: 'mitra@c.com', address: 'Alamat C', phone: '081234567892' },
   ];
-
-  return (
-    <div className="flex min-h-screen bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-r from-blue-500 to-indigo-600 p-6 rounded-r-2xl flex flex-col items-center">
-        <img
-          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="User Avatar"
-          className="rounded-full border-4 border-white mb-4"
-          style={{ width: '75px', height: '75px' }}
-        />
-        <h2 className="text-2xl font-bold text-white">Tegar</h2>
-        <p className="text-gray-200 mb-6">Admin</p>
-        <nav className="w-full space-y-4">
-          {sidebarItems.map((item, index) => (
-            <button
-              key={index}
-              className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
-            >
-              <span className="mr-3 text-xl">{item.icon}</span> {item.label}
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8 space-y-8">
-        <ProfilMitra />
-      </main>
-    </div>
-  );
-};
-
-const ProfilMitra = () => {
   const [mitraData, setMitraData] = useState(initialMitraData);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -130,11 +93,3 @@ const ProfilMitra = () => {
   );
 };
 
-// Data Mitra Awal
-const initialMitraData = [
-  { id: 1, name: 'Mitra A', email: 'mitra@a.com', address: 'Alamat A', phone: '081234567890' },
-  { id: 2, name: 'Mitra B', email: 'mitra@b.com', address: 'Alamat B', phone: '081234567891' },
-  { id: 3, name: 'Mitra C', email: 'mitra@c.com', address: 'Alamat C', phone: '081234567892' },
-];
-
-export default App;
