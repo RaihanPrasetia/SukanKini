@@ -77,7 +77,7 @@ export default function HomeMitra() {
         // Fetch data pembayaran
         const fetchPayments = async () => {
             try {
-                const paymentData = await paymentService.getPayments();
+                const paymentData = await paymentService.getPaymentStatus();
                 setPayments(paymentData);
             } catch (error) {
                 Swal.fire({
@@ -140,7 +140,7 @@ export default function HomeMitra() {
                 setIsPaymentCompleted(true);
 
                 // Refresh data pembayaran setelah sukses
-                const updatedPayments = await paymentService.getPayments();
+                const updatedPayments = await paymentService.getPaymentStatus();
                 setPayments(updatedPayments);
 
                 closePaymentModal(); // Menutup modal pembayaran

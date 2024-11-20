@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     const checkUserPaymentStatus = async () => {
       try {
-        const payments = await paymentService.getPayments();
+        const payments = await paymentService.getPaymentStatus();
         if (payments && payments.length > 0) {
           const activePayment = payments[0];
           setIsPaymentActive(activePayment.paymentStatus === 'Diterima');

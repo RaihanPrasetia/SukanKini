@@ -19,7 +19,6 @@ const Class = sequelize.define('Class', {
             model: 'Category',
             key: 'id',
         },
-        onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
     },
     alamat: {

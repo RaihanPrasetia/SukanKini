@@ -67,7 +67,7 @@ const getClassById = async (req, res) => {
                         {
                             model: User,
                             as: 'user',
-                            attributes: ['id', 'name', 'kota', 'alamat']
+                            attributes: ['id', 'name', 'kota', 'alamat', 'phone_number']
                         }
                     ]
                 }

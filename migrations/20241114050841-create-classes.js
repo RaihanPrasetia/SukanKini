@@ -21,7 +21,6 @@ module.exports = {
           model: 'Categories',  // Merujuk ke tabel Categories di database
           key: 'id',
         },
-        onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
       alamat: {
@@ -35,7 +34,6 @@ module.exports = {
           model: 'Trainers',  // Merujuk ke tabel Trainers di database
           key: 'id',
         },
-        onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
       createdBy: {
@@ -45,7 +43,6 @@ module.exports = {
           model: 'Users',  // Merujuk ke tabel Users di database
           key: 'id',
         },
-        onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
       createdAt: {

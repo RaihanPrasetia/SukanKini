@@ -1,19 +1,17 @@
-export default class Bank {
+export default class Trainer {
     constructor({
         id,
-        an,
-        brand,
-        no_rek,
-        createdBy,
+        name,
+        age,
+        image_path,
         createdAt,
         updatedAt,
         deletedAt = null,
     }) {
         this.id = id; // ID Bank
-        this.an = an; // Nama pemilik rekening
-        this.brand = brand; // Nama bank
-        this.no_rek = no_rek; // Nomor rekening
-        this.createdBy = createdBy; // ID pembuat data
+        this.name = name; // Nama pemilik rekening
+        this.age = age; // Nama bank
+        this.imagePath = image_path; // Nomor rekening
         this.createdAt = createdAt ? new Date(createdAt) : null; // Tanggal data dibuat
         this.updatedAt = updatedAt ? new Date(updatedAt) : null; // Tanggal data diperbarui
         this.deletedAt = deletedAt ? new Date(deletedAt) : null; // Tanggal data dihapus (jika soft-delete)

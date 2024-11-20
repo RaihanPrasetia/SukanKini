@@ -1,4 +1,4 @@
-const { Payment, User, Bank, Class } = require('../../associations');
+const { Payment, User, Bank, Class, ClassSchedule } = require('../../associations');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -53,12 +53,18 @@ const getUserPayments = async (req, res) => {
             where: {
                 [Op.or]: [
                     { user_id: userId },  // Menyaring berdasarkan user_id
-                    { createdBy: userId }  // Menyaring berdasarkan createdBy
                 ]
             },
             include: [
                 { model: Bank, as: 'bank', attributes: ['an', 'no_rek', 'brand'] },  // Menyertakan informasi bank
-                { model: Class, as: 'class', attributes: ['name', 'category_id'] },  // Menyertakan informasi kelas (jika ada)
+                {
+                    model: Class, as: 'class', attributes: ['name', 'category_id'],
+                    include: [
+                        {
+                            model: ClassSchedule, as: 'schedules', attributes: ['hari', 'jam']
+                        }
+                    ]
+                },  // Menyertakan informasi kelas (jika ada)
                 { model: User, as: 'from', attributes: ['name', 'email', 'phone_number'] },  // Menyertakan informasi pengguna
             ],
             attributes: ['id', 'bukti', 'status_pembayaran', 'total'],

@@ -1,42 +1,77 @@
 export default class Class {
     constructor({
         id,
-        bukti,
-        status_pembayaran,
-        total,
-        bank,
-        class: classInfo = null,
-        from,
+        name,
+        alamat,
+        price,
+        image_path,
+        owner,
+        category,
+        trainer,
+        schedules,
+        members,
+        createdAt,
+        updatedAt,
+        deletedAt = null,
     }) {
         this.id = id;
-        this.paymentProof = bukti;
-        this.paymentStatus = status_pembayaran;
-        this.total = total;
-        this.bank = {
-            accountName: bank.an,
-            accountNumber: bank.no_rek,
-            bankBrand: bank.brand,
+        this.name = name;
+        this.address = alamat;
+        this.price = price;
+        this.imagePath = image_path;
+        this.createdAt = createdAt ? new Date(createdAt) : null; // Tanggal data dibuat
+        this.updatedAt = updatedAt ? new Date(updatedAt) : null; // Tanggal data diperbarui
+        this.deletedAt = deletedAt ? new Date(deletedAt) : null; // Tanggal data dihapus (jika soft-delete)
+
+        this.owner = {
+            id: owner.id,
+            name: owner.name
         };
-        this.classInfo = classInfo; // Kelas terkait, jika ada
-        this.from = {
-            name: from.name,
-            email: from.email,
-            phoneNumber: from.phone_number,
+
+        this.category = {
+            id: category.id,
+            name: category.name
         };
+
+        this.trainer = {
+            id: trainer.id,
+            name: trainer.name,
+            age: trainer.age,
+            imagePath: trainer.image_path
+        };
+
+        this.schedules = schedules.map(schedule => ({
+            id: schedule.id,
+            hari: schedule.hari,
+            jam: schedule.jam
+        }));
+
+        this.members = members.map(member => ({
+            id: member.id,
+            userId: member.user_id,
+            classId: member.class_id,
+            user: {
+                id: member.user.id,
+                name: member.user.name,
+                city: member.user.kota,
+                address: member.user.alamat,
+                phone: member.user.phone_number
+            }
+        }));
     }
 
-    // Properti terhitung untuk mengecek apakah pembayaran diterima
-    get isAccepted() {
-        return this.paymentStatus === "Diterima";
+    // A method to check if the class has any members
+    get hasMembers() {
+        return this.members.length > 0;
     }
 
-    // Properti terhitung untuk mengecek apakah pembayaran ditolak
-    get isRejected() {
-        return this.paymentStatus === "Ditolak";
+    // Method to get the trainer's full name
+    get trainerFullName() {
+        return `${this.trainer.name} (Age: ${this.trainer.age})`;
     }
 
-    // Properti terhitung untuk mengecek apakah pembayaran sedang diproses
-    get isInProcess() {
-        return this.paymentStatus === "Diproses";
+    // Method to display class schedules
+    get classSchedule() {
+        return this.schedules.map(schedule => `${schedule.day} at ${schedule.time}`).join(', ');
     }
 }
