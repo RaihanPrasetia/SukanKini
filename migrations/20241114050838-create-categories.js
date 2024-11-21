@@ -12,6 +12,7 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
         unique: true,  // Menambahkan aturan unik pada kolom name
       },

@@ -29,10 +29,8 @@ const createCategory = async (req, res) => {
 // Get all categories created by the logged-in user
 const getCategories = async (req, res) => {
     try {
-        const userId = req.userId; // ID pengguna yang sedang login
 
         const categories = await Category.findAll({
-            where: { createdBy: userId },
             attributes: ['id', 'name', 'createdAt', 'updatedAt'],
             order: [['updatedAt', 'DESC']],
         });

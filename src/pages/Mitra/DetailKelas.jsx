@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import classService from '../../service/classService'; // Import the service function
-import { FaUserAlt, FaPhoneAlt, FaCity } from 'react-icons/fa'; // Icons for profile
+import { FaUserAlt, FaCity } from 'react-icons/fa'; // Icons for profile
 
 const DetailKelas = () => {
     const { id } = useParams(); // Get the class ID from the URL
@@ -13,7 +13,8 @@ const DetailKelas = () => {
         const fetchClassDetails = async () => {
             try {
                 const classData = await classService.getClassById(id); // Fetch class data using the service function
-                setKelas(classData); // Set the fetched class data into the state
+                setKelas(classData);
+                console.log(classData)
             } catch (error) {
                 console.error('Error fetching class details:', error);
             }
@@ -47,9 +48,11 @@ const DetailKelas = () => {
                 <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">{kelas.name}</h2>
 
                 {/* Class Details Section */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
-                    <div className="flex flex-col sm:w-1/2 space-y-4">
-                        <div className="bg-blue-50 p-4 rounded-lg shadow-md">
+                <div className="flex flex-col lg:flex-row items-start sm:items-center justify-between w-full">
+
+                    <div className="flex flex-col justify-between items-center w-1/2">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-md w-full">
+                            <h3 className='text-2xl font-semibold mb-2 text-center underline'>Data Kelas</h3>
                             <p className="text-lg text-gray-700">
                                 <strong className="text-gray-900">Kategori:</strong> {kelas.category.name}
                             </p>
@@ -69,7 +72,30 @@ const DetailKelas = () => {
                                     </li>
                                 ))}
                             </ul>
+
                         </div>
+
+                    </div>
+                    <div className="flex  flex-col justify-center items-end w-full">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-md w-1/2">
+                            <h3 className='text-2xl font-semibold mb-2 text-center underline'>Data Trainer</h3>
+                            <p className="text-lg text-gray-700">
+                                <strong className="text-gray-900">Name:</strong> {kelas.trainer.name}
+                            </p>
+                            <p className="text-lg text-gray-700">
+                                <strong className="text-gray-900">Telepon: </strong>{kelas.trainer.phone}
+                            </p>
+                            <p className="text-lg text-gray-700">
+                                <strong className="text-gray-900">Alamat:</strong> {kelas.trainer.alamat}
+                            </p>
+                            <p className="text-lg text-gray-700">
+                                <strong className="text-gray-900">Age: </strong>
+                                {kelas.trainer.age} Tahun
+                            </p>
+                            <p>{kelas.trainer.deletedAt}</p>
+
+                        </div>
+
                     </div>
                 </div>
 

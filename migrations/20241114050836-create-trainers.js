@@ -22,6 +22,15 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,  // Menambahkan aturan null jika tidak ada gambar
       },
+      phone_number: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,  // Menambahkan aturan null jika tidak ada gambar
+      },
+      alamat: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false,

@@ -90,12 +90,16 @@ const seedData = async () => {
       name: 'Natalie Rose',
       age: 32,
       image_path: 'pelatih1.jpg',
+      alamat: 'Jalan Merpati Blok E no 32',
+      phone_number: '086735243712',
       createdBy: mitraUser.id,
     })
     await Trainer.create({
       name: 'Natasha Willona',
       age: 32,
       image_path: 'pelatih1.jpg',
+      alamat: 'Jalan Merpati Blok E no 31',
+      phone_number: '08629633483',
       createdBy: mitraUser.id,
     })
     await Class.create({

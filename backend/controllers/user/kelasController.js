@@ -129,7 +129,9 @@ const getClassById = async (req, res) => {
                 {
                     model: Trainer,
                     as: 'trainer',
-                    attributes: ['id', 'name', 'image_path']
+                    attributes: ['id', 'name', 'image_path'],
+                    where: { deletedAt: null },
+                    paranoid: true,
                 },
                 {
                     model: User,
@@ -146,14 +148,12 @@ const getClassById = async (req, res) => {
 
         // Get the createdBy value and category of the retrieved class
         const classData = allClass[0];
-        const createdBy = classData.createdBy;
         const categoryId = classData.category_id;
 
         // Retrieve related/recommended classes - for example, same category
         const relatedClasses = await Class.findAll({
             where: {
                 [Op.or]: [
-                    { createdBy: createdBy },  // Menyaring berdasarkan user_id
                     { category_id: categoryId },  // Menyaring berdasarkan user_id
                 ]
             },
@@ -213,7 +213,9 @@ const getAllClass = async (req, res) => {
                 {
                     model: Trainer,
                     as: 'trainer',
-                    attributes: ['id', 'name', 'image_path']
+                    attributes: ['id', 'name', 'image_path'],
+                    where: { deletedAt: null },
+                    paranoid: false,
                 },
                 {
                     model: User,

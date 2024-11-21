@@ -24,6 +24,15 @@ const Trainer = sequelize.define('Trainer', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    phone_number: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,  // Menambahkan aturan null jika tidak ada gambar
+    },
+    alamat: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
 
     createdBy: {
         type: DataTypes.INTEGER,
@@ -38,8 +47,8 @@ const Trainer = sequelize.define('Trainer', {
 
 }, {
     timestamps: true,
-    paranoid: true, // Enables soft deletes
-    deletedAt: 'deletedAt', // Automatically adds createdAt and updatedAt fields
+    paranoid: true,  // Enables soft delete functionality
+    deletedAt: 'deletedAt',  // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = Trainer;

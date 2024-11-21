@@ -70,7 +70,7 @@ export const register = async ({ name, email, password }) => {
     }; // Return the JSON response, which should include the token
 };
 
-export const registerMitra = async ({ name, email, password, kota, alamat, bank, no_rek, an }) => {
+export const registerMitra = async ({ name, email, password, kota, alamat, brand, no_rek, an }) => {
     try {
         const response = await fetch(`${apiUrl}/register-mitra`, { // Assuming `/register-mitra` is the endpoint for mitra registration
             method: 'POST',
@@ -84,7 +84,7 @@ export const registerMitra = async ({ name, email, password, kota, alamat, bank,
                 password,
                 kota,
                 alamat,
-                bank,
+                brand,
                 no_rek,
                 an,
             }),

@@ -40,6 +40,8 @@ export default class Class {
             name: trainer.name || "Unknown",
             age: trainer.age || "Unknown",
             imagePath: trainer.image_path || "",
+            phone: trainer.phone_number || "",
+            alamat: trainer.alamat || "",
         };
 
         this.schedules = Array.isArray(schedules)

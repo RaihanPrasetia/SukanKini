@@ -11,7 +11,7 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
     const [email, setEmail] = useState('');
     const [kota, setKota] = useState('');
     const [alamat, setAlamat] = useState('');
-    const [bank, setBank] = useState('');
+    const [brand, setBrand] = useState('');
     const [no_rek, setNorek] = useState('');
     const [an, setAn] = useState('');
     const [password, setPassword] = useState('');
@@ -36,7 +36,7 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
         }
         if (!kota.trim()) newErrors.kota = 'Kota tidak boleh kosong.';
         if (!alamat.trim()) newErrors.alamat = 'Alamat tidak boleh kosong.';
-        if (!bank.trim()) newErrors.bank = 'Isi Nama bank.';
+        if (!brand.trim()) newErrors.brand = 'Isi Nama brand.';
         if (!no_rek.trim()) newErrors.no_rek = 'Isi Nomor rekening.';
         if (!an.trim()) newErrors.an = 'Atas nama';
         return newErrors;
@@ -70,7 +70,7 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
         console.log('Generated OTP:', otp);
 
         // Send user data and OTP
-        onSendOTPMitra({ otp, name, email, password, kota, alamat, bank, no_rek, an }); // Call the function to proceed to the OTP step
+        onSendOTPMitra({ otp, name, email, password, kota, alamat, brand, no_rek, an }); // Call the function to proceed to the OTP step
     };
 
 
@@ -151,13 +151,13 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
                                         className="border-yellow-300 focus:ring-yellow-400"
                                         type="text"
                                         placeholder="Nama Bank"
-                                        value={bank}
+                                        value={brand}
                                         onChange={(e) => {
-                                            setBank(e.target.value);
-                                            setErrors((prev) => ({ ...prev, bank: undefined }));
+                                            setBrand(e.target.value);
+                                            setErrors((prev) => ({ ...prev, brand: undefined }));
                                         }}
                                     />
-                                    {errors.bank && <p className="text-red-500">{errors.bank}</p>}
+                                    {errors.brand && <p className="text-red-500">{errors.brand}</p>}
                                 </div>
                                 <div className="w-full">
                                     <FormInput

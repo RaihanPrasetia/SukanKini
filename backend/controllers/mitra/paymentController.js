@@ -88,7 +88,7 @@ const getStatusPayments = async (req, res) => {
 
         const payments = await Payment.findAll({
             where: {
-                [Op.or]: [
+                [Op.and]: [
                     { user_id: 1 },
                     { createdBy: userId }
                 ]

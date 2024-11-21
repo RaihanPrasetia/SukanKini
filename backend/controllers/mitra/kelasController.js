@@ -1,6 +1,8 @@
 const { Class, User, Category, Trainer, ClassSchedule, Memberships } = require('../../associations');
 const path = require('path');
 const fs = require('fs');
+const { Op } = require('sequelize');
+
 
 const getUserClasses = async (req, res) => {
     try {
@@ -11,7 +13,16 @@ const getUserClasses = async (req, res) => {
             include: [
                 { model: User, as: 'owner', attributes: ['id', 'name'] },
                 { model: Category, as: 'category', attributes: ['id', 'name'] },
-                { model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path'] },
+                {
+                    model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number'],
+                    where: {
+                        [Op.or]: [
+                            { deletedAt: null }, // Trainer aktif
+                            { deletedAt: { [Op.ne]: null } } // Trainer telah dihapus
+                        ]
+                    },
+                    paranoid: false,
+                },
                 {
                     model: ClassSchedule,
                     as: 'schedules',  // Use the alias defined in the association
@@ -53,7 +64,7 @@ const getClassById = async (req, res) => {
             include: [
                 { model: User, as: 'owner', attributes: ['id', 'name'] },
                 { model: Category, as: 'category', attributes: ['id', 'name'] },
-                { model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path'] },
+                { model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number'] },
                 {
                     model: ClassSchedule,
                     as: 'schedules',

@@ -8,7 +8,7 @@ const { getTrainers, createTrainer, updateTrainer, deleteTrainer, upload } = req
 router.get('/trainers', upload.none(), authenticateJWT, getTrainers);
 router.post('/trainers/create', upload.single('image_path'), authenticateJWT, createTrainer);
 router.put('/trainers/update/:id', upload.single('image_path'), authenticateJWT, updateTrainer);
-router.post('/trainers/delete/:id', upload.none(), authenticateJWT, deleteTrainer);
+router.delete('/trainers/delete/:id', upload.none(), authenticateJWT, deleteTrainer);
 
 
 

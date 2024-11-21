@@ -10,7 +10,12 @@ const Bank = require('./models/bankModel');
 // Define Associations
 Class.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
 Class.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
-Class.belongsTo(Trainer, { foreignKey: 'trainer_id', as: 'trainer' });
+Class.belongsTo(Trainer, {
+    foreignKey: 'trainer_id',
+    as: 'trainer',
+    paranoid: true
+});
+
 Class.hasMany(ClassSchedule, { foreignKey: 'class_id', as: 'schedules' });
 Class.hasMany(Memberships, { foreignKey: 'class_id', as: 'members' });
 

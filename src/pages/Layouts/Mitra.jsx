@@ -5,6 +5,7 @@ import HomeMitra from '../Mitra/HomeMitra';
 import MitraNavbar from '../../components/Navbar/MitraNavbar';
 import ProfileMitra from '../Mitra/ProfileMitra';
 import KelasMitra from '../Mitra/KelasMitra';
+import Trainer from '../Mitra/Trainer';
 import NotifMitra from '../Mitra/NotifMitra';
 import Pembayaran from '../Mitra/Pembayaran';
 import DetailKelas from '../Mitra/DetailKelas'
@@ -28,6 +29,7 @@ const Mitra = () => {
                         <Route path="/profile" element={<ProfileMitra />} />
                         <Route path="/kelas" element={<KelasMitra />} />
                         <Route path="/kelas/:id" element={<DetailKelas />} />
+                        <Route path="/trainer" element={<Trainer />} />
                         <Route path="/notif" element={<NotifMitra />} />
                         <Route path="/pembayaran" element={<Pembayaran />} />
                     </Routes>

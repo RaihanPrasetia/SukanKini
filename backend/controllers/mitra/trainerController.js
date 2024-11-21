@@ -48,12 +48,20 @@ const upload = multer({
 const createTrainer = async (req, res) => {
     try {
         const userId = req.userId; // ID pengguna yang sedang login
-        const { name, age, } = req.body;
+        const { name, age, alamat, phone_number } = req.body;
 
         // Validasi input
-        if (!name || !age) {
+        if (!name || !age || !alamat || !phone_number) {
             return res.status(400).json({ message: 'Missing required fields: name, age' });
         }
+
+        if (phone_number) {
+            const phoneExists = await Trainer.findOne({ where: { phone_number } });
+            if (phoneExists) {
+                return res.status(400).json({ message: 'Phone number already exists.' });
+            }
+        }
+
         let imagePath = null;
         if (req.file) {
             imagePath = `${req.file.filename}`;
@@ -63,13 +71,17 @@ const createTrainer = async (req, res) => {
                 fs.mkdirSync(dir, { recursive: true });
             }
         } else {
-            return res.status(400).json({ message: 'Missing payment proof (photo)' });
+            return res.status(400).json({ message: 'Missing image proof (photo)' });
         }
+
+
         // Buat data trainer baru
         const newTrainer = await Trainer.create({
             name,
             age,
             image_path: imagePath,
+            phone_number,
+            alamat,
             createdBy: userId,
         });
 
@@ -88,13 +100,10 @@ const getTrainers = async (req, res) => {
         // Cari semua trainer yang dibuat oleh user yang login
         const trainers = await Trainer.findAll({
             where: { createdBy: userId },
-            attributes: ['id', 'name', 'age', 'image_path'], // Pilih atribut yang diperlukan
+            attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number'], // Pilih atribut yang diperlukan
             order: [['createdAt', 'DESC']], // Urutkan berdasarkan waktu pembuatan terbaru
         });
 
-        if (!trainers || trainers.length === 0) {
-            return res.status(404).json({ message: 'No trainers found' });
-        }
 
         res.status(200).json({ trainers });
     } catch (error) {
@@ -107,7 +116,7 @@ const updateTrainer = async (req, res) => {
     try {
         const userId = req.userId; // ID pengguna yang sedang login
         const trainerId = req.params.id; // ID Trainer dari URL params
-        const { name, age } = req.body; // Data yang akan diupdate
+        const { name, age, phone_number, alamat } = req.body; // Data yang akan diupdate
 
         // Cari trainer berdasarkan ID dan validasi createdBy
         const trainer = await Trainer.findOne({ where: { id: trainerId, createdBy: userId } });
@@ -119,6 +128,8 @@ const updateTrainer = async (req, res) => {
         // Update hanya kolom yang diberikan dalam request
         if (name) trainer.name = name;
         if (age) trainer.age = age;
+        if (phone_number) trainer.phone_number = phone_number;
+        if (alamat) trainer.alamat = alamat;
 
         // Handle update image file jika ada file baru yang diunggah
         if (req.file) {
@@ -160,7 +171,10 @@ const deleteTrainer = async (req, res) => {
         }
 
         // Hapus trainer
-        await trainer.destroy();
+        const deleteTrainer = await Trainer.findByPk(trainerId);
+        if (deleteTrainer) {
+            await deleteTrainer.destroy(); // This will set the 'deletedAt' field
+        }
 
         res.status(200).json({ message: 'Trainer deleted successfully' });
     } catch (error) {

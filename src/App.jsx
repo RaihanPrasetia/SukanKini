@@ -26,12 +26,12 @@ function AppRoutes() {
         } catch (error) {
           console.error('Error fetching payment status:', error);
         } finally {
-          setIsLoading(false);
+          setIsLoading(false);  // Set loading to false once status check is complete
         }
       };
       checkUserPaymentStatus();
     } else {
-      setIsLoading(false);
+      setIsLoading(false);  // If not mitra, set loading to false directly
     }
   }, [userRole]);
 
@@ -74,7 +74,10 @@ function AppRoutes() {
             </>
           )}
           {userRole === 'mitra' && (
-            <Route path="/mitra/*" element={isPaymentActive ? <Mitra /> : <Payment />} />
+            <Route
+              path="/mitra/*"
+              element={isPaymentActive ? <Mitra /> : <Payment />}
+            />
           )}
         </>
       ) : (

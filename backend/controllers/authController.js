@@ -137,9 +137,9 @@ const registerMitra = async (req, res) => {
     });
 
     await Bank.create({
-      an,           // Account Name
-      brand,        // Bank Name
-      no_rek,       // Bank Account Number
+      an,              // Account Name
+      brand: brand.toUpperCase(), // Convert Bank Name (brand) to uppercase
+      no_rek,          // Bank Account Number
       createdBy: newUser.id,  // Initially set to null to be updated later
     });
 

@@ -32,14 +32,14 @@ function AuthModal({ isOpen, onClose }) {
     const handleRegisterMitra = () => setCurrentForm("registerMitra");
     const handleLoginMitra = () => setCurrentForm("loginMitra");
 
-    const handleSendOTP = ({ otp: generatedOtp, name, email, password, kota, alamat, bank, no_rek, an }) => {
+    const handleSendOTP = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an }) => {
         setOtp(generatedOtp);  // Store generated OTP for validation later
-        setUserData({ name, email, password, kota, alamat, bank, no_rek, an });  // Store user data for registration
+        setUserData({ name, email, password, kota, alamat, brand, no_rek, an });  // Store user data for registration
         setCurrentForm("otpConfirmation");  // Switch to OTP confirmation form
     }
-    const handleSendOTPMitra = ({ otp: generatedOtp, name, email, password, kota, alamat, bank, no_rek, an }) => {
+    const handleSendOTPMitra = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an }) => {
         setOtp(generatedOtp);  // Store generated OTP for validation later
-        setUserData({ name, email, password, kota, alamat, bank, no_rek, an });  // Store user data for registration
+        setUserData({ name, email, password, kota, alamat, brand, no_rek, an });  // Store user data for registration
         setCurrentForm("otpConfirmationMitra");  // Switch to OTP confirmation form
     }
 
