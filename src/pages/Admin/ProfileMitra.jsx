@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSearch, FaPlusCircle, FaEdit, FaTrashAlt, FaUserTie, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
+import { FaSearch, FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 
 export default function ProfilMitra() {

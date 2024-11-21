@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 const KelasHome = () => {
+
+    const handleMenuClick = () => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    };
     return (
         <>
             {/* Explore Classes Section */}
@@ -58,7 +62,9 @@ const KelasHome = () => {
                 {/* Action Button */}
                 <div className="flex justify-center mt-8">
                     <button className="px-5 py-3 bg-green-500 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-white hover:text-green-500 hover:shadow-xl transition duration-200">
-                        <Link to='/kelas'>Lihat Kelas</Link>
+                        <Link
+                            onClick={handleMenuClick}
+                            to='/kelas'>Lihat Kelas</Link>
                     </button>
                 </div>
             </div>

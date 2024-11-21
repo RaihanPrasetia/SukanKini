@@ -5,11 +5,11 @@ export default class Class {
         alamat,
         price,
         image_path,
-        owner,
-        category,
-        trainer,
-        schedules,
-        members,
+        owner = null, // Default ke null jika tidak ada
+        category = {},
+        trainer = {},
+        schedules = [],
+        members = [],
         createdAt,
         updatedAt,
         deletedAt = null,
@@ -23,41 +23,47 @@ export default class Class {
         this.updatedAt = updatedAt ? new Date(updatedAt) : null; // Tanggal data diperbarui
         this.deletedAt = deletedAt ? new Date(deletedAt) : null; // Tanggal data dihapus (jika soft-delete)
 
-        this.owner = {
-            id: owner.id,
-            name: owner.name
-        };
+        this.owner = owner
+            ? {
+                id: owner.id || null,
+                name: owner.name || "Unknown",
+            }
+            : null;
 
         this.category = {
-            id: category.id,
-            name: category.name
+            id: category.id || null,
+            name: category.name || "Unknown",
         };
 
         this.trainer = {
-            id: trainer.id,
-            name: trainer.name,
-            age: trainer.age,
-            imagePath: trainer.image_path
+            id: trainer.id || null,
+            name: trainer.name || "Unknown",
+            age: trainer.age || "Unknown",
+            imagePath: trainer.image_path || "",
         };
 
-        this.schedules = schedules.map(schedule => ({
-            id: schedule.id,
-            hari: schedule.hari,
-            jam: schedule.jam
-        }));
+        this.schedules = Array.isArray(schedules)
+            ? schedules.map((schedule) => ({
+                id: schedule.id,
+                hari: schedule.hari,
+                jam: schedule.jam,
+            }))
+            : [];
 
-        this.members = members.map(member => ({
-            id: member.id,
-            userId: member.user_id,
-            classId: member.class_id,
-            user: {
-                id: member.user.id,
-                name: member.user.name,
-                city: member.user.kota,
-                address: member.user.alamat,
-                phone: member.user.phone_number
-            }
-        }));
+        this.members = Array.isArray(members)
+            ? members.map((member) => ({
+                id: member.id,
+                userId: member.user_id,
+                classId: member.class_id,
+                user: {
+                    id: member.user?.id || null,
+                    name: member.user?.name || "Unknown",
+                    city: member.user?.kota || "Unknown",
+                    address: member.user?.alamat || "Unknown",
+                    phone: member.user?.phone_number || "Unknown",
+                },
+            }))
+            : [];
     }
 
     // A method to check if the class has any members
@@ -72,6 +78,6 @@ export default class Class {
 
     // Method to display class schedules
     get classSchedule() {
-        return this.schedules.map(schedule => `${schedule.day} at ${schedule.time}`).join(', ');
+        return this.schedules.map((schedule) => `${schedule.hari} at ${schedule.jam}`).join(", ");
     }
 }

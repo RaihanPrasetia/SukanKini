@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaTachometerAlt, FaUserFriends, FaUser, FaBoxOpen, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 const App = () => {
   const [data, setData] = useState([

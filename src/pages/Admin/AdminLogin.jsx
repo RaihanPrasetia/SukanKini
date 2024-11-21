@@ -5,8 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../../components/assets/FormInput';
 import Button from '../../components/assets/Button';
 import { useAuth } from '../../contexts/AuthContext';
-import { login } from '../../controllers/authController'; // Import login function
-import UserModel from '../../constructors/UserModel'; // Assuming there's a User model like in your login form
+import { login } from '../../controllers/authController';
+import UserModel from '../../constructors/UserModel';
 
 function AdminLogin({ onForgotPassword, onRegister }) {
     const [email, setEmail] = useState('');
@@ -39,7 +39,6 @@ function AdminLogin({ onForgotPassword, onRegister }) {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Validate email and password input
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -47,25 +46,20 @@ function AdminLogin({ onForgotPassword, onRegister }) {
         }
 
         try {
-            // Call the login function to authenticate the user
             const { token, user } = await login(email, password);
 
-            // Initialize the user data using the User model
             const loggedInUser = new UserModel(user);
 
-            // Check if the user is blocked
             if (loggedInUser.isUserBlocked()) {
                 toast.error('Akun Anda diblokir. Silakan hubungi dukungan.');
                 return;
             }
 
-            // Check if the user's role is valid (admin or user)
             if (!loggedInUser.isAdmin()) {
                 toast.error('Hanya admin yang dapat mengakses halaman ini.');
                 return;
             }
 
-            // Log the user in and store the token and user details in the context
             contextLogin(token, loggedInUser.getFormattedName(), loggedInUser.role);
             toast.success(`Selamat Bergabung, ${loggedInUser.getFormattedName()}`);
             navigate('/admin/dashboard');

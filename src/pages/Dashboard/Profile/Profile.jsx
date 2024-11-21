@@ -24,7 +24,6 @@ const Profile = () => {
         const token = localStorage.getItem("token");
         const userData = await getUserProfile(token);
         setUser(userData);
-        console.log("Data User", userData)
         // Set initial values for the form
         setName(userData.name || "");
         setEmail(userData.email || "");
@@ -46,18 +45,7 @@ const Profile = () => {
 
   const handleUpdateAccount = async () => {
     try {
-      console.log("Updated Data:", {
-        id: user.id,
-        name,
-        email,
-        phone_number,
-        alamat,
-        age,
-        gender,
-        kota,
-        weight,
-        height
-      });
+
 
       const token = localStorage.getItem("token");
 

@@ -1,31 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import throttle from "lodash.throttle"; // Helps to throttle the scroll events
+import throttle from "lodash.throttle";
 
 const Kelas = () => {
   const sectionRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
 
-  const handleScroll = throttle(() => {
-    if (sectionRef.current) {
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      setIsInView(rect.top <= windowHeight - 100 && rect.bottom >= 0);
-    }
-  }, 100);
+  // Memoize the throttled function
+  const throttledScrollHandler = useCallback(
+    throttle(() => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        setIsInView(rect.top <= windowHeight - 100 && rect.bottom >= 0);
+      }
+    }, 100),
+    []
+  );
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", throttledScrollHandler);
+
+    return () => {
+      window.removeEventListener("scroll", throttledScrollHandler);
+      throttledScrollHandler.cancel(); // Cancel pending executions on unmount
+    };
+  }, [throttledScrollHandler]);
 
   const communityData = [
-    { id: 1, title: 'Yoga & Flexibilitas', image: '/assets/images/kelasuser/yoga.jpg' },
-    { id: 2, title: 'Pembentukan Otot', image: '/assets/images/kelasuser/otot.jpg' },
-    { id: 3, title: 'Cardio', image: '/assets/images/kelasuser/cardio.jpg' },
-    { id: 4, title: 'Zumba', image: '/assets/images/kelasuser/zumba.jpg' },
-    { id: 5, title: 'Relaksasi', image: '/assets/images/kelasuser/relaksasiii.jpg' },
-    { id: 6, title: 'Dance', image: '/assets/images/kelasuser/dance.jpg' },
+    { id: 1, title: "Yoga & Flexibilitas", image: "/assets/images/kelasuser/yoga.jpg" },
+    { id: 2, title: "Pembentukan Otot", image: "/assets/images/kelasuser/otot.jpg" },
+    { id: 3, title: "Cardio", image: "/assets/images/kelasuser/cardio.jpg" },
+    { id: 4, title: "Zumba", image: "/assets/images/kelasuser/zumba.jpg" },
+    { id: 5, title: "Relaksasi", image: "/assets/images/kelasuser/relaksasiii.jpg" },
+    { id: 6, title: "Dance", image: "/assets/images/kelasuser/dance.jpg" },
   ];
 
   return (
@@ -53,7 +61,7 @@ const Kelas = () => {
         animate={{ opacity: isInView ? 1 : 0 }}
         transition={{ delay: 0.3, duration: 0.7 }}
       >
-        {['Cardio', 'Dance', 'Mind & Body', 'Strength'].map((category) => (
+        {["Cardio", "Dance", "Mind & Body", "Strength"].map((category) => (
           <button
             key={category}
             className="px-4 py-2 border border-green-500 text-green-700 rounded-xl hover:bg-green-500 hover:text-white transition transform duration-150 hover:scale-105"

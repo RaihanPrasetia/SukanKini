@@ -4,11 +4,14 @@ const { Category } = require('../../associations'); // Pastikan path benar
 const createCategory = async (req, res) => {
     try {
         const userId = req.userId; // ID pengguna yang sedang login
-        const { name } = req.body;
+        let { name } = req.body;
 
         if (!name) {
             return res.status(400).json({ message: 'Missing required field: name' });
         }
+
+        // Mengubah huruf pertama menjadi kapital dan sisanya menjadi huruf kecil
+        name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
         const newCategory = await Category.create({
             name,
@@ -21,6 +24,7 @@ const createCategory = async (req, res) => {
         res.status(500).json({ message: 'Failed to create category', error: error.message });
     }
 };
+
 
 // Get all categories created by the logged-in user
 const getCategories = async (req, res) => {

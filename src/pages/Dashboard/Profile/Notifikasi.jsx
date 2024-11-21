@@ -23,7 +23,7 @@ function Notifikasi() {
             <Link
               key={notification.id}
               to={`/profile/notifikasi/${notification.id}`} // Link to detailed view
-              className="block bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 hover:bg-green-50 hover:translate-x-2"
+              className="block bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out  hover:bg-green-50"
             >
               <p className="text-green-700 text-lg">{notification.message}</p>
             </Link>

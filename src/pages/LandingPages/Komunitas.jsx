@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
 
@@ -8,6 +8,7 @@ function Komunitas() {
 
     // Check if the component is in view using IntersectionObserver
     useEffect(() => {
+        const currentRef = ref.current;
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -19,16 +20,13 @@ function Komunitas() {
             { threshold: 0.1 }
         );
 
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
+        if (currentRef) observer.observe(currentRef);
 
         return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
+            if (currentRef) observer.unobserve(currentRef);
         };
     }, [controls]);
+
 
     // Smooth fade-in and scale effect
     const fadeInSmooth = {

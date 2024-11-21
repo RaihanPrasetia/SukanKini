@@ -8,20 +8,23 @@ function Pelatih() {
 
     // Use IntersectionObserver for smoother scroll detection
     useEffect(() => {
+        const currentSectionRef = sectionRef.current; // Copy the ref value into a local variable
         const observer = new IntersectionObserver(
             ([entry]) => setIsInView(entry.isIntersecting),
             { threshold: 0.5 } // 50% of the element is in view before triggering
         );
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+
+        if (currentSectionRef) {
+            observer.observe(currentSectionRef);
         }
 
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
+            if (currentSectionRef) {
+                observer.unobserve(currentSectionRef); // Use the copied value for cleanup
             }
         };
     }, []);
+
 
     const categories = ['Pelatih Populer', 'Cardio', 'Dance', 'Mind & Body'];
     const communityCards = [

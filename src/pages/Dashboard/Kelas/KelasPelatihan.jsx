@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import DaftarKelasPopup from './DaftarKelas'; // Import the DaftarKelasPopup component
-import { FaArrowDown } from 'react-icons/fa';
-
-const classes = [
-  {
-    id: 1,
-    title: "CARDIO",
-    image: "/assets/images/kelasuser/cardio.jpg",
-    location: "Raffles Hotel Jakarta",
-    address: "Ciputra World 1, Jl. Prof. DR. Satrio No.5, Jakarta, Daerah Khusus Ibukota Jakarta 12940",
-    hours: "06.00 - 22.00 WIB",
-    price: "Mulai 200.000-an",
-  },
-  {
-    id: 2,
-    title: "PEMBENTUKKAN OTOT",
-    image: "/assets/images/kelasuser/otot.jpg",
-    location: "Abadi Suite Jambi",
-    address: "Jalan Telanai Pura, no 123 Lt.3",
-    hours: "06.00 - 22.00 WIB",
-    price: "Mulai 200.000-an",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import DaftarKelasPopup from "./DaftarKelas";
+import { FaArrowDown } from "react-icons/fa";
+import classService from "../../../service/User/classService";
 
 const KelasPelatihan = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
+  const [classData, setClassData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const classes = await classService.getAllClasses();
+        setClassData(classes); // Assign data directly
+      } catch (err) {
+        setError(err.message || "Failed to fetch classes.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClasses();
+  }, []);
 
   const openPopup = (classInfo) => {
     setSelectedClass(classInfo);
@@ -39,15 +39,11 @@ const KelasPelatihan = () => {
     setSelectedClass(null);
   };
 
-  const handleDetailClick = () => {
-    window.scrollTo(0, 0); // Scroll to the top of the page
-  };
-
   const scrollToKelas = () => {
     const kelasSection = document.getElementById("daftarkelas");
     if (kelasSection) {
       window.scrollTo({
-        top: kelasSection.offsetTop - 50, // Menggeser sedikit ke atas (50px)
+        top: kelasSection.offsetTop - 50,
         behavior: "smooth",
       });
     }
@@ -60,11 +56,11 @@ const KelasPelatihan = () => {
         <div
           className="flex flex-col items-center justify-center text-center p-10 absolute inset-0 bg-cover bg-center rounded-lg"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1728486145245-d4cb0c9c3470?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-          }}>
-          {/* Overlay */}
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1728486145245-d4cb0c9c3470?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+          }}
+        >
           <div className="absolute inset-0 bg-black opacity-40 rounded-lg"></div>
-
           <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg z-10">
             Ayo Jadi Lebih Sehat dan Bugar!
           </h1>
@@ -80,15 +76,12 @@ const KelasPelatihan = () => {
           >
             <FaArrowDown size={18} />
           </button>
-
         </div>
-
       </section>
 
       {/* Daftar Kelas Section */}
       <section id="daftarkelas" className="py-16 px-6 lg:px-20 min-h-screen bg-gray-50">
-        <div
-          className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl mb-8 space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl mb-8 space-y-4 md:space-y-0">
           <div className="flex space-x-6">
             <Link to="/semua-kelas">
               <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
@@ -105,9 +98,12 @@ const KelasPelatihan = () => {
             </button>
           </div>
           <div className="relative flex items-center w-full md:w-auto">
-            <input type="text" placeholder="Cari Kelas" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none
-        focus:border-green-500 transition-all"
+            <input
+              type="text"
+              placeholder="Cari Kelas"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all"
             />
             <button className="absolute right-2 text-green-500 hover:text-green-700 transition-all">
               🔍
@@ -119,42 +115,54 @@ const KelasPelatihan = () => {
           DAFTAR KELAS PELATIHAN
         </h1>
 
-        {/* Display all classes */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {classes
-            .filter((classInfo) =>
-              classInfo.title.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .map((classInfo) => (
-              <div key={classInfo.id}
-                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all transform hover:scale-105">
-                <img src={classInfo.image} alt={classInfo.title} className="w-full h-56 object-cover rounded-lg mb-4" />
-                <h2 className="text-xl font-semibold mb-2">{classInfo.title}</h2>
-                <p className="text-green-700 font-semibold">{classInfo.location}</p>
-                <p className="text-gray-600 text-sm">{classInfo.address}</p>
-                <p className="text-gray-600 text-sm">Jam Operasi: {classInfo.hours}</p>
-                <p className="text-green-700 font-semibold">Harga: {classInfo.price}</p>
-                <div className="mt-4 flex space-x-4">
-                  <Link to={`/kelas/${classInfo.id}`} onClick={handleDetailClick}>
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition-all">
-                      Lihat Kelas
-                    </button>
-                  </Link>
-                  <button onClick={() => openPopup(classInfo)}
-                    className="bg-green-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-green-600
-            transition-all"
-                  >
-                    Daftar Kelas
-                  </button>
-                </div>
-              </div>
-            ))}
-        </div>
+        {loading ? (
+          <p className="text-center text-green-600">Loading classes...</p>
+        ) : error ? (
+          <p className="text-center text-red-600">{error}</p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {classData
+              .filter((classInfo) =>
+                classInfo.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((classInfo) => (
+                <div
+                  key={classInfo.id}
+                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all transform hover:scale-105"
+                >
+                  <img
+                    src={`/images/kelas/${classInfo.imagePath}`}
+                    alt={classInfo.name}
+                    className="w-full h-56 object-cover rounded-lg mb-4"
+                  />
 
-        {/* Conditionally render the DaftarKelasPopup */}
-        {isPopupOpen &&
-          <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />}
+                  <h2 className="text-xl font-semibold mb-2">{classInfo.name}</h2>
+                  <p className="text-green-700 font-semibold">{classInfo.trainer.name}</p>
+                  <p className="text-gray-600 text-sm">{classInfo.alamat}</p>
+                  <p className="text-gray-600 text-sm">
+                    Jadwal:{" "}
+                    {classInfo.schedules.map((schedule) => `${schedule.hari} ${schedule.jam}`).join(", ")}
+                  </p>
+                  <p className="text-green-700 font-semibold">Harga: Rp {classInfo.price.toLocaleString()}</p>
+                  <div className="mt-4 flex space-x-4">
+                    <Link to={`/kelas/${classInfo.id}`}>
+                      <button className="bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition-all">
+                        Lihat Kelas
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => openPopup(classInfo)}
+                      className="bg-green-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-green-600 transition-all"
+                    >
+                      Daftar Kelas
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+
+        {isPopupOpen && <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />}
       </section>
     </>
   );
