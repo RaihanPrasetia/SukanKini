@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import classService from '../../service/classService'; // Import the service function
-import { FaUserAlt, FaPhoneAlt, FaCity } from 'react-icons/fa'; // Icons for profile
+import { FaUserAlt,FaCity } from 'react-icons/fa'; // Icons for profile
 
 const DetailKelas = () => {
     const { id } = useParams(); // Get the class ID from the URL

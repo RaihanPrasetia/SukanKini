@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { FaTachometerAlt, FaUserFriends, FaUser, FaBoxOpen, FaSearch } from 'react-icons/fa';
+import {FaSearch } from 'react-icons/fa';
 
 const App = () => {
-  const [data, setData] = useState([
+  const [data] = useState([
     { id: 1, nama: 'Benediktus Prayoga', email: 'benediktus@example.com', noTelepon: '081234567890', bankTujuan: 'Bank A', buktiPembayaran: 'bukti1.jpg', status: 'Pending', total: 'Rp 1.000.000' },
     { id: 2, nama: 'Rama Dhani', email: 'rama@example.com', noTelepon: '081234567891', bankTujuan: 'Bank B', buktiPembayaran: 'bukti2.jpg', status: 'Pending', total: 'Rp 2.000.000' },
     { id: 3, nama: 'Dio Maulana Nurjayadi', email: 'dio@example.com', noTelepon: '081234567892', bankTujuan: 'Bank C', buktiPembayaran: 'bukti3.jpg', status: 'Pending', total: 'Rp 1.500.000' },
