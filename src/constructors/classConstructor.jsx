@@ -10,6 +10,7 @@ export default class Class {
         trainer = {},
         schedules = [],
         members = [],
+        createdBy,
         createdAt,
         updatedAt,
         deletedAt = null,
@@ -18,6 +19,7 @@ export default class Class {
         this.name = name;
         this.address = alamat;
         this.price = price;
+        this.createdBy = createdBy;
         this.imagePath = image_path;
         this.createdAt = createdAt ? new Date(createdAt) : null; // Tanggal data dibuat
         this.updatedAt = updatedAt ? new Date(updatedAt) : null; // Tanggal data diperbarui
@@ -42,6 +44,7 @@ export default class Class {
             imagePath: trainer.image_path || "",
             phone: trainer.phone_number || "",
             alamat: trainer.alamat || "",
+            deletedAt: trainer.deletedAt,
         };
 
         this.schedules = Array.isArray(schedules)

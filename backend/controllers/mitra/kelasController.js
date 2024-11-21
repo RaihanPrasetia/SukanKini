@@ -41,11 +41,11 @@ const getUserClasses = async (req, res) => {
                     ]
                 }
             ],
-            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt']
+            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt', 'createdBy']
         });
 
         if (classes.length === 0) {
-            return res.status(404).json({ message: 'User is not associated with any classes!' });
+            return res.status(404).json({ message: 'Kamu Belum Memiliki Kelas' });
         }
 
         res.status(200).json({ classes });
@@ -64,7 +64,16 @@ const getClassById = async (req, res) => {
             include: [
                 { model: User, as: 'owner', attributes: ['id', 'name'] },
                 { model: Category, as: 'category', attributes: ['id', 'name'] },
-                { model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number'] },
+                {
+                    model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number', 'deletedAt'],
+                    where: {
+                        [Op.or]: [
+                            { deletedAt: null }, // Trainer aktif
+                            { deletedAt: { [Op.ne]: null } } // Trainer telah dihapus
+                        ]
+                    },
+                    paranoid: false,
+                },
                 {
                     model: ClassSchedule,
                     as: 'schedules',
@@ -83,7 +92,7 @@ const getClassById = async (req, res) => {
                     ]
                 }
             ],
-            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdBy', 'createdAt', 'updatedAt']
+            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdBy', 'createdAt', 'updatedAt', 'createdBy']
         });
 
         if (!classData) {
@@ -102,8 +111,6 @@ const getClassById = async (req, res) => {
 
 const createClass = async (req, res) => {
     try {
-        console.log('Body:', req.body); // Debugging
-        console.log('File:', req.file); // Debugging
 
         const userId = req.userId; // User ID from JWT
         const { name, alamat, category_id, trainer_id, price } = req.body;

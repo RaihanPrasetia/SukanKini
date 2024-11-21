@@ -128,7 +128,7 @@ const KelasMitra = () => {
                 setClasses(classData); // Update state with new class data
             } catch (error) {
                 Swal.fire({
-                    title: 'Error',
+                    title: 'Upss!!!',
                     text: error.message || 'Gagal mengambil data kelas.',
                     icon: 'error',
                     confirmButtonText: 'OK',
@@ -283,17 +283,26 @@ const KelasMitra = () => {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Pelatih</label>
-                                    <select name="trainer" value={formData.trainer} onChange={handleInputChange}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        required>
-                                        <option value="">Pilih Pelatih</option>
-                                        {trainers.map((trainer) => (
-                                            <option key={trainer.id} value={trainer.id}>
-                                                {trainer.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    {trainers.length === 0 ? (
+                                        <p className="text-red-500 font-semibold">Silahkan buat Pelatih Terlebih dahulu</p>
+                                    ) : (
+                                        <select
+                                            name="trainer"
+                                            value={formData.trainer}
+                                            onChange={handleInputChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            required
+                                        >
+                                            <option value="">Pilih Pelatih</option>
+                                            {trainers.map((trainer) => (
+                                                <option key={trainer.id} value={trainer.id}>
+                                                    {trainer.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
                                 </div>
+
                             </div>
 
                             <div className="mb-6">
@@ -437,17 +446,24 @@ const KelasMitra = () => {
                                 {/* Pelatih */}
                                 <div className="w-full">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Pelatih</label>
-                                    <select name="trainer" value={formData.trainer || editingClass.trainer.id}
-                                        onChange={handleInputChange}
-                                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        required>
-                                        <option value="">Pilih Pelatih</option>
-                                        {trainers.map((trainer) => (
-                                            <option key={trainer.id} value={trainer.id}>
-                                                {trainer.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    {trainers.length === 0 ? (
+                                        <p className="text-red-500 font-semibold">Silahkan buat Pelatih Terlebih dahulu</p>
+                                    ) : (
+                                        <select
+                                            name="trainer"
+                                            value={formData.trainer || editingClass.trainer?.id || ""}
+                                            onChange={handleInputChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            required
+                                        >
+                                            <option value="">Pilih Pelatih</option>
+                                            {trainers.map((trainer) => (
+                                                <option key={trainer.id} value={trainer.id}>
+                                                    {trainer.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
                                 </div>
                             </div>
 

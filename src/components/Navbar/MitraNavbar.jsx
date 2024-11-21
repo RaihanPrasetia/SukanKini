@@ -64,10 +64,13 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                     </li>
 
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/kelas')}`}>
-                        <Link onClick={handleMenuClick} to="/mitra/kelas">Kelas</Link>
+                        <Link onClick={handleMenuClick} to="/mitra/kelas">Data Kelas</Link>
                     </li>
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/trainer')}`}>
-                        <Link onClick={handleMenuClick} to="/mitra/trainer">Trainer</Link>
+                        <Link onClick={handleMenuClick} to="/mitra/trainer">Data Pelatih</Link>
+                    </li>
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/category')}`}>
+                        <Link onClick={handleMenuClick} to="/mitra/category">Data Kategory</Link>
                     </li>
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/notif')}`}>
                         <Link onClick={handleMenuClick} to="/mitra/notif">Pemberitahuan</Link>

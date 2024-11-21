@@ -13,6 +13,13 @@ const createCategory = async (req, res) => {
         // Mengubah huruf pertama menjadi kapital dan sisanya menjadi huruf kecil
         name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
+        // Periksa apakah kategori dengan nama yang sama sudah ada
+        const existingCategory = await Category.findOne({ where: { name } });
+        if (existingCategory) {
+            return res.status(400).json({ message: 'Category dengan nama ini sudah ada!' });
+        }
+
+        // Buat kategori baru
         const newCategory = await Category.create({
             name,
             createdBy: userId,
@@ -24,6 +31,7 @@ const createCategory = async (req, res) => {
         res.status(500).json({ message: 'Failed to create category', error: error.message });
     }
 };
+
 
 
 // Get all categories created by the logged-in user

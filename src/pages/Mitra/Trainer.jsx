@@ -341,7 +341,7 @@ const Trainer = () => {
                 <tbody>
                     {trainers.length === 0 ? (
                         <tr>
-                            <td colSpan="5" className="text-center py-5 text-xl font-semibold text-gray-500">
+                            <td colSpan="7" className="text-center py-5 text-xl font-semibold text-gray-500">
                                 Belum ada data trainer
                             </td>
                         </tr>

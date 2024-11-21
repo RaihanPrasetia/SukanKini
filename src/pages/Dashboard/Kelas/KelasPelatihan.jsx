@@ -30,9 +30,10 @@ const KelasPelatihan = () => {
   }, []);
 
   const openPopup = (classInfo) => {
-    setSelectedClass(classInfo);
-    setIsPopupOpen(true);
+    setSelectedClass(classInfo); // Mengatur data kelas yang dipilih
+    setIsPopupOpen(true); // Membuka modal
   };
+
 
   const closePopup = () => {
     setIsPopupOpen(false);

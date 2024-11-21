@@ -1,5 +1,6 @@
 import axios from 'axios';
-import Class from '../../constructors/classConstructor'; // Ensure this path is correct
+import Class from '../../constructors/classConstructor';
+import Membership from '../../constructors/memberships' // Ensure this path is correct
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -29,19 +30,18 @@ const getAllClasses = async () => {
 
 const getClassById = async (classId) => {
     try {
-        const response = await axios.get(`${apiUrl}/class/${classId}`, {
+        const response = await axios.get(`${apiUrl}/class/detail/${classId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 api_key: apiKey,
             },
         });
 
-        console.log('API Response:', response.data);  // Log the entire response to check its structure
+        console.log('API Response:', response.data);
 
         if (response.data && response.data.class) {
-            const classData = response.data.class;  // Directly access the class object, not an array
+            const classData = response.data.class;
 
-            // If classData is an object, extract its properties
             const mappedClassData = {
                 id: classData.id,
                 name: classData.name,
@@ -73,12 +73,37 @@ const getClassById = async (classId) => {
     }
 };
 
+const createMemberships = async (classId) => {
+    try {
+        const formData = new FormData();
+
+        formData.append("class_id", classId);
+
+        const response = await axios.post(`${apiUrl}/class/create`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                api_key: apiKey,
+            },
+        });
+
+        if (response.data && Array.isArray(response.data.memberships)) {
+            // Map response data to Membership instances
+            return response.data.memberships.map((membership) => new Membership(membership));
+        } else {
+            throw new Error("No class data found in the response.");
+        }
+    } catch (error) {
+        console.error('Error fetching class info:', error);
+        throw new Error(error.response?.data?.message || 'Failed to fetch class info');
+    }
+}
 
 
 // Dashboard service exposes both methods
 const classService = {
     getAllClasses,
     getClassById,
+    createMemberships
 };
 
 export default classService;
