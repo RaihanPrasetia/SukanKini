@@ -46,9 +46,6 @@ const getUserClasses = async (req, res) => {
             attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt', 'createdBy']
         });
 
-        if (classes.length === 0) {
-            return res.status(404).json({ message: 'Kamu Belum Memiliki Kelas' });
-        }
 
         res.status(200).json({ classes });
     } catch (error) {

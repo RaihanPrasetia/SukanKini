@@ -14,6 +14,7 @@ const getNotifications = async () => {
         });
         // Inisialisasi objek Bank menggunakan konstruktor
         if (response.data && response.data.notifications) {
+            console.log(response.data.notifications)
             return response.data.notifications.map(notification => new Notification(notification)); // Mapping each payment response to the Payment model
         } else {
             throw new Error("No Trainer data found.");

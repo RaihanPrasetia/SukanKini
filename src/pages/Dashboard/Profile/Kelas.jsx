@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiMapPin, FiClock, FiCalendar } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import profileClass from '../../../service/User/profileClass'; // Ensure this path is correct
@@ -7,6 +8,7 @@ const Kelas = () => {
   const [classDetails, setClassDetails] = useState([]); // Kelas Hari Ini
   const [allClass, setAllClass] = useState([]); // Semua Kelas
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -95,7 +97,9 @@ const Kelas = () => {
                   <FiCalendar className="h-5 w-5 mr-2 text-green-600" />
                   {kelas.class?.schedules?.length > 0 ? kelas.class.schedules[0].hari : 'Hari tidak tersedia'}
                 </p>
-                <button className="mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
+                <button
+                  onClick={() => navigate(`/kelas/${kelas.class?.id}`)}
+                  className="mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
                   Lihat Detail Kelas
                 </button>
               </div>
@@ -149,7 +153,9 @@ const Kelas = () => {
                 </div>
               ))}
 
-              <button className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
+              <button
+                onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
+                className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
                 Lihat Detail Kelas
               </button>
             </motion.div>

@@ -80,7 +80,6 @@ export default function HomeMitra() {
             try {
                 const paymentData = await paymentService.getPaymentStatus();
                 setPayments(paymentData);
-                console.log(paymentData)
             } catch (error) {
                 Swal.fire({
                     title: "Cek Status Pembayaran Anda",
@@ -198,14 +197,6 @@ export default function HomeMitra() {
                 {/* Dropdown Menu for Profile and Logout */}
                 {dropdownOpen && (
                     <div className="absolute right-0 top-[60px] mt-2 w-40 bg-white rounded-md shadow-lg p-2 z-10">
-                        <Link
-                            onClick={handleMenuClick}
-                            to="/mitra/profile"
-                            className="block px-4 py-2 text-gray-700 hover:bg-green-300 transition duration-200 rounded-md"
-                        >
-                            <FaUser className='inline mr-2' />
-                            Profile
-                        </Link>
                         <button
                             onClick={handleLogout}
                             className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-300 transition duration-200 rounded-md"
@@ -218,19 +209,24 @@ export default function HomeMitra() {
             </div>
         </nav>
         <div
-            className='flex flex-col bg-gray-100 items-start justify-start px-4 sm:p-16 py-24 lg:pt-32 transition-all duration-300 '
+            className='flex flex-col bg-gray-100 items-center justify-center px-4 sm:p-16 py-24 lg:pt-32 transition-all duration-300 '
         >
             {isFirstPaymentApproved ? (
-                <div className="flex flex-col w-full bg-blue-500 rounded-lg shadow-lg p-6 mb-4">
-                    <h1 className="text-lg md:text-xl font-semibold text-white text-left leading-snug">
-                        Pembayaran Anda telah diterima. Silakan logout dan login ulang untuk melanjutkan.
+                <div className="flex flex-col w-full justify-center items-center bg-blue-500 rounded-lg shadow-lg p-6 mb-4">
+                    <h1 className="text-lg md:text-xl  font-semibold text-white mb-2 text-center leading-snug">
+                        Pembayaran Anda telah diterima.
                     </h1>
-                    <button
-                        onClick={handleLogout}
-                        className="mt-4 bg-white text-blue-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-200 transition"
-                    >
-                        Logout
-                    </button>
+                    <div className="flex justify-center items-center">
+                        <Link
+                            onClick={handleMenuClick}
+                            to="/mitra/home"
+                            className="block px-4 py-2 text-gray-900 bg-white hover:bg-green-300 transition duration-200 rounded-md"
+                        >
+                            <FaUser className='inline mr-2' />
+                            Ke Halaman Dashboard
+                        </Link>
+                    </div>
+
                 </div>
             ) : isFirstPaymentPending ? (
                 <div className="flex flex-col w-full bg-yellow-500 rounded-lg shadow-lg p-6 mb-4">

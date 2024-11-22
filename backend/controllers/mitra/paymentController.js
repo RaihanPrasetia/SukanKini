@@ -80,9 +80,7 @@ const getUserPayments = async (req, res) => {
             order: [['createdAt', 'DESC']],  // Mengurutkan berdasarkan waktu pembayaran terbaru
         });
 
-        if (!payments || payments.length === 0) {
-            return res.status(404).json({ message: 'No payment records found for this user.' });
-        }
+
 
         res.status(200).json({ payments });
     } catch (error) {
@@ -111,9 +109,7 @@ const getStatusPayments = async (req, res) => {
             order: [['createdAt', 'DESC']],
         });
 
-        if (!payments || payments.length === 0) {
-            return res.status(404).json({ message: 'No payment records found for this user.' });
-        }
+
 
         res.status(200).json({ payments });
     } catch (error) {

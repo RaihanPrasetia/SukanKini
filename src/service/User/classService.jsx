@@ -36,7 +36,6 @@ const getClassById = async (classId) => {
             },
         });
 
-        console.log('API Response:', response.data);
 
         if (response.data && response.data.class) {
             const classData = response.data.class;
@@ -52,7 +51,8 @@ const getClassById = async (classId) => {
                 trainer: classData.trainer || { name: 'Unknown', image_path: '' },  // Default to 'Unknown' if no trainer
                 category: classData.category || { name: 'Unknown' },  // Default to 'Unknown' if no category
                 createdBy: classData.createdBy,
-                owner: classData.owner || [],  // Default to empty if owner is not available
+                owner: classData.owner || [],
+                imagePath: classData.image_path, // Default to empty if owner is not available
             };
 
             // Also return related classes if available

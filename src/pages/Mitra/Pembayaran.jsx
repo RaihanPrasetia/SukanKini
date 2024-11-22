@@ -194,75 +194,83 @@ const Pembayaran = () => {
                 <div className="text-center">Loading...</div>
             ) : (
                 <div className="overflow-x-auto bg-white shadow-lg sm:rounded-lg">
-                    <table className="min-w-full text-sm text-left text-gray-500">
-                        <thead className="text-xs text-gray-700 uppercase bg-gradient-to-r from-blue-500 to-indigo-600 ">
+                    <table className="min-w-full text-sm text-left text-gray-500 border border-gray-300">
+                        <thead className="text-xs text-white uppercase bg-gradient-to-r from-blue-500 to-indigo-600">
                             <tr>
-                                <th className="px-6 py-3">No</th>
-                                <th className="px-6 py-3">Nama Anggota</th>
-                                <th className="px-6 py-3">Jam</th>
-                                <th className="px-6 py-3">Hari</th>
-                                <th className="px-6 py-3">Nama Kelas</th>
-                                <th className="px-6 py-3">Nomor HP</th>
-                                <th className="px-6 py-3">Bukti Pembayaran</th>
-                                <th className="px-6 py-3">Total</th>
-                                <th className="px-6 py-3">Status</th>
-                                <th className="px-6 py-3">Aksi</th>
+                                <th className="px-6 py-3 border border-gray-300">No</th>
+                                <th className="px-6 py-3 border border-gray-300">Nama Anggota</th>
+                                <th className="px-6 py-3 border border-gray-300">Jam</th>
+                                <th className="px-6 py-3 border border-gray-300">Hari</th>
+                                <th className="px-6 py-3 border border-gray-300">Nama Kelas</th>
+                                <th className="px-6 py-3 border border-gray-300">Nomor HP</th>
+                                <th className="px-6 py-3 border border-gray-300">Bukti Pembayaran</th>
+                                <th className="px-6 py-3 border border-gray-300">Total</th>
+                                <th className="px-6 py-3 border border-gray-300">Status</th>
+                                <th className="px-6 py-3 border border-gray-300">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {payments.map((payment, index) => (
-                                <tr key={payment.id}
-                                    className="border-b border-gray-200 hover:bg-gray-100 transition-all duration-200 ease-in-out">
-                                    <td className="px-6 py-4">{index + 1}</td>
-                                    <td className="px-6 py-4">{payment.name}</td>
-                                    <td className="px-6 py-4">
-                                        {payment.schedules.length > 0
-                                            ? payment.schedules.map((schedule) => schedule.jam).join(", ")
-                                            : "-"}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {payment.schedules.length > 0
-                                            ? payment.schedules.map((schedule) => schedule.hari).join(", ")
-                                            : "-"}
-                                    </td>
-                                    <td className="px-6 py-4">{payment.className}</td>
-                                    <td className="px-6 py-4">{payment.phone}</td>
-                                    <td className="px-6 py-4">
-                                        <button className="text-blue-600 hover:text-blue-800 focus:outline-none" onClick={() =>
-                                            handleView(payment)}
-                                        >
-                                            Lihat Bukti
-                                        </button>
-                                    </td>
-                                    <td className="px-6 py-4">{formatRupiah(payment.total)}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`inline-block px-4 py-2 text-sm font-semibold rounded-full ${payment.status === "Diproses" ? "bg-yellow-100 text-yellow-800" : payment.status === "Diterima"
-                                            ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                                            {payment.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 space-x-2">
-                                        {payment.status === "Diproses" && (
-                                            <>
-                                                <button
-                                                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none transition-all duration-200"
-                                                    onClick={() => handleAccept(payment.id)}
-                                                >
-                                                    Terima
-                                                </button>
-                                                <button
-                                                    className="ml-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none transition-all duration-200"
-                                                    onClick={() => handleReject(payment.id)}
-                                                >
-                                                    Tolak
-                                                </button>
-                                            </>
-                                        )}
+                            {payments.length === 0 ? (
+                                <tr>
+                                    <td colSpan="10" className="px-6 py-4 text-xl text-center text-gray-600 font-semibold border-b border-gray-300">
+                                        Belum ada pembayaran
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                payments.map((payment, index) => (
+                                    <tr key={payment.id} className="border-b border-gray-200 hover:bg-gray-100 transition-all duration-200 ease-in-out">
+                                        <td className="px-6 py-4 border-b border-gray-300">{index + 1}</td>
+                                        <td className="px-6 py-4 border-b border-gray-300">{payment.name}</td>
+                                        <td className="px-6 py-4 border-b border-gray-300">
+                                            {payment.schedules.length > 0
+                                                ? payment.schedules.map((schedule) => schedule.jam).join(", ")
+                                                : "-"}
+                                        </td>
+                                        <td className="px-6 py-4 border-b border-gray-300">
+                                            {payment.schedules.length > 0
+                                                ? payment.schedules.map((schedule) => schedule.hari).join(", ")
+                                                : "-"}
+                                        </td>
+                                        <td className="px-6 py-4 border-b border-gray-300">{payment.className}</td>
+                                        <td className="px-6 py-4 border-b border-gray-300">{payment.phone}</td>
+                                        <td className="px-6 py-4 border-b border-gray-300">
+                                            <button className="text-blue-600 hover:text-blue-800 focus:outline-none" onClick={() =>
+                                                handleView(payment)}
+                                            >
+                                                Lihat Bukti
+                                            </button>
+                                        </td>
+                                        <td className="px-6 py-4 border-b border-gray-300">{formatRupiah(payment.total)}</td>
+                                        <td className="px-6 py-4 border-b border-gray-300">
+                                            <span className={`inline-block px-4 py-2 text-sm font-semibold rounded-full ${payment.status === "Diproses" ? "bg-yellow-100 text-yellow-800" : payment.status === "Diterima"
+                                                ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                                                {payment.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 border-b border-gray-300 space-x-2">
+                                            {payment.status === "Diproses" && (
+                                                <>
+                                                    <button
+                                                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none transition-all duration-200"
+                                                        onClick={() => handleAccept(payment.id)}
+                                                    >
+                                                        Terima
+                                                    </button>
+                                                    <button
+                                                        className="ml-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none transition-all duration-200"
+                                                        onClick={() => handleReject(payment.id)}
+                                                    >
+                                                        Tolak
+                                                    </button>
+                                                </>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
+
                 </div>
 
             )}

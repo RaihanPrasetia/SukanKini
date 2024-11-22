@@ -81,14 +81,14 @@ export default function HomeMitra({ sidebarOpen }) {
             {/* Stat 1 - Jumlah Member */}
             <div className="flex flex-col items-center bg-green-500 p-6 rounded-xl shadow-xl">
               <MdPeople className="text-4xl mb-3 text-white" />
-              <div className="text-4xl font-bold text-white">{newCountData?.countClasses}</div>
+              <div className="text-4xl font-bold text-white">{newCountData?.countMemberships}</div>
               <div className="text-xl text-white">Jumlah Member</div>
             </div>
 
             {/* Stat 2 - Jumlah Kelas */}
             <div className="flex flex-col items-center bg-yellow-500 p-6 rounded-xl shadow-xl">
               <MdClass className="text-4xl mb-3 text-white" />
-              <div className="text-4xl font-bold text-white">{newCountData?.countMemberships}</div>
+              <div className="text-4xl font-bold text-white">{newCountData?.countClasses}</div>
               <div className="text-xl text-white">Jumlah Kelas</div>
             </div>
 

@@ -20,9 +20,6 @@ const getNotifications = async (req, res) => {
             ],
         });
 
-        if (!notifications || notifications.length === 0) {
-            return res.status(404).json({ message: 'No notifications found for this user.' });
-        }
 
         res.status(200).json({ notifications });
     } catch (error) {
@@ -30,7 +27,6 @@ const getNotifications = async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve notifications.', error: error.message });
     }
 };
-
 
 const updateNotificationReadStatus = async (req, res) => {
     try {
@@ -43,15 +39,22 @@ const updateNotificationReadStatus = async (req, res) => {
             return res.status(404).json({ message: 'Notification not found.' });
         }
 
-        // Perbarui status `isRead`
+        // Perbarui status `isRead` dan tipe `type`
         await notification.update({ isRead: true });
 
-        res.status(200).json({ message: 'Notification marked as read.', notification });
+        res.status(200).json({
+            message: 'Notification marked as read and type updated to success.',
+            notification
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to update notification status.', error: error.message });
+        res.status(500).json({
+            message: 'Failed to update notification status.',
+            error: error.message
+        });
     }
 };
+
 
 
 

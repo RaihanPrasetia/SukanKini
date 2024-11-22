@@ -599,50 +599,57 @@ const KelasMitra = () => {
                                 <th className="px-6 py-4 border-b">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
-                            {classes.map((kelas) => (
-                                <tr key={kelas.id} className="hover:bg-gray-100 transition-colors">
-                                    <td className="px-6 py-4 text-center">
-                                        <img src={`/images/kelas/${kelas.imagePath}`} alt={kelas.name}
-                                            className="w-16 h-16 object-cover rounded-lg" />
-                                    </td>
-                                    <td className="px-6 py-4 font-medium">{kelas.name}</td>
-                                    <td className="px-6 py-4">{kelas.category.name}</td>
-                                    <td className="px-6 py-4">
-                                        {kelas.schedules
-                                            .map((schedule) => `${schedule.hari} (${schedule.jam})`)
-                                            .join(', ')}
-                                    </td>
-                                    <td className="px-6 py-4">{kelas.trainer.name}</td>
-                                    <td className="px-6 py-4">{kelas.address}</td>
-                                    <td className="px-6 py-4 font-semibold text-gray-900">
-                                        {`Rp ${kelas.price.toLocaleString()}`}
-                                    </td>
-                                    <td className="px-6 py-4 text-center">
-                                        <div className="flex justify-center space-x-2">
-                                            <button onClick={() => handleEdit(kelas)}
-                                                className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600
-                                transition-colors"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button onClick={() => handleDelete(kelas.id)}
-                                                className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600
-                                transition-colors"
-                                            >
-                                                Hapus
-                                            </button>
-                                            <button
-                                                className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
-                                                onClick={() => handleViewDetails(kelas.id)}
-                                            >
-                                                Lihat
-                                            </button>
-                                        </div>
+                        <tbody className="divide-y divide-gray-200 ">
+                            {classes.length === 0 ? (
+                                <tr>
+                                    <td colSpan="8" className="px-6 text-xl border py-4 text-center text-gray-600 font-semibold">
+                                        Anda belum memiliki kelas
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                classes.map((kelas) => (
+                                    <tr key={kelas.id} className="hover:bg-gray-100 transition-colors">
+                                        <td className="px-6 py-4 text-center">
+                                            <img src={`/images/kelas/${kelas.imagePath}`} alt={kelas.name}
+                                                className="w-16 h-16 object-cover rounded-lg" />
+                                        </td>
+                                        <td className="px-6 py-4 font-medium">{kelas.name}</td>
+                                        <td className="px-6 py-4">{kelas.category.name}</td>
+                                        <td className="px-6 py-4">
+                                            {kelas.schedules
+                                                .map((schedule) => `${schedule.hari} (${schedule.jam})`)
+                                                .join(', ')}
+                                        </td>
+                                        <td className="px-6 py-4">{kelas.trainer.name}</td>
+                                        <td className="px-6 py-4">{kelas.address}</td>
+                                        <td className="px-6 py-4 font-semibold text-gray-900">
+                                            {`Rp ${kelas.price.toLocaleString()}`}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            <div className="flex justify-center space-x-2">
+                                                <button onClick={() => handleEdit(kelas)}
+                                                    className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600
+              transition-colors">
+                                                    Edit
+                                                </button>
+                                                <button onClick={() => handleDelete(kelas.id)}
+                                                    className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600
+              transition-colors">
+                                                    Hapus
+                                                </button>
+                                                <button
+                                                    className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+                                                    onClick={() => handleViewDetails(kelas.id)}
+                                                >
+                                                    Lihat
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
+
                     </table>
 
                 )}
