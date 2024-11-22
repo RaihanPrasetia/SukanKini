@@ -82,7 +82,7 @@ const getClassById = async (req, res) => {
                 {
                     model: Memberships,
                     as: 'members',
-                    attributes: ['id', 'user_id', 'class_id'],
+                    attributes: ['id', 'user_id', 'class_id', 'status', 'createdAt', 'updatedAt'],
                     include: [
                         {
                             model: User,

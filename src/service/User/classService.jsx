@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Class from '../../constructors/classConstructor';
-import Membership from '../../constructors/memberships' // Ensure this path is correct
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -73,24 +72,29 @@ const getClassById = async (classId) => {
     }
 };
 
-const createMemberships = async (classId) => {
+const createMemberships = async (classId, bank_id, total, bukti) => {
     try {
         const formData = new FormData();
 
         formData.append("class_id", classId);
+        formData.append("bank_id", bank_id);
+        formData.append("total", total);
+        if (bukti) {
+            formData.append("bukti", bukti); // Add image only if there is one
+        }
 
-        const response = await axios.post(`${apiUrl}/class/create`, {
+        const response = await axios.post(`${apiUrl}/payments/create`, formData, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 api_key: apiKey,
             },
         });
 
-        if (response.data && Array.isArray(response.data.memberships)) {
-            // Map response data to Membership instances
-            return response.data.memberships.map((membership) => new Membership(membership));
+        if (response.data && response.data.message) {
+            // Return only the message from the response
+            return { message: response.data.message };
         } else {
-            throw new Error("No class data found in the response.");
+            throw new Error("Payment creation failed. No message in response.");
         }
     } catch (error) {
         console.error('Error fetching class info:', error);

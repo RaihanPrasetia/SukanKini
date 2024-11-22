@@ -7,11 +7,15 @@ export default class Payment {
         bank = {},
         class: classInfo = null,
         from = {},
+        createdAt,
+        to = {},
     }) {
         this.id = id;
         this.paymentProof = bukti || ""; // Default ke string kosong jika tidak ada bukti
         this.paymentStatus = status_pembayaran;
         this.total = total;
+        this.createdAt = createdAt ? new Date(createdAt) : null; // Tanggal keanggotaan dibuat
+
 
         // Bank object dengan nilai default untuk menghindari error jika data tidak lengkap
         this.bank = {
@@ -23,8 +27,11 @@ export default class Payment {
         // Class information, jika tidak ada data kelas maka gunakan nilai default
         this.classInfo = classInfo
             ? {
+                id: classInfo.id,
                 name: classInfo.name || "Tidak ada nama kelas",
+                category: classInfo.category || [],
                 categoryId: classInfo.category_id || null,
+                schedules: classInfo.schedules || [],
             }
             : null;
 
@@ -33,6 +40,11 @@ export default class Payment {
             name: from.name || "Tidak ada nama",
             email: from.email || "Tidak ada email",
             phoneNumber: from.phone_number || "Tidak ada nomor telepon",
+        };
+        this.to = {
+            name: to.name || "Tidak ada nama",
+            email: to.email || "Tidak ada email",
+            phoneNumber: to.phone_number || "Tidak ada nomor telepon",
         };
 
         // Jadwal dari kelas

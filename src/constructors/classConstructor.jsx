@@ -60,6 +60,9 @@ export default class Class {
                 id: member.id,
                 userId: member.user_id,
                 classId: member.class_id,
+                status: member.status,
+                createdAt: member.createdAt ? new Date(createdAt) : null,
+                updatedAt: member.updatedAt ? new Date(createdAt) : null,
                 user: {
                     id: member.user?.id || null,
                     name: member.user?.name || "Unknown",

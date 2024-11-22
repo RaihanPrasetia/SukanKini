@@ -102,26 +102,60 @@ const DetailKelas = () => {
                 {/* Members Table */}
                 <div className="overflow-x-auto mt-8">
                     <h4 className="text-2xl font-semibold text-gray-800 mb-4">Anggota Kelas</h4>
-                    <table className="bg-white shadow-lg sm:rounded-lg w-full">
+                    <table className="bg-white shadow-lg sm:rounded-lg w-full text-center border border-gray-300">
                         <thead>
-                            <tr className="bg-gray-200">
-                                <th className="py-2 px-4 text-left text-gray-800 font-medium">No.</th>
-                                <th className="py-2 px-4 text-left text-gray-800 font-medium">Nama</th>
-                                <th className="py-2 px-4 text-left text-gray-800 font-medium">Kota</th>
-                                <th className="py-2 px-4 text-left text-gray-800 font-medium">Alamat</th>
-                                <th className="py-2 px-4 text-left text-gray-800 font-medium">Nomor Telepon</th>
-                                <th className="py-2 px-4 text-left text-gray-800 font-medium">Aksi</th>
+                            <tr className="bg-blue-300 border-b border-gray-300">
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">No.</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">Nama</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">Kota</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">Alamat</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">Nomor Telepon</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">Tanggal Daftar</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium border-r border-gray-300">Status</th>
+                                <th className="py-2 px-4 text-gray-800 font-medium">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {kelas.members && kelas.members.length > 0 ? (
                                 kelas.members.map((member, index) => (
-                                    <tr key={member.id} className="border-b border-gray-200">
-                                        <td className="py-2 px-4">{index + 1}</td>
-                                        <td className="py-2 px-4">{member.user.name}</td>
-                                        <td className="py-2 px-4">{member.user.city}</td>
-                                        <td className="py-2 px-4">{member.user.address}</td>
-                                        <td className="py-2 px-4">{member.user.phone}</td>
+                                    <tr key={member.id} className="border-b border-gray-300">
+                                        <td className="py-2 px-4 border-r border-gray-300">{index + 1}</td>
+                                        <td className="py-2 px-4 border-r border-gray-300">{member.user.name}</td>
+                                        <td className="py-2 px-4 border-r border-gray-300">{member.user.city}</td>
+                                        <td className="py-2 px-4 border-r border-gray-300">{member.user.address}</td>
+                                        <td className="py-2 px-4 border-r border-gray-300">{member.user.phone}</td>
+                                        <td className="py-2 px-4 border-r border-gray-300">
+                                            <span>
+                                                {new Date(member.updatedAt).toLocaleDateString('id-ID', {
+                                                    weekday: 'long',
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                })}
+                                            </span>
+                                            <br />
+                                            <span>
+                                                Jam: {new Date(member.updatedAt).toLocaleTimeString('id-ID', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: false,
+                                                })} WIB
+                                            </span>
+                                        </td>
+
+
+                                        <td className="py-2 px-4 border-r border-gray-300">
+                                            <p
+                                                className={`py-1 px-2 text-center font-semibold rounded-lg 
+                                                    ${member.status === 'active' ? 'bg-green-500 text-white' :
+                                                        member.status === 'pending' ? 'bg-yellow-500 text-white' :
+                                                            member.status === 'inactive' ? 'bg-red-500 text-white' : ''}`}
+                                            >
+                                                {member.status}
+                                            </p>
+                                        </td>
+
+
                                         <td className="py-2 px-4 text-center">
                                             <button
                                                 onClick={() => handleProfileClick(member.user.id)}
@@ -134,13 +168,14 @@ const DetailKelas = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="py-4 px-4 text-center text-gray-600">
+                                    <td colSpan="7" className="py-4 px-4 text-center text-gray-600">
                                         Belum ada anggota
                                     </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
+
                 </div>
 
                 {/* Back Button */}

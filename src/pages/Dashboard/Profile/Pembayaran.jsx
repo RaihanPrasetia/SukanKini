@@ -1,55 +1,30 @@
-import React, { useState } from 'react';
-import DetailPembayaran from '../../../components/DetailPembayaran'; // Import komponen DetailPembayaran
-
-const orderData = [
-  {
-    id: 1,
-    alamat: 'Jln. Merpati, Bakung ujung',
-    kota: 'Jambi',
-    kelas: 'Yoga',
-    namaPelatih: 'Baihaqi Khaizan',
-    tanggalPesanan: '25 Oktober 2024, 11:49',
-    metodePembayaran: 'Transfer - Online',
-    fotoPemesan: '/assets/images/kelasuser/yoga.jpg',
-    jumlah: 'Rp. 150.000',
-    statusPembayaran: 'Lunas',
-    sesi: 'Sesi 1',
-    namaMitra: 'GYM EXO',
-  },
-  {
-    id: 2,
-    alamat: 'Jln. Merpati, Bakung ujung',
-    kota: 'Jambi',
-    kelas: 'Zumba',
-    namaPelatih: 'Fachlufi Gred',
-    tanggalPesanan: '25 Oktober 2024, 11:49',
-    metodePembayaran: 'Transfer - Online',
-    jumlah: 'Rp. 150.000',
-    fotoPemesan: '/assets/images/kelasuser/zumba.jpg',
-    statusPembayaran: 'Diproses',
-    sesi: 'Sesi 2',
-    namaMitra: 'Hotel Ratu',
-  },
-  {
-    id: 3,
-    alamat: 'Jln. Merpati, Bakung ujung',
-    kota: 'Jambi',
-    kelas: 'Cardio',
-    namaPelatih: 'Rina Putri',
-    tanggalPesanan: '26 Oktober 2024, 10:30',
-    metodePembayaran: 'Transfer - Online',
-    jumlah: 'Rp. 150.000',
-    fotoPemesan: '/assets/images/kelasuser/cardio.jpg',
-    statusPembayaran: 'Ditolak',
-    sesi: 'Sesi 3',
-    namaMitra: 'Hotel swiss bel',
-  },
-  // Tambahkan lebih banyak data jika perlu
-];
+import React, { useState, useEffect } from 'react';
+import paymentService from '../../../service/User/profilePayment';
+import DetailPembayaran from '../../../components/DetailPembayaran';
 
 export default function Pembayaran() {
+  const [orderData, setOrderData] = useState([]); // State to store payment data
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+
+  // Function to fetch payment data from API
+  const fetchPayments = async () => {
+    try {
+      const payments = await paymentService.getUserPayments();
+      setOrderData(payments); // Set order data with fetched payments
+      setLoading(false); // Set loading to false once data is fetched
+    } catch (err) {
+      setError(err.message); // Set error message in case of failure
+      setLoading(false); // Set loading to false even if error occurs
+    }
+  };
+
+  // Fetch payments when the component mounts
+  useEffect(() => {
+    fetchPayments();
+  }, []);
 
   const openModal = (order) => {
     setSelectedOrder(order);
@@ -61,9 +36,17 @@ export default function Pembayaran() {
     setSelectedOrder(null);
   };
 
+  // Display loading or error states
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="items-center justify-center p-6 flex flex-col rounded-lg bg-gray-100 shadow-xl w-full h-full max-w-none mx-auto animate__animated animate__fadeInUp">
-
       <h3 className="text-blue-600 font-bold text-3xl mb-4 text-center animate__animated animate__zoomIn">
         INFORMASI PESANAN
       </h3>
@@ -74,23 +57,23 @@ export default function Pembayaran() {
         {orderData.map((order, index) => (
           <div key={index} className="bg-white p-6 rounded-lg border border-gray-300 shadow-lg">
             <div className="flex flex-col items-center">
-              <img src={order.fotoPemesan} alt="Foto Pemesan"
-                className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-200" />
-              <span className={`px-3 py-1 rounded-full text-sm font-medium text-white ${
-                order.statusPembayaran === 'Lunas' ? 'bg-green-500' 
-                : order.statusPembayaran === 'Diproses' ? 'bg-yellow-500'
-                : 'bg-red-500'
-              }`}>
-                {order.statusPembayaran}
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium text-white ${order.paymentStatus === 'Diterima'
+                  ? 'bg-green-500'
+                  : order.paymentStatus === 'Diproses'
+                    ? 'bg-yellow-500'
+                    : 'bg-red-500'
+                  }`}
+              >
+                {order.paymentStatus}
               </span>
             </div>
             <div className="mt-4">
               {[
-                { label: "Nama Mitra", value: order.namaMitra },
-                { label: "Kelas", value: order.kelas },
-                { label: "Tanggal Pembayaran", value: order.tanggalPesanan },
-                { label: "Metode Pembayaran", value: order.metodePembayaran },
-                { label: "Total", value: order.jumlah },
+                { label: 'Nama Mitra', value: (order.to?.name || 'N/A').toUpperCase() },
+                { label: 'Kelas', value: order.classInfo?.name || 'N/A' },
+                { label: 'Tanggal Pembayaran', value: new Date(order.createdAt).toLocaleString() },
+                { label: 'Total', value: `Rp. ${order.total.toLocaleString()}` },
               ].map((item, index) => (
                 <div key={index} className="flex justify-between py-1 border-b border-gray-200 last:border-none">
                   <p className="text-gray-600 font-semibold text-sm">{item.label}</p>
@@ -98,6 +81,7 @@ export default function Pembayaran() {
                 </div>
               ))}
             </div>
+
             <div className="mt-6 text-center">
               <button
                 className="px-5 py-2 rounded-full text-lg font-semibold bg-blue-600 text-white shadow-md hover:bg-blue-700 transition duration-300 animate__animated animate__fadeIn"

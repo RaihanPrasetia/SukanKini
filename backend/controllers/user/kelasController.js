@@ -10,7 +10,12 @@ const getUserMemberships = async (req, res) => {
         const userId = req.userId;
 
         const memberships = await Memberships.findAll({
-            where: { user_id: userId }, // Filter by user_id matching the logged-in user
+            where: {
+                [Op.and]: [
+                    { user_id: userId },  // Menyaring berdasarkan user_id
+                    { status: 'active' },  // Menyaring berdasarkan user_id
+                ]
+            }, // Filter by user_id matching the logged-in user
             include: [
                 {
                     model: User,
@@ -49,7 +54,12 @@ const getClassNow = async (req, res) => {
 
         // Cari memberships yang terkait dengan user_id dan memiliki jadwal untuk hari ini
         const memberships = await Memberships.findAll({
-            where: { user_id: userId },
+            where: {
+                [Op.and]: [
+                    { user_id: userId },  // Menyaring berdasarkan user_id
+                    { status: 'active' },  // Menyaring berdasarkan user_id
+                ]
+            },
             include: [
                 {
                     model: User,
@@ -84,28 +94,6 @@ const getClassNow = async (req, res) => {
         res.status(200).json({ memberships: filteredMemberships });
     } catch (error) {
         res.status(500).json({ message: `Terjadi kesalahan: ${error.message}` });
-    }
-};
-
-
-
-
-
-const createMembership = async (req, res) => {
-    try {
-        const userId = req.userId;
-
-        const { class_id, status } = req.body;
-
-        const newMembership = await Memberships.create({
-            user_id: userId,
-            class_id,
-            status: status || 'active',
-        });
-
-        res.status(201).json({ message: 'Membership created successfully!', membership: newMembership });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
     }
 };
 
@@ -234,4 +222,4 @@ const getAllClass = async (req, res) => {
 }
 
 
-module.exports = { getUserMemberships, createMembership, getClassNow, getAllClass, getClassById };
+module.exports = { getUserMemberships, getClassNow, getAllClass, getClassById };

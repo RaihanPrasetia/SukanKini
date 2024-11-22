@@ -4,16 +4,21 @@ import Bank from '../../constructors/bankModel';
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const getBankMitraById = async (bankId) => {
+const getBankMitraById = async (userId) => {
     try {
-        const response = await axios.get(`${apiUrl}/bank/mitra/${bankId}`, {
+        const response = await axios.get(`${apiUrl}/bank/mitra/${userId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 api_key: apiKey,
             },
         });
         // Inisialisasi objek Bank menggunakan konstruktor
-        return new Bank(response.data.bank);
+        if (response.data && Array.isArray(response.data.bank)) {
+            // Map response data to Membership instances
+            return response.data.bank.map((bank) => new Bank(bank));
+        } else {
+            throw new Error("No class data found in the response.");
+        }
     } catch (error) {
         console.error("Failed to fetch bank info:", error);
         throw new Error(error.response?.data?.message || "Failed to fetch bank info");

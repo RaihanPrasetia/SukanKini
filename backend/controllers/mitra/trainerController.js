@@ -66,7 +66,7 @@ const createTrainer = async (req, res) => {
         if (req.file) {
             imagePath = `${req.file.filename}`;
 
-            const dir = path.join(__dirname, '../../public/images/trainer', imagePath);
+            const dir = path.join(__dirname, '../../../public/images/trainer', imagePath);
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }

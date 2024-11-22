@@ -11,10 +11,11 @@ export default function HomeMitra() {
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const [selectedPromo, setSelectedPromo] = useState(null);
     const [paymentProof, setPaymentProof] = useState(null);
+    const [bankInfo, setBankInfo] = useState(null);
     const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
-    const [bankInfo, setBankInfo] = useState(null); // State untuk informasi bank
+    // State untuk informasi bank
     const [payments, setPayments] = useState([]);
-    const { logout, userName, user } = useAuth();
+    const { logout, user } = useAuth();
     const navigate = useNavigate();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -52,6 +53,7 @@ export default function HomeMitra() {
 
     // Fungsi untuk memeriksa status pembayaran pertama
     const isFirstPaymentPending = payments.length > 0 && payments[0].paymentStatus === "Diproses";
+    const isFirstPaymentApproved = payments.length > 0 && payments[0].paymentStatus === "Diterima";
 
     useEffect(() => {
         // Fetch informasi bank
@@ -79,6 +81,7 @@ export default function HomeMitra() {
             try {
                 const paymentData = await paymentService.getPaymentStatus();
                 setPayments(paymentData);
+                console.log(paymentData)
             } catch (error) {
                 Swal.fire({
                     title: "Error",
@@ -124,14 +127,13 @@ export default function HomeMitra() {
             });
 
 
-            if (response && response.payment) {
+            if (response && response.message) {
                 Swal.fire({
                     title: "Sukses",
                     text: `Pembayaran berhasil untuk promo ${selectedPromo.name}.`,
                     icon: "success",
                     confirmButtonText: "OK",
                 });
-
                 setIsPaymentCompleted(true);
 
                 const updatedPayments = await paymentService.getPaymentStatus();
@@ -181,7 +183,6 @@ export default function HomeMitra() {
                             className="h-12 w-12 rounded-full"
                         />
                     )}
-                    <span className='text-white font-bold text-xl hidden lg:block'>{userName || "Profile"}</span> {/* Display userName here */}
                 </div>
 
                 {/* Dropdown Menu for Profile and Logout */}
@@ -209,39 +210,35 @@ export default function HomeMitra() {
         <div
             className='flex flex-col bg-gray-100 items-start justify-start px-4 sm:p-16 py-24 lg:pt-32 transition-all duration-300 '
         >
-            {isFirstPaymentPending ? (
+            {isFirstPaymentApproved ? (
+                <div className="flex flex-col w-full bg-blue-500 rounded-lg shadow-lg p-6 mb-4">
+                    <h1 className="text-lg md:text-xl font-semibold text-white text-left leading-snug">
+                        Pembayaran Anda telah diterima. Silakan logout dan login ulang untuk melanjutkan.
+                    </h1>
+                    <button
+                        onClick={handleLogout}
+                        className="mt-4 bg-white text-blue-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-200 transition"
+                    >
+                        Logout
+                    </button>
+                </div>
+            ) : isFirstPaymentPending ? (
                 <div className="flex flex-col w-full bg-yellow-500 rounded-lg shadow-lg p-6 mb-4">
-                <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                        <svg className="w-5 h-5 text-yellow-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h3v3H9zm0 0h3V9H9zM4 9h1a1 1 0 011 1v5a1 1 0 011 1h2a1 1 0 011 1v5a1 1 0 011 1h1" />
-                        </svg>
-                    </div>
                     <h1 className="text-lg md:text-xl font-semibold text-white text-left leading-snug">
                         Pembayaran Anda sedang ditinjau oleh admin. Silakan menunggu konfirmasi lebih lanjut.
                     </h1>
                 </div>
-                <p className="text-sm text-white opacity-90 mt-2 text-left">
-                    Kami akan memberitahukan Anda setelah konfirmasi pembayaran berhasil atau jika ada informasi lebih lanjut yang perlu Anda ketahui.
-                </p>
-            </div>
-            
-            ) : !isPaymentCompleted ? (
-                <div className="flex flex-col w-full bg-red-500 rounded-lg shadow-lg p-6 mb-3">
-                    <h1 className="text-xl md:text-2xl w-[80%] font-bold text-white text-left">
-                        Untuk melanjutkan, silakan lakukan pembayaran terlebih dahulu dengan memilih promo yang tersedia.
-                    </h1>
-                </div>
             ) : (
-                <div className="flex flex-col w-full bg-green-500 rounded-lg shadow-lg p-6 mb-3">
-                    <h1 className="text-xl md:text-2xl w-[80%] font-bold text-white text-left">
-                        Pembayaran berhasil. Terima kasih!
-                    </h1>
-                </div>
+                !isPaymentCompleted && !isFirstPaymentPending && !isFirstPaymentApproved && (
+                    <div className="flex flex-col w-full bg-red-500 rounded-lg shadow-lg p-6 mb-4">
+                        <h1 className="text-lg md:text-xl font-semibold text-white text-left leading-snug">
+                            Silahkan untuk melanjutkan pembayaran terlebih dahulu
+                        </h1>
+                    </div>
+                )
             )}
 
-            {/* Hanya tampilkan promo jika pembayaran pertama tidak diproses */}
-            {!isFirstPaymentPending && (
+            {!isFirstPaymentPending && !isFirstPaymentApproved && (
                 <div className="w-full sm:w-1/3 lg:w-max p-6 rounded-2xl bg-opacity-75 bg-white text-white shadow-lg">
                     <h2 className="text-2xl font-semibold mb-4 text-center text-black">Promo</h2>
                     <div className="flex gap-4">
@@ -264,46 +261,55 @@ export default function HomeMitra() {
 
             {/* Tabel Data Pembayaran */}
             <div className="mt-6 w-full bg-white p-6 rounded-lg shadow-xl">
-    <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Riwayat Pembayaran</h2>
-    <table className="w-full table-auto border-separate border-spacing-0.5 rounded-lg overflow-hidden">
-        <thead>
-            <tr className="bg-yellow-500 text-white">
-                <th className="px-6 py-3 text-sm font-medium text-center">No</th>
-                <th className="px-6 py-3 text-sm font-medium text-center">Bukti</th>
-                <th className="px-6 py-3 text-sm font-medium text-center">Total</th>
-                <th className="px-6 py-3 text-sm font-medium text-center">Status Pembayaran</th>
-            </tr>
-        </thead>
-        <tbody>
-            {payments.map((payment, index) => (
-                <tr key={payment.id} className="transition duration-200 hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-center">{index + 1}</td>
-                    <td className="px-6 py-4 text-center">
-                        {payment.paymentProof ? (
-                            <img
-                                src={`/bukti/${payment.paymentProof}`}
-                                alt={`Bukti Pembayaran ${payment.id}`}
-                                className="w-16 h-16 object-cover rounded-lg border border-gray-300"
-                            />
-                        ) : (
-                            <span className="text-red-500 font-medium">No Proof</span>
-                        )}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">Rp. {payment.total}</td>
-                    <td className="px-6 py-4 text-sm text-center">
-                        <span
-                            className={`${
-                                payment.paymentStatus === 'Approved' ? 'text-green-500' : 'text-red-500'
-                            } font-semibold`}
-                        >
-                            {payment.paymentStatus}
-                        </span>
-                    </td>
-                </tr>
-            ))}
-        </tbody>
-    </table>
-</div>
+                <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Riwayat Pembayaran</h2>
+                <table className="w-full table-auto border-separate text-center border-spacing-0.5 rounded-lg overflow-hidden">
+                    <thead>
+                        <tr className="bg-yellow-500 text-white">
+                            <th className="px-6 py-3 text-sm font-medium ">No</th>
+                            <th className="px-6 py-3 text-sm font-medium ">Bukti</th>
+                            <th className="px-6 py-3 text-sm font-medium ">Bank Tujuan</th>
+                            <th className="px-6 py-3 text-sm font-medium ">Nomor Rekening</th>
+                            <th className="px-6 py-3 text-sm font-medium ">Atas Nama</th>
+                            <th className="px-6 py-3 text-sm font-medium ">Total</th>
+                            <th className="px-6 py-3 text-sm font-medium ">Status Pembayaran</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {payments.map((payment, index) => (
+                            <tr key={payment.id} className="transition duration-200 hover:bg-gray-50">
+                                <td className="px-6 py-4 text-sm text-center">{index + 1}</td>
+                                <td className="px-6 py-4 text-center">
+                                    {payment.paymentProof ? (
+                                        <img
+                                            src={`/bukti/${payment.paymentProof}`}
+                                            alt={`Bukti Pembayaran ${payment.id}`}
+                                            className="w-16 h-16 object-cover rounded-lg border border-gray-300"
+                                        />
+                                    ) : (
+                                        <span className="text-red-500 font-medium">No Proof</span>
+                                    )}
+                                </td>
+                                <td className="px-6 py-4 text-sm text-gray-800"> {payment.bank.bankBrand}</td>
+                                <td className="px-6 py-4 text-sm text-gray-800"> {payment.bank.accountNumber}</td>
+                                <td className="px-6 py-4 text-sm text-gray-800"> {payment.bank.accountName}</td>
+                                <td className="px-6 py-4 text-sm text-gray-800 font-bold">Rp. {payment.total}</td>
+                                <td className="px-6 py-4 text-sm text-center">
+                                    <span
+                                        className={`
+                                            ${payment.paymentStatus === 'Diterima' ? 'px-4 py-2 bg-green-500 text-white rounded-lg' :
+                                                payment.paymentStatus === 'Ditolak' ? 'px-4 py-2 bg-red-500 text-white rounded-lg' :
+                                                    payment.paymentStatus === 'Diproses' ? 'px-4 py-2 bg-yellow-500 text-white rounded-lg' :
+                                                        'text-gray-500'
+                                            } font-semibold`}
+                                    >
+                                        {payment.paymentStatus}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
 
             {isPaymentModalOpen && bankInfo && (

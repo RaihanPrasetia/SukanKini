@@ -26,12 +26,12 @@ function AppRoutes() {
         } catch (error) {
           console.error('Error fetching payment status:', error);
         } finally {
-          setIsLoading(false);  // Set loading to false once status check is complete
+          setIsLoading(false); // Set loading to false after the check
         }
       };
       checkUserPaymentStatus();
     } else {
-      setIsLoading(false);  // If not mitra, set loading to false directly
+      setIsLoading(false); // Set loading to false directly if not mitra
     }
   }, [userRole]);
 

@@ -5,6 +5,8 @@ import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { checkEmailAvailability } from '../../controllers/authController';
+import sendOtpService from '../../service/sendOtpService';
+
 
 function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
     const [name, setName] = useState('');
@@ -65,12 +67,24 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
             return; // Stop if there was an error checking the email
         }
 
-        // Generate OTP and call onSendOTP
+        // Generate OTP
         const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
-        console.log('Generated OTP:', otp);
 
-        // Send user data and OTP
-        onSendOTPMitra({ otp, name, email, password, kota, alamat, brand, no_rek, an }); // Call the function to proceed to the OTP step
+        // Send OTP to the user's email through backend using axios
+        try {
+            const response = await sendOtpService.sendOtp(email, otp);
+
+            if (response && response.message) {
+                toast.success('OTP telah dikirim ke email Anda.');
+                // Proceed with sending data to the next step
+                onSendOTPMitra({ otp, name, email, password, kota, alamat, brand, no_rek, an });
+            } else {
+                toast.error('Gagal mengirim OTP. Coba lagi.');
+            }
+        } catch (error) {
+            console.error('Error sending OTP:', error);
+            toast.error('Terjadi kesalahan saat mengirim OTP. Silakan coba lagi.');
+        }
     };
 
 

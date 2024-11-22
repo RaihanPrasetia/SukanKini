@@ -1,4 +1,4 @@
-const { Payment, User, Bank, Class, ClassSchedule } = require('../../associations');
+const { Payment, User, Bank, Class, ClassSchedule, Memberships } = require('../../associations');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -209,9 +209,30 @@ const updatePaymentStatus = async (req, res) => {
             return res.status(403).json({ message: 'You are not authorized to update this payment' });
         }
 
+
+        const membership = await Memberships.findOne({
+            where: {
+                [Op.and]: [
+                    { user_id: payment.createdBy },
+                    { class_id: payment.class_id },
+                ]
+            }
+        });
         // Update status pembayaran
+        if (!membership) {
+            return res.status(404).json({ message: 'Memberships not found' });
+        }
+        if (status_pembayaran === 'Diterima') {
+            membership.status = 'active';  // Ubah status membership menjadi active
+        } else if (status_pembayaran === 'Ditolak') {
+            membership.status = 'inactive';  // Ubah status membership menjadi inactive jika ditolak
+        } else {
+            return res.status(400).json({ message: 'Invalid payment status' });
+        }
         payment.status_pembayaran = status_pembayaran;
         await payment.save();
+        membership.status = 'active';
+        await membership.save();
 
         res.status(200).json({ message: 'Payment status updated successfully', payment });
     } catch (error) {

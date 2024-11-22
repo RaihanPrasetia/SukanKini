@@ -5,6 +5,9 @@ import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { checkEmailAvailability } from '../../controllers/authController';
+import sendOtpService from '../../service/sendOtpService';
+
+
 
 
 function RegisterForm({ onLogin, onSendOTP }) {
@@ -33,6 +36,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
         return newErrors;
     };
 
+
     const handleRegis = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm();
@@ -46,7 +50,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
         // Check if the email is already registered
         try {
             const isEmailRegistered = await checkEmailAvailability(email);
-            if (!isEmailRegistered) { // Change this line to check for availability
+            if (!isEmailRegistered) {
                 toast.error('Email sudah terdaftar. Silakan gunakan email lain.');
                 return; // Stop the registration process if email is already registered
             }
@@ -56,13 +60,27 @@ function RegisterForm({ onLogin, onSendOTP }) {
             return; // Stop if there was an error checking the email
         }
 
-        // Generate OTP and call onSendOTP
+        // Generate OTP
         const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
-        console.log('Generated OTP:', otp);
 
-        // Send user data and OTP
-        onSendOTP({ otp, name, email, password }); // Call the function to proceed to the OTP step
+        // Send OTP to the user's email through the service
+        try {
+            const response = await sendOtpService.sendOtp(email, otp);  // Use the sendOtpService to send OTP
+
+            if (response && response.message) {
+                toast.success('OTP telah dikirim ke email Anda.');
+                // Proceed with sending data to the next step
+                onSendOTP({ otp, name, email, password }); // Call the function to proceed to the OTP step
+            } else {
+                toast.error('Gagal mengirim OTP. Coba lagi.');
+            }
+        } catch (error) {
+            console.error('Error sending OTP:', error);
+            toast.error('Terjadi kesalahan saat mengirim OTP. Silakan coba lagi.');
+        }
     };
+
+
 
 
 

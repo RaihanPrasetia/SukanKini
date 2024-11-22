@@ -24,10 +24,8 @@ const createPayment = async ({ bankId, total, paymentProof }) => {
         );
 
         // Check if the response contains payment data
-        if (response.data && response.data.payment) {
-            return new Payment(response.data.payment);
-        } else {
-            throw new Error("Payment creation failed, no payment data in response.");
+        if (response.data && response.data.message) {
+            return { message: response.data.message };
         }
     } catch (error) {
         console.error("Error creating payment:", error.message || error);
