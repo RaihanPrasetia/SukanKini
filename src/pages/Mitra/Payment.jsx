@@ -84,10 +84,21 @@ export default function HomeMitra() {
                 console.log(paymentData)
             } catch (error) {
                 Swal.fire({
-                    title: "Error",
-                    text: "Gagal mengambil data pembayaran.",
-                    icon: "error",
-                    confirmButtonText: "OK",
+                    title: "Cek Status Pembayaran Anda",
+                    text: "Segera cek status pembayaran Anda untuk memastikan proses berjalan lancar. Pastikan semuanya sudah terverifikasi!",
+                    icon: "info",
+                    confirmButtonText: "Cek Sekarang",
+                    confirmButtonColor: '#ff9900',  // Warna tombol konfirmasi oranye
+                    background: '#f0f8ff',          // Latar belakang yang lebih lembut
+                    color: '#333',                  // Warna teks gelap
+                    iconColor: '#ff9900',           // Warna ikon informasi oranye
+                    padding: '20px',                // Menambah padding agar popup lebih luas
+                    customClass: {
+                        popup: 'swal-popup-custom',  // Kelas custom untuk popup
+                        title: 'swal-title-custom',  // Kelas custom untuk judul
+                        icon: 'swal-icon-custom',    // Kelas custom untuk ikon
+                        confirmButton: 'swal-btn-custom' // Kelas custom untuk tombol
+                    },
                 });
             }
         };

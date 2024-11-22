@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
-function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
+function OtpForm({ onConfirmOTP, reSendOtp, onLogin, onMessage }) { // Added onBack prop
     const [enteredOtp, setEnteredOtp] = useState('');
+    const [isResendDisabled, setIsResendDisabled] = useState(false);
+    const [countdown, setCountdown] = useState(60);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    // Show SweetAlert when onMessage changes
+    useEffect(() => {
+        if (onMessage) {
+            Swal.fire({
+                title: 'Cek Email Anda',
+                text: onMessage,
+                icon: 'success',
+                confirmButtonText: 'OK',
+            });
+        }
+    }, [onMessage]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,6 +44,22 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
     };
     const handleMenuClick = () => {
         window.scrollTo(0, 0); // Scroll to the top of the page
+    };
+
+    const handleResendOtp = () => {
+        setIsResendDisabled(true);
+        reSendOtp(); // Call the resend OTP function
+        let timer = 60; // Countdown duration in seconds
+        setCountdown(timer);
+
+        const interval = setInterval(() => {
+            timer -= 1;
+            setCountdown(timer);
+            if (timer <= 0) {
+                clearInterval(interval);
+                setIsResendDisabled(false);
+            }
+        }, 1000);
     };
 
     return (
@@ -62,10 +93,22 @@ function OtpForm({ onConfirmOTP, onLogin }) { // Added onBack prop
                         {isSubmitting ? 'Mengonfirmasi...' : 'Konfirmasi'}
                     </button>
                 </form>
+                <div className='flex items-center justify-center rounded-lg'>
+                    <button
+                        type="button"
+                        onClick={handleResendOtp}
+                        className={`mt-4 ${isResendDisabled ? 'text-gray-400 cursor-not-allowed underline' : ' hover:bg-green-600 px-4 py-2 bg-green-500 text-white rounded-lg'} `}
+                        disabled={isResendDisabled}
+                    >
+                        {isResendDisabled ? `${countdown} detik untuk mengirim ulang` : 'Kirim Ulang OTP'}
+                    </button>
+                </div>
+
+
                 <button
                     type="button"
                     onClick={onLogin} // Calls the back action when clicked
-                    className="mt-4 text-green-500 underline"
+                    className="mt-4 text-green-500 underline hover:text-green-600"
                 >
                     Kembali ke Halaman Sebelumnya
                 </button>

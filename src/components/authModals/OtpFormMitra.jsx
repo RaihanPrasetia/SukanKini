@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
-function OtpFormMitra({ onConfirmOTPMitra, onRegisterMitra }) {
+function OtpFormMitra({ onConfirmOTPMitra, onRegisterMitra, reSendOtp, onMessage }) {
     const [enteredOtp, setEnteredOtp] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isResendDisabled, setIsResendDisabled] = useState(false);
+    const [countdown, setCountdown] = useState(60);
+
+    useEffect(() => {
+        if (onMessage) {
+            Swal.fire({
+                title: 'Cek Email Anda',
+                text: onMessage,
+                icon: 'success',
+                confirmButtonText: 'OK',
+            });
+        }
+    }, [onMessage]);
 
     const handleSubmitMitra = async (e) => {
         e.preventDefault();
@@ -26,6 +40,21 @@ function OtpFormMitra({ onConfirmOTPMitra, onRegisterMitra }) {
         } finally {
             setIsSubmitting(false);
         }
+    };
+    const handleResendOtp = () => {
+        setIsResendDisabled(true);
+        reSendOtp(); // Call the resend OTP function
+        let timer = 60; // Countdown duration in seconds
+        setCountdown(timer);
+
+        const interval = setInterval(() => {
+            timer -= 1;
+            setCountdown(timer);
+            if (timer <= 0) {
+                clearInterval(interval);
+                setIsResendDisabled(false);
+            }
+        }, 1000);
     };
 
     return (
@@ -54,6 +83,7 @@ function OtpFormMitra({ onConfirmOTPMitra, onRegisterMitra }) {
                     />
                     {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
                     <button
+                        onClick={handleSubmitMitra}
                         type="submit"
                         className={`bg-yellow-500 text-white py-2 rounded-lg w-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                         disabled={isSubmitting}
@@ -61,13 +91,26 @@ function OtpFormMitra({ onConfirmOTPMitra, onRegisterMitra }) {
                         {isSubmitting ? 'Mengonfirmasi...' : 'Konfirmasi'}
                     </button>
                 </form>
+                <div className='flex items-center justify-center rounded-lg'>
+                    <button
+                        type="button"
+                        onClick={handleResendOtp}
+                        className={`mt-4 ${isResendDisabled ? 'text-gray-400 cursor-not-allowed underline' : ' hover:bg-yellow-600 px-4 py-2 bg-yellow-500 text-white rounded-lg'} `}
+                        disabled={isResendDisabled}
+                    >
+                        {isResendDisabled ? `${countdown} detik untuk mengirim ulang` : 'Kirim Ulang OTP'}
+                    </button>
+                </div>
+
+
                 <button
                     type="button"
                     onClick={onRegisterMitra} // Calls the back action when clicked
-                    className="mt-4 text-yellow-500 underline"
+                    className="mt-4 text-yellow-500 underline hover:text-yellow-600"
                 >
                     Kembali ke Halaman Sebelumnya
                 </button>
+
             </div>
         </div>
     );

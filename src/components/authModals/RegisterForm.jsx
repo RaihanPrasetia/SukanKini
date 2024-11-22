@@ -65,18 +65,19 @@ function RegisterForm({ onLogin, onSendOTP }) {
 
         // Send OTP to the user's email through the service
         try {
-            const response = await sendOtpService.sendOtp(email, otp);  // Use the sendOtpService to send OTP
+            const response = await sendOtpService.sendOtp(email, otp); // Use the sendOtpService to send OTP
 
-            if (response && response.message) {
-                toast.success('OTP telah dikirim ke email Anda.');
-                // Proceed with sending data to the next step
-                onSendOTP({ otp, name, email, password }); // Call the function to proceed to the OTP step
+            if (response && response.success) {
+                // Display success toast with message from server
+                toast.success(response.message || 'OTP telah dikirim ke email Anda.');
+                // Pass the message to onSendOTP
+                onSendOTP({ otp, name, email, password, message: response.message });
             } else {
                 toast.error('Gagal mengirim OTP. Coba lagi.');
             }
         } catch (error) {
-            console.error('Error sending OTP:', error);
-            toast.error('Terjadi kesalahan saat mengirim OTP. Silakan coba lagi.');
+            console.error('Error in sending OTP:', error);
+            toast.error(error.message || 'Gagal mengirim OTP. Coba lagi.');
         }
     };
 

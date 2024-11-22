@@ -74,10 +74,10 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
         try {
             const response = await sendOtpService.sendOtp(email, otp);
 
-            if (response && response.message) {
+            if (response && response.success) {
                 toast.success('OTP telah dikirim ke email Anda.');
                 // Proceed with sending data to the next step
-                onSendOTPMitra({ otp, name, email, password, kota, alamat, brand, no_rek, an });
+                onSendOTPMitra({ otp, name, email, password, kota, alamat, brand, no_rek, an, message: response.message });
             } else {
                 toast.error('Gagal mengirim OTP. Coba lagi.');
             }

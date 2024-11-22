@@ -10,6 +10,7 @@ const classUser = require('./user/classUser');
 const paymentUser = require('./user/paymentUser');
 const getBankMitra = require('./user/bankMitra');
 const sendOtp = require('./sendOtpRoutes');
+const notifications = require('./notifikasiRoutes');
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use(classUser);
 router.use(paymentUser);
 router.use(getBankMitra);
 router.use(sendOtp);
+router.use(notifications);
 
 module.exports = router;
