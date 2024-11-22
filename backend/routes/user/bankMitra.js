@@ -7,7 +7,7 @@ const authenticateJWT = require('../../middleware/jwtMiddleware');
 const { getBankMitra } = require('../../controllers/user/bankController')
 
 // Mitra
-router.get('/bank/mitra/:userId', upload.none(), authenticateJWT, getBankMitra);
+router.get('/bank/mitra/class/:userId', upload.none(), authenticateJWT, getBankMitra);
 
 
 module.exports = router;

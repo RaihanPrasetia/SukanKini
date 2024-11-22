@@ -42,9 +42,8 @@ const getPaymentStatus = async () => {
             },
         });
 
-        // Check if the response contains payments data
         if (response.data && response.data.payments) {
-            return response.data.payments.map(payment => new Payment(payment)); // Mapping each payment response to the Payment model
+            return response.data.payments.map(payment => new Payment(payment));
         } else {
             throw new Error("No payment data found.");
         }

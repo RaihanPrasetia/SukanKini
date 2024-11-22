@@ -7,7 +7,7 @@ const { createBank, getUserBanks, updateBank, deleteBank, getBankById } = requir
 
 // Routes
 router.post('/banks/create', upload.none(), authenticateJWT, createBank);
-router.get('/banks', authenticateJWT, getUserBanks);
+router.get('/bank', authenticateJWT, getUserBanks);
 router.get('/banks/:id', authenticateJWT, getBankById);
 router.put('/banks/update/:id', upload.none(), authenticateJWT, updateBank);
 router.delete('/banks/delete/:id', upload.none(), authenticateJWT, deleteBank);

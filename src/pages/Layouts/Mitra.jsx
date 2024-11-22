@@ -10,6 +10,7 @@ import NotifMitra from '../Mitra/NotifMitra';
 import Pembayaran from '../Mitra/Pembayaran';
 import DetailKelas from '../Mitra/DetailKelas'
 import Category from '../Mitra/Category';
+import Bank from '../Mitra/Bank';
 
 const Mitra = () => {
     // State to manage the sidebar open/close status
@@ -34,6 +35,7 @@ const Mitra = () => {
                         <Route path="/category" element={<Category />} />
                         <Route path="/notif" element={<NotifMitra />} />
                         <Route path="/pembayaran" element={<Pembayaran />} />
+                        <Route path="/bank" element={<Bank />} />
                     </Routes>
                 </div>
                 <Footer />

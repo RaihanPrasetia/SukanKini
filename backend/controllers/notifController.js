@@ -13,7 +13,7 @@ const getNotifications = async (req, res) => {
                 { model: User, as: 'from', attributes: ['name', 'email', 'phone_number'] }, // Informasi pengirim
                 { model: User, as: 'to', attributes: ['name', 'email', 'phone_number'] }, // Informasi penerima
             ],
-            attributes: ['id', 'title', 'message', 'type', 'isRead'],
+            attributes: ['id', 'title', 'message', 'type', 'isRead', 'createdAt', 'updatedAt'],
             order: [
                 ['isRead', 'ASC'], // Urutkan berdasarkan `isRead` (false lebih dulu)
                 ['createdAt', 'DESC'], // Urutkan berdasarkan waktu pembayaran terbaru

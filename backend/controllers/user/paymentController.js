@@ -131,7 +131,6 @@ const createPayment = async (req, res) => {
         } else {
             return res.status(400).json({ message: 'Missing payment proof (bukti)' });
         }
-
         // Buat entri pembayaran baru
         await Payment.create({
             user_id: classData.createdBy,

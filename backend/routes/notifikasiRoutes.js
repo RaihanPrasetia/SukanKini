@@ -7,6 +7,6 @@ const authenticateJWT = require('../middleware/jwtMiddleware');
 const { getNotifications, updateNotificationReadStatus } = require('../controllers/notifController');
 
 router.get('/notifications', upload.none(), authenticateJWT, getNotifications);
-router.get('/notifications/:id/read', upload.none(), authenticateJWT, updateNotificationReadStatus);
+router.put('/notifications/:id/read', upload.none(), authenticateJWT, updateNotificationReadStatus);
 
 module.exports = router; 

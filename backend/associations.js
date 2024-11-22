@@ -19,6 +19,7 @@ Class.belongsTo(Trainer, {
 
 Class.hasMany(ClassSchedule, { foreignKey: 'class_id', as: 'schedules' });
 Class.hasMany(Memberships, { foreignKey: 'class_id', as: 'members' });
+Class.hasMany(Payment, { foreignKey: 'class_id', as: 'payments' });
 
 ClassSchedule.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
 Memberships.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });

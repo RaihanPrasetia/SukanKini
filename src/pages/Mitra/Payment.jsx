@@ -76,7 +76,6 @@ export default function HomeMitra() {
             }
         };
 
-        // Fetch data pembayaran
         const fetchPayments = async () => {
             try {
                 const paymentData = await paymentService.getPaymentStatus();

@@ -1,4 +1,4 @@
-const { Payment, User, Bank, Class, ClassSchedule, Memberships } = require('../../associations');
+const { Payment, User, Bank, Class, ClassSchedule, Memberships, Notification } = require('../../associations');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -56,7 +56,16 @@ const getUserPayments = async (req, res) => {
                 ]
             },
             include: [
-                { model: Bank, as: 'bank', attributes: ['an', 'no_rek', 'brand'] },  // Menyertakan informasi bank
+                {
+                    model: Bank, as: 'bank', attributes: ['an', 'no_rek', 'brand'],
+                    where: {
+                        [Op.or]: [
+                            { deletedAt: null }, // Trainer aktif
+                            { deletedAt: { [Op.ne]: null } } // Trainer telah dihapus
+                        ]
+                    },
+                    paranoid: false,
+                },  // Menyertakan informasi bank
                 {
                     model: Class, as: 'class', attributes: ['name', 'category_id'],
                     include: [
@@ -146,18 +155,29 @@ const getPaymentById = async (req, res) => {
 
 const createPayment = async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.userId; // ID pengguna yang melakukan pembayaran
         const { bank_id, total } = req.body;
+
+        // Validasi input
         if (!bank_id || !total) {
-            return res.status(400).json({ message: 'Missing required fields: bank_id, total' });
+            return res.status(400).json({ message: 'Bank ID dan jumlah total pembayaran diperlukan.' });
         }
 
+        // Validasi bank
         const bankData = await Bank.findOne({ where: { id: bank_id } });
         if (!bankData) {
-            return res.status(404).json({ message: 'Bank not found' });
+            return res.status(404).json({ message: 'Bank yang dipilih tidak ditemukan.' });
+        }
+
+        // Validasi pengguna
+        const userData = await User.findOne({ where: { id: userId } });
+        if (!userData) {
+            return res.status(404).json({ message: 'Pengguna tidak ditemukan.' });
         }
 
         let buktiPath = null;
+
+        // Validasi bukti pembayaran
         if (req.file) {
             buktiPath = `${req.file.filename}`;
 
@@ -166,9 +186,10 @@ const createPayment = async (req, res) => {
                 fs.mkdirSync(dir, { recursive: true });
             }
         } else {
-            return res.status(400).json({ message: 'Missing payment proof (bukti)' });
+            return res.status(400).json({ message: 'Bukti pembayaran wajib diunggah.' });
         }
 
+        // Buat data pembayaran
         const newPayment = await Payment.create({
             user_id: 1,
             bank_id,
@@ -177,14 +198,37 @@ const createPayment = async (req, res) => {
             total,
             class_id: null,
             createdBy: userId,
+            isRead: false,
+        });
+
+        // Buat notifikasi untuk pengguna
+        const notificationMessageToUser = `Pembayaran pendaftaran Anda sebesar Rp${total.toLocaleString()} melalui bank ${bankData.brand} telah diterima dan sedang diproses oleh Admin. Harap tunggu konfirmasi selanjutnya.`;
+        await Notification.create({
+            title: "Pembayaran Pendaftaran",
+            message: notificationMessageToUser,
+            type: "info",
+            user_id: userId,
+            createdBy: userId,
+        });
+
+        // Buat notifikasi untuk admin
+        const adminId = 1; // ID admin
+        const notificationMessageToRecipient = `Pengguna ${userData.name} telah mengirimkan pembayaran sebesar Rp${total.toLocaleString()} melalui bank ${bankData.brand}. Mohon segera verifikasi pembayaran.`;
+        await Notification.create({
+            title: "Pembayaran Baru",
+            message: notificationMessageToRecipient,
+            type: "warning",
+            user_id: adminId,
+            createdBy: userId,
         });
 
         res.status(201).json({ message: 'Payment created successfully', payment: newPayment });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Failed to create payment', error: error.message });
+        console.error('Error creating payment:', error);
+        res.status(500).json({ message: 'Gagal membuat pembayaran.', error: error.message });
     }
 };
+
 
 const updatePaymentStatus = async (req, res) => {
     try {

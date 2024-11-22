@@ -26,6 +26,26 @@ const getClasses = async () => {
     }
 };
 
+const getClassNow = async () => {
+    try {
+        const response = await axios.get(`${apiUrl}/mitra/class/now`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                api_key: apiKey,
+            },
+        });
+        if (response.data && Array.isArray(response.data.classes)) {
+            // Mapping setiap kelas ke instance Class jika diperlukan
+            return response.data.classes.map((classData) => new Class(classData));
+        } else {
+            throw new Error("No class data found in the response.");
+        }
+    } catch (error) {
+        console.error("Error fetching classes:", error.message || error);
+        throw new Error(error.response?.data?.message || "Failed to fetch classes.");
+    }
+}
+
 const createClass = async ({ name, category_id, alamat, schedules, trainer_id, image_path, price }) => {
     try {
         const formData = new FormData();
@@ -140,6 +160,7 @@ const classService = {
     getClassById,
     updateClass,
     deleteClassById,
+    getClassNow
 };
 
 export default classService;
