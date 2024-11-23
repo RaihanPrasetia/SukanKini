@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import notifService from '../../../service/notifService';
 import { FiCheck } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 function Notifikasi() {
   const [notifications, setNotifications] = useState([]);
@@ -107,19 +108,22 @@ function Notifikasi() {
       <div className="space-y-6">
         {filteredNotifications.length > 0 ? (
           filteredNotifications.map((notif) => (
-            <div
+            <motion.div
               key={notif.id}
-              className={`p-6 rounded-xl shadow-md ${notif.type === 'info'
+              className={`p-6 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 ${notif.type === 'info'
                 ? 'bg-blue-100 border-l-4 border-blue-500'
                 : notif.type === 'warning'
                   ? 'bg-yellow-100 border-l-4 border-yellow-500'
                   : 'bg-green-100 border-l-4 border-green-500'
                 }`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
               <div className="flex items-start space-x-4">
                 {/* Icon */}
                 <div
-                  className={`h-10 w-10 rounded-full flex items-center justify-center text-white ${notif.type === 'info'
+                  className={`h-12 w-12 rounded-full flex items-center justify-center text-white ${notif.type === 'info'
                     ? 'bg-blue-500'
                     : notif.type === 'warning'
                       ? 'bg-yellow-500'
@@ -131,7 +135,7 @@ function Notifikasi() {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    className="h-6 w-6"
+                    className="h-7 w-7"
                   >
                     {notif.type === 'info' && (
                       <path
@@ -187,7 +191,7 @@ function Notifikasi() {
                   </button>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))
         ) : (
           <p className="text-gray-500">No notifications available</p>
