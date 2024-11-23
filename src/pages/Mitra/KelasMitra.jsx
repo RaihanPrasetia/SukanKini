@@ -382,13 +382,25 @@ return (
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Gambar</label>
-                        <input type="file" name="image_path" onChange={(e)=> setFormData({
-                        ...formData, image_path: e.target.files[0]
-                        })}
+                        <input type="file" name="image_path" onChange={(e)=> {
+                        const file = e.target.files[0];
+                        if (file) {
+                        if (file.size > 5 * 1024 * 1024) {
+                        alert("Ukuran file tidak boleh lebih dari 5MB");
+                        e.target.value = ""; // Reset input file
+                        } else {
+                        setFormData({
+                        ...formData,
+                        image_path: file,
+                        });
+                        }
+                        }
+                        }}
                         className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2
                         focus:ring-blue-500"
                         />
                     </div>
+
                 </div>
 
                 <div className="flex justify-end space-x-4">
@@ -505,22 +517,29 @@ return (
                         </button>
                     </div>
                     <ul className="space-y-1">
-                        {formData.schedules.map((schedule, index) => (
-                        <li key={index} className="flex justify-between items-center">
-                            <span>{`${schedule.hari} (${schedule.jam})`}</span>
-                            <button type="button" onClick={()=>
-                                setFormData((prev) => ({
-                                ...prev,
-                                schedules: prev.schedules.filter((_, i) => i !== index),
-                                }))
-                                }
-                                className="text-red-500 hover:underline"
-                                >
-                                <i className="fas fa-trash-alt mr-1"></i> Hapus
-                            </button>
-                        </li>
-                        ))}
-                    </ul>
+  {formData.schedules.map((schedule, index) => {
+    // Memformat waktu menjadi format jam:menit
+    const formattedTime = schedule.jam.split(':').slice(0, 2).join(':'); // Menyaring jam dan menit, kemudian menggabungkan dengan ":"
+    return (
+      <li key={index} className="flex justify-between items-center">
+        <span>{`${schedule.hari} (${formattedTime})`}</span>
+        <button
+          type="button"
+          onClick={() =>
+            setFormData((prev) => ({
+              ...prev,
+              schedules: prev.schedules.filter((_, i) => i !== index),
+            }))
+          }
+          className="text-red-500 hover:underline"
+        >
+          <i className="fas fa-trash-alt mr-1"></i> Hapus
+        </button>
+      </li>
+    );
+  })}
+</ul>
+
                 </div>
 
                 {/* Alamat & Harga */}
@@ -542,12 +561,24 @@ return (
                     <div className="w-full">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Gambar Kelas</label>
                         <input type="file" name="image_path" onChange={(e)=> {
-                        setFormData({ ...formData, image_path: e.target.files[0] });
+                        const file = e.target.files[0];
+                        if (file) {
+                        if (file.size > 5 * 1024 * 1024) {
+                        alert("Ukuran file tidak boleh lebih dari 5MB");
+                        e.target.value = ""; // Reset input file
+                        } else {
+                        setFormData({
+                        ...formData,
+                        image_path: file
+                        });
+                        }
+                        }
                         }}
                         className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none
                         focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
+
 
                 </div>
 
@@ -573,71 +604,79 @@ return (
         {loading ? (
         <div className="text-center">Loading...</div>
         ) : (
-            <table className="min-w-full text-sm text-left text-gray-500 rounded-lg shadow-lg bg-white">
+        <table className="min-w-full text-sm text-left text-gray-500 rounded-lg shadow-lg bg-white">
             <thead className="bg-blue-600 text-white">
-              <tr>
-                <th className="px-6 py-4">Gambar</th>
-                <th className="px-6 py-4">Nama Kelas</th>
-                <th className="px-6 py-4">Kategori</th>
-                <th className="px-6 py-4">Hari & Jam</th>
-                <th className="px-6 py-4">Trainer</th>
-                <th className="px-6 py-4">Alamat</th>
-                <th className="px-6 py-4">Harga</th>
-                <th className="px-6 py-4">Aksi</th>
-              </tr>
+                <tr>
+                    <th className="px-6 py-4">Gambar</th>
+                    <th className="px-6 py-4">Nama Kelas</th>
+                    <th className="px-6 py-4">Kategori</th>
+                    <th className="px-6 py-4">Hari & Jam</th>
+                    <th className="px-6 py-4">Trainer</th>
+                    <th className="px-6 py-4">Alamat</th>
+                    <th className="px-6 py-4">Harga</th>
+                    <th className="px-6 py-4">Aksi</th>
+                </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {classes.length === 0 ? (
+                {classes.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="px-6 py-4 text-center text-gray-600 font-semibold">
-                    Anda belum memiliki kelas
-                  </td>
+                    <td colSpan="8" className="px-6 py-4 text-center text-gray-600 font-semibold">
+                        Anda belum memiliki kelas
+                    </td>
                 </tr>
-              ) : (
+                ) : (
                 classes.map((kelas) => (
-                  <tr key={kelas.id} className="hover:bg-gray-100 transition-all">
+                <tr key={kelas.id} className="hover:bg-gray-100 transition-all">
                     <td className="px-6 py-4 text-center">
-                      <img src={`/images/kelas/${kelas.imagePath}`} alt={kelas.name}
-                        className="w-16 h-16 object-cover rounded-lg" />
+                        <img src={`/images/kelas/${kelas.imagePath}`} alt={kelas.name}
+                            className="w-16 h-16 object-cover rounded-lg" />
                     </td>
                     <td className="px-6 py-4 font-medium">{kelas.name}</td>
                     <td className="px-6 py-4">{kelas.category.name}</td>
                     <td className="px-6 py-4">
-                      <ul className="list-disc pl-6">
-                        {kelas.schedules.map((schedule, index) => (
-                          <li key={index}>{schedule.hari} ({schedule.jam})</li>
-                        ))}
-                      </ul>
+                        <ul className="list-disc pl-6 space-y-2">
+                            {kelas.schedules.map((schedule, index) => {
+                            const formattedTime = schedule.jam.split(':').slice(0, 2).join(':');
+                            return (
+                            <li key={index} className="text-gray-700">
+                                <span className="block font-medium text-green-600">{schedule.hari}</span>
+                                <span className="text-sm text-gray-500">{formattedTime}</span>
+                            </li>
+                            );
+                            })}
+                        </ul>
                     </td>
+
                     <td className="px-6 py-4">{kelas.trainer.name}</td>
                     <td className="px-6 py-4">{kelas.address}</td>
                     <td className="px-6 py-4 font-semibold text-gray-900">
-                      {`Rp ${kelas.price.toLocaleString()}`}
+                        {`Rp ${kelas.price.toLocaleString()}`}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="flex justify-center space-x-2">
-                        <button onClick={() => handleEdit(kelas)}
-                          className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition-all">
-                          Edit
-                        </button>
-                        <button onClick={() => handleDelete(kelas.id)}
-                          className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all">
-                          Hapus
-                        </button>
-                        <button
-                          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-all"
-                          onClick={() => handleViewDetails(kelas.id)}
-                        >
-                          Lihat
-                        </button>
-                      </div>
+                        <div className="flex justify-center space-x-2">
+                            <button onClick={()=> handleEdit(kelas)}
+                                className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600
+                                transition-all">
+                                Edit
+                            </button>
+                            <button onClick={()=> handleDelete(kelas.id)}
+                                className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all">
+                                Hapus
+                            </button>
+                            <button
+                                className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-all"
+                                onClick={()=> handleViewDetails(kelas.id)}
+                                >
+                                Lihat
+                            </button>
+                        </div>
                     </td>
-                  </tr>
+                </tr>
                 ))
-              )}
+                )}
             </tbody>
-          </table>
-          
+        </table>
+
 
         )}
     </div>

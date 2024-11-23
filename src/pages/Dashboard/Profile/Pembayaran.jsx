@@ -9,6 +9,7 @@ export default function Pembayaran() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetching payment data
   const fetchPayments = async () => {
     try {
       const payments = await paymentService.getUserPayments();
@@ -32,6 +33,14 @@ export default function Pembayaran() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedOrder(null);
+  };
+
+  // Helper function to format time as HH:MM
+  const formatTime = (date) => {
+    const newDate = new Date(date);
+    const hours = newDate.getHours().toString().padStart(2, '0');
+    const minutes = newDate.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   };
 
   if (loading) {
@@ -59,6 +68,7 @@ export default function Pembayaran() {
       <p className="text-gray-600 mb-8 text-center text-lg animate__animated animate__fadeInUp animate__delay-1s">
         Nikmati kelas dan fasilitas yang telah Anda pilih!
       </p>
+
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
         {orderData.map((order, index) => (
           <div
@@ -79,10 +89,10 @@ export default function Pembayaran() {
               </span>
             </div>
             <div className="space-y-2">
-              {[
+              {[ 
                 { label: 'Nama Mitra', value: (order.to?.name || 'N/A').toUpperCase() },
                 { label: 'Kelas', value: order.classInfo?.name || 'N/A' },
-                { label: 'Tanggal Pembayaran', value: new Date(order.createdAt).toLocaleString() },
+                { label: 'Tanggal Pembayaran', value: `${new Date(order.createdAt).toLocaleDateString()} ${formatTime(order.createdAt)}` },
                 { label: 'Total', value: `Rp. ${order.total.toLocaleString()}` },
               ].map((item, index) => (
                 <div key={index} className="flex justify-between py-1 border-b border-gray-200 last:border-none">

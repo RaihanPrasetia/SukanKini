@@ -223,14 +223,18 @@ return (
                     <td className="px-6 py-4 border-b">{index + 1}</td>
                     <td className="px-6 py-4 border-b">{payment.name}</td>
                     <td className="px-6 py-4 border-b">
-                        {payment.schedules.length > 0 ? (
-                        <ul className="list-disc pl-6">
-                            {payment.schedules.map((schedule, idx) => (
-                            <li key={idx}>{schedule.jam}</li>
-                            ))}
-                        </ul>
-                        ) : "-"}
-                    </td>
+  {payment.schedules.length > 0 ? (
+    <ul className="list-disc pl-6">
+      {payment.schedules.map((schedule, idx) => (
+        <li key={idx}>
+          {/* Memformat jam dan menit dengan tanda ":" */}
+          {schedule.jam.slice(0, 5)}
+        </li>
+      ))}
+    </ul>
+  ) : "-"}
+</td>
+
                     <td className="px-6 py-4 border-b">
                         {payment.schedules.length > 0 ? (
                         <ul className="list-disc pl-6">
