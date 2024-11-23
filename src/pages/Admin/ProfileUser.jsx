@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaSearch, FaEye } from 'react-icons/fa';
 import adminUserService from '../../service/admin/adminUserService';
 import Swal from 'sweetalert2';
+import { AiOutlineClose } from 'react-icons/ai';
 
 export default function ProfilUser() {
   const [userData, setUserData] = useState([]); // Initial state as an empty array
@@ -86,7 +87,9 @@ export default function ProfilUser() {
           </thead>
           <tbody>
             {filteredMitra.map((user, index) => (
-              <tr key={user.id} className="hover:bg-indigo-50">
+              <tr key={user.id}
+                className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                  } hover:bg-gray-200`}>
                 <td className="p-4">{index + 1}</td>
                 <td className="p-4">{user.name}</td>
                 <td className="p-4">{user.email}</td>
@@ -95,7 +98,7 @@ export default function ProfilUser() {
                 <td className="p-4">
                   <button
                     onClick={() => handleView(user.id)}
-                    className="text-indigo-500 hover:text-indigo-700 text-center flex flex-col items-center justify-start"
+                    className="bg-indigo-500 text-white px-3 py-1 rounded-lg shadow hover:bg-indigo-600 transition duration-300"
                   >
                     <span>
                       <FaEye />
@@ -113,7 +116,10 @@ export default function ProfilUser() {
           <div className="bg-white p-6 rounded-lg shadow-xl w-96">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Detail User</h2>
-              <button onClick={handleCloseModal} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+              <button onClick={handleCloseModal}
+                className=" text-red-500 bg-red-200 p-3 rounded-full shadow-lg hover:bg-gray-200 hover:rotate-45 hover:scale-110 transition-all focus:outline-none">
+                <AiOutlineClose size={18} />
+              </button>
             </div>
             <div className="space-y-4">
               <div className="flex flex-col items-center space-y4">

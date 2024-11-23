@@ -27,6 +27,7 @@ const adminPayment = require('./admin/adminPaymentRoutes');
 const adminClass = require('./admin/adminClassRoutes');
 const adminTrainer = require('./admin/adminTrainerRoutes');
 const adminUser = require('./admin/adminUser');
+const adminDashboard = require('./admin/adminDashboardCount');
 
 router.use(authRoutes);
 
@@ -53,6 +54,7 @@ router.use('/admin', adminPayment);
 router.use('/admin', adminClass);
 router.use('/admin', adminTrainer);
 router.use('/admin', adminUser);
+router.use('/admin', adminDashboard);
 
 
 module.exports = router;

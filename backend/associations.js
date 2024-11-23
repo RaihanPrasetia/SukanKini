@@ -21,6 +21,9 @@ Class.hasMany(ClassSchedule, { foreignKey: 'class_id', as: 'schedules' });
 Class.hasMany(Memberships, { foreignKey: 'class_id', as: 'members' });
 Class.hasMany(Payment, { foreignKey: 'class_id', as: 'payments' });
 
+Trainer.hasMany(Class, { foreignKey: 'trainer_id', as: 'class' });
+Trainer.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
+
 ClassSchedule.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
 Memberships.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
 Memberships.belongsTo(User, { foreignKey: 'user_id', as: 'user' });

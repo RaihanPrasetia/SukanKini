@@ -1,4 +1,4 @@
-const { Trainer, User } = require('../../associations');
+const { Trainer, User, Class } = require('../../associations');
 
 const getAdminTrainers = async (req, res) => {
     try {
@@ -11,8 +11,22 @@ const getAdminTrainers = async (req, res) => {
 
         // Cari semua trainer yang dibuat oleh user yang login
         const trainers = await Trainer.findAll({
-            attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number'], // Pilih atribut yang diperlukan
+            attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number'],
+            include: [
+                {
+                    model: Class,
+                    as: 'class',
+                    attributes: ['name', 'alamat'],
+                    paranoid: false,
+                },
+                {
+                    model: User,
+                    as: 'owner',
+                    attributes: ['name', 'kota', 'alamat', 'phone_number', 'email']
+                }
+            ],
             order: [['createdAt', 'DESC']],
+            paranoid: false,
         });
 
 

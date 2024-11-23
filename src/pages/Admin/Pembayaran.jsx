@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { FaEye, FaSearch } from 'react-icons/fa';
 import adminPaymentService from "../../service/admin/adminPaymentService";
 import Swal from "sweetalert2";
 
@@ -9,6 +9,9 @@ const PembayaranAdmin = () => {
   const [actionLoading, setActionLoading] = useState(null); // State untuk melacak loading per aksi
   const [searchTerm, setSearchTerm] = useState('');
   const [viewedItem, setViewedItem] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
 
   // Fetch payment data
   useEffect(() => {
@@ -94,27 +97,82 @@ const PembayaranAdmin = () => {
     setViewedItem(null);
   };
 
-  const filteredPayments = payments.filter((payment) =>
-    payment.nama.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPayments = payments.filter((payment) => {
+    const query = searchTerm.toLowerCase(); // Normalisasi query ke lowercase
+
+    // Filter berdasarkan pencarian dan status
+    const matchesSearchTerm =
+      (payment.nama && payment.nama.toLowerCase().includes(query)) ||
+      (payment.noTelepon && payment.noTelepon.toLowerCase().includes(query)) ||
+      (payment.email && payment.email.toLowerCase().includes(query)) ||
+      (payment.status && payment.status.toLowerCase().includes(query));
+
+    const matchesStatusFilter = statusFilter ? payment.status === statusFilter : true;
+
+    return matchesSearchTerm && matchesStatusFilter;
+  });
+
+  const handleChange = (value) => {
+    setStatusFilter(value);
+    setIsOpen(false);
+  };
+
+  const options = [
+    { value: "", label: "Semua Status", hoverClass: "hover:bg-gray-200" },
+    { value: "Diterima", label: "Diterima", hoverClass: "hover:bg-green-500 hover:text-white" },
+    { value: "Ditolak", label: "Ditolak", hoverClass: "hover:bg-red-500 hover:text-white" },
+    { value: "Diproses", label: "Diproses", hoverClass: "hover:bg-yellow-500 hover:text-black" },
+  ];
+
+
+
 
   return (
     <main className="flex-1">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">DATA PEMBAYARAN</h1>
 
       <div className="rounded-lg">
-        <div className="flex items-center mb-6">
-          <input
-            type="text"
-            placeholder="Cari nama..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="mr-2 border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <button className="bg-indigo-600 text-white px-6 py-3 rounded-r-lg hover:bg-indigo-700 transition-all duration-200 ease-in">
-            <FaSearch />
-          </button>
+        <div className="flex justify-between items-center mb-4">
+          <div className="relative w-1/3">
+            <input
+              type="text"
+              placeholder="Cari Pembayaran..."
+              className="p-2 pl-10 border rounded-lg shadow-sm w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+          </div>
+
+          <div className="relative w-1/6 flex items-center justify-center space-x-2">
+            <div className="relative text-center w-full items-center justify-center">
+              <h2 className='text-xl mb-2 text-blue-500 font-semibold'>Filter Status </h2>
+
+              <div
+                className="p-2 border rounded-lg shadow-sm border-blue-400 focus:border-blue-400 focus:border  cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)} // Toggle dropdown
+              >
+                <span>{statusFilter || "Semua Status"}</span>
+              </div>
+
+              {isOpen && (
+                <ul className="absolute w-full mt-1 bg-white border rounded-lg shadow-lg z-10 transition-all duration-300">
+                  {options.map((option) => (
+                    <li
+                      key={option.value}
+                      onClick={() => handleChange(option.value)}
+                      className={`p-2 cursor-pointer ${option.hoverClass}`}
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
         </div>
+
 
         {loading ? (
           <div className="flex justify-center items-center py-10">
@@ -136,13 +194,22 @@ const PembayaranAdmin = () => {
               </thead>
               <tbody>
                 {filteredPayments.map((item, index) => (
-                  <tr key={item.id} className="hover:bg-gray-100">
-                    <td className="border-b px-4 py-2 text-center">{index + 1}</td>
-                    <td className="border-b px-4 py-2">{item.nama}</td>
-                    <td className="border-b px-4 py-2">{item.email}</td>
-                    <td className="border-b px-4 py-2">{item.noTelepon}</td>
-                    <td className="border-b px-4 py-2">{item.status}</td>
-                    <td className="border-b px-4 py-2 text-center">
+                  <tr key={item.id}
+                    className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                      } hover:bg-gray-200`}>
+                    <td className="border-b px-4 py-4 text-center">{index + 1}</td>
+                    <td className="border-b px-4 py-4">{item.nama}</td>
+                    <td className="border-b px-4 py-4">{item.email}</td>
+                    <td className="border-b px-4 py-4">{item.noTelepon}</td>
+                    <td className="border-b px-4 py-4">
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold 
+                        ${item.status === 'Diterima' ? 'bg-green-500 text-white' :
+                          item.status === 'Ditolak' ? 'bg-red-500 text-white' :
+                            item.status === 'Diproses' ? 'bg-yellow-500 text-black' : ''}`}>
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="border-b px-4 py-4 text-center">
                       <div className="flex space-x-3 justify-center">
                         {item.status === "Diproses" && (
                           <>
@@ -165,10 +232,12 @@ const PembayaranAdmin = () => {
                           </>
                         )}
                         <button
-                          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-200"
                           onClick={() => handleView(item)}
+                          className="bg-indigo-500 text-white px-3 py-1 rounded-lg shadow hover:bg-indigo-600 transition duration-300"
                         >
-                          Lihat
+                          <span>
+                            <FaEye />
+                          </span>
                         </button>
                       </div>
 

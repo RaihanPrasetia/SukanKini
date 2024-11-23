@@ -1,4 +1,4 @@
-const { Payment, User, Bank, Class, ClassSchedule } = require('../../associations');
+const { Payment, User, Bank } = require('../../associations');
 
 /**
  * Controller untuk mendapatkan semua data pembayaran (khusus untuk admin)

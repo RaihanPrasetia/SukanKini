@@ -90,7 +90,6 @@ const Mitra = () => {
                     <Route path="/notif" element={<NotifMitra />} />
                     <Route path="/pembayaran" element={<Pembayaran />} />
                     <Route path="/bank" element={<Bank />} />
-                    {/* Wildcard route to catch undefined paths */}
                     <Route path="/*" element={<NotFound />} />
                 </Routes>
             </div>

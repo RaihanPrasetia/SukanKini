@@ -45,7 +45,8 @@ const getAdminAllClass = async (req, res) => {
                     ]
                 }
             ],
-            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt', 'createdBy']
+            paranoid: false,
+            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt', 'createdBy', 'deletedAt']
         });
 
         res.status(200).json({ classes });
