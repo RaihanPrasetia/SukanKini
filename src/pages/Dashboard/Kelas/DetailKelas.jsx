@@ -128,52 +128,50 @@ const DetailKelas = () => {
         {/* Related Classes */}
         {relatedClasses.length > 0 && (  // Use relatedClasses state for rendering
           <div className="px-6 md:px-20 py-8">
-            <h3 className="text-2xl md:text-3xl font-bold text-green-500 mb-4">Rekomendasi Kelas Lain</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {/* Render related classes */}
-              {relatedClasses.map((relatedClass, index) => (
-                <div
-                  key={index}
-                  className="relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition"
-                >
-                  <img
-                    src={`/images/kelas/${relatedClass?.image_path}`}  // Image path for related class
-                    alt={relatedClass?.name}
-                    className="w-full h-64 md:w-full md:h-80 object-cover rounded-lg shadow-lg"
-                  />
-                  <div className="p-4">
-                    <h4 className="text-2xl text-center font-semibold ">{relatedClass?.name}</h4>
-                    <p className=" text-yellow-600 text-center text-xl font-semibold mb-2">
-                      {relatedClass?.owner?.name}</p>
-                    <p className=" text-gray-600  text-sm ">
-                      <strong>Pelatih : </strong>
-                      {relatedClass?.trainer?.name}</p>
-                    <p className="text-sm text-gray-600">
-                      <strong>Harga : </strong>
-                      {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(relatedClass?.price)} {/* Price */}
-                    </p>
-                  </div>
-                  <div className='p-4 justify-end flex items-center gap-2'>
-                    <Link to={`/kelas/${relatedClass?.id}`}
-                      onClick={handleMenuClick}
-                    >
-                      <button className="bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition-all">
-                        Lihat Kelas
-                      </button>
-                    </Link>
-                    <button
-                      onClick={() => openPopup(classInfo)}
-                      className="bg-green-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-green-600 transition-all"
-                    >
-                      Daftar Kelas
-                    </button>
-                  </div>
+          <h3 className="text-3xl md:text-4xl font-bold text-green-600 mb-8 text-center">Rekomendasi Kelas Lain</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {/* Render related classes */}
+            {relatedClasses.map((relatedClass, index) => (
+              <div
+                key={index}
+                className="relative bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300"
+              >
+                <img
+                  src={`/images/kelas/${relatedClass?.image_path}`}  // Image path for related class
+                  alt={relatedClass?.name}
+                  className="w-full h-64 md:h-80 object-cover rounded-lg shadow-md transition-shadow duration-300 hover:shadow-2xl"
+                />
+                <div className="p-6">
+                  <h4 className="text-2xl font-semibold text-center text-gray-800 mb-2">{relatedClass?.name}</h4>
+                  <p className="text-yellow-600 text-center text-lg font-semibold mb-2">
+                    {relatedClass?.owner?.name}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    <strong className="font-medium">Pelatih:</strong> {relatedClass?.trainer?.name}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong className="font-medium">Harga:</strong>
+                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(relatedClass?.price)}
+                  </p>
                 </div>
-
-              ))}
-            </div>
-
+                <div className="p-4 flex justify-end gap-4">
+                  <Link to={`/kelas/${relatedClass?.id}`} onClick={handleMenuClick}>
+                    <button className="bg-blue-500 text-white px-5 py-3 text-sm font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition-colors">
+                      Lihat Kelas
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => openPopup(classInfo)}
+                    className="bg-green-500 text-white px-5 py-3 text-sm font-semibold rounded-lg shadow-lg hover:bg-green-600 transition-colors"
+                  >
+                    Daftar Kelas
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+        
         )}
         <div className="flex justify-center mt-6">
           <button
