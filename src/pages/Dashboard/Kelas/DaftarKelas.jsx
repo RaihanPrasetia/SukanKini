@@ -198,18 +198,30 @@ return (
         </label>
         <input id="bukti-pembayaran" type="file" accept="image/*"
           className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-          onChange={handleFileChange} />
+          onChange={(e)=> {
+        const file = e.target.files[0];
+        if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+        alert("Ukuran file tidak boleh lebih dari 5MB");
+        e.target.value = ""; // Reset input jika file terlalu besar
+        } else {
+        handleFileChange(e); // Panggil fungsi untuk memproses file
+        }
+        }
+        }}
+        />
       </div>
+
 
       <div className="flex justify-between mt-6">
         <button onClick={()=> setShowPaymentModal(false)}
-          className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition-all"
+          className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-all shadow-md"
           >
           Batal
         </button>
-        <button onClick={handleSubmit} disabled={isSubmitting} className={`bg-gradient-to-r from-green-400 to-green-600
-          text-white px-4 py-2 rounded-lg shadow-lg hover:from-green-500 hover:to-green-700 transition-all transform
-          hover:scale-105 ${isSubmitting ? "opacity-50 cursor-not-allowed" : "" }`}>
+        <button onClick={handleSubmit} disabled={isSubmitting} className={`bg-green-600 text-white px-4 py-2 rounded-lg
+          shadow-md hover:bg-green-700 transition-all transform hover:scale-105 ${ isSubmitting
+          ? "opacity-50 cursor-not-allowed" : "" }`}>
           {isSubmitting ? "Mengirim..." : "Konfirmasi"}
         </button>
       </div>

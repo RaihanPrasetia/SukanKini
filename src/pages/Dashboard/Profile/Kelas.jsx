@@ -39,9 +39,16 @@ const Kelas = () => {
     );
   }
 
+  // Format time to "HH:MM"
+  const formatTime = (time) => {
+    if (!time) return 'Jam tidak tersedia';
+    const [hour, minute] = time.split(':');
+    return `${hour}:${minute}`;
+  };
+
   return (
     <div className="w-full mx-auto lg:p-8 rounded-3xl transform transition duration-500 bg-gradient-to-br from-green-100 via-white to-green-200 shadow-2xl">
-
+      
       {/* Kelas Hari Ini Section */}
       {classDetails.length > 0 ? (
         <motion.div
@@ -95,7 +102,7 @@ const Kelas = () => {
                 {kelas.class?.schedules?.map((schedule, index) => (
                   <div key={index} className="text-gray-600 text-sm flex items-center mb-1">
                     <FiClock className="h-5 w-5 mr-2 text-green-600" />
-                    <span>{schedule.jam || 'Jam tidak tersedia'} WIB</span>
+                    <span>{formatTime(schedule.jam)} WIB</span>
                   </div>
                 ))}
                 <p className="text-gray-600 text-sm flex items-center mb-3">
@@ -120,7 +127,6 @@ const Kelas = () => {
           ))}
         </div>
       )}
-
 
       {/* Kelas Favorit Section */}
       <motion.div
@@ -163,29 +169,20 @@ const Kelas = () => {
               {favorite.class?.schedules?.map((schedule, index) => (
                 <div key={index} className="text-gray-600 text-sm flex items-center mb-1">
                   <FiClock className="h-5 w-5 mr-2 text-green-600" />
-                  {schedule.hari} - {schedule.jam || 'Jam tidak tersedia'}
+                  {favorite.class?.schedules ? `${schedule.hari} - ${formatTime(schedule.jam)} WIB` : 'Waktu tidak tersedia'}
                 </div>
               ))}
-
-              {/* Display Inactive Status */}
-              {favorite.class?.deletedAt !== null && (
-                <p className="text-red-600 font-semibold text-sm">Kelas ini sudah tidak aktif</p>
-              )}
-
-              {/* Render Button Only If Class Is Active */}
-              {favorite.class?.deletedAt === null && (
-                <button
-                  onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
-                  className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700"
-                >
-                  Lihat Detail Kelas
-                </button>
-              )}
+              <button
+                onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
+                className={`mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 ${favorite.class?.deletedAt !== null ? 'bg-gray-500 cursor-not-allowed' : ''}`}
+                disabled={favorite.class?.deletedAt !== null} // Disable if the class is inactive
+              >
+                Lihat Detail Kelas
+              </button>
             </motion.div>
           ))}
         </div>
       )}
-
     </div>
   );
 };
