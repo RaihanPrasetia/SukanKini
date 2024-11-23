@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { getUserProfile } from "../../controllers/userController";
 import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt, FaBars, FaUser } from 'react-icons/fa';
 
 export default function AuthNavbar() {
-    const { logout, user } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [userData, setUserData] = useState(null);
 
     const handleLogout = () => {
         logout();
         navigate('/');
     };
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const data = await getUserProfile();
+                setUserData(data.image_path); // Assuming 'data' contains the necessary fields (name, image_path, etc.)
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -116,15 +131,11 @@ export default function AuthNavbar() {
                 {/* Profile and Logout Section */}
                 <div className="relative hidden lg:flex items-center cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
                     <div className="flex items-center text-lg hover:text-yellow-500 transition space-x-2">
-                        {user?.photoURL ? (
-                            <img src={user.photoURL} alt="Profile" className="h-8 w-8 rounded-full" />
-                        ) : (
-                            <img
-                                src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="Default Profile"
-                                className="h-12 w-12 rounded-full"
-                            />
-                        )}
+                        <img
+                            src={`/images/profile/${userData}`}
+                            alt="Profile"
+                            className="h-12 w-12 rounded-full"
+                        />
                     </div>
 
                     {dropdownOpen && (

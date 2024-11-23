@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
+import { getUserProfile } from "../../controllers/userController";
 import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Import FontAwesome icons
 
 const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const { logout, user } = useAuth(); // Get userName and user from useAuth
+    const { logout } = useAuth(); // Get userName and user from useAuth
     const navigate = useNavigate();
-    const location = useLocation(); // Hook to get the current location
+    const location = useLocation();
+    const [userData, setUserData] = useState(null);
+    // Hook to get the current location
 
     const handleLogout = () => {
         handleMenuClick();
@@ -16,6 +18,21 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
         navigate('/');
     };
 
+    // Fetch user data on mount
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const data = await getUserProfile();
+                setUserData(data.image_path); // Assuming 'data' contains the necessary fields (name, image_path, etc.)
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []); // Empty dependency array ensures this runs only once on component mount
+
+    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (!event.target.closest('.profile-dropdown')) {
@@ -37,6 +54,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     const isActive = (path) => {
         return location.pathname.startsWith(path) ? 'bg-white text-green-500 ' : 'text-white hover:bg-green-400 hover:text-white';
     };
+
     const handleMenuClick = () => {
         window.scrollTo(0, 0); // Scroll to the top of the page
     };
@@ -45,8 +63,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="flex fixed top-0 w-full">
             {/* Sidebar */}
             <div
-                className={`fixed top-0 left-0 h-full w-64 bg-green-600 p-2 text-white transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-                    } z-50`}
+                className={`fixed top-0 left-0 h-full w-64 bg-green-600 p-2 text-white transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} z-50`}
             >
                 <div className="py-5 text-center text-lg font-bold border-b border-green-500">
                     <Link to="/mitra/home" className="text-2xl font-bold  transition duration-300 text-white">
@@ -55,14 +72,8 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                 </div>
                 <ul className="mt-4 text-center space-y-5">
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/home')}`}>
-                        <Link
-                            onClick={handleMenuClick}
-                            to="/mitra/home"
-                        >
-                            Home
-                        </Link>
+                        <Link onClick={handleMenuClick} to="/mitra/home">Home</Link>
                     </li>
-
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/kelas')}`}>
                         <Link onClick={handleMenuClick} to="/mitra/kelas">Data Kelas</Link>
                     </li>
@@ -85,14 +96,10 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
             </div>
 
             {/* Navbar */}
-            <nav
-                className={`flex  items-center justify-between px-16 w-full bg-green-500 text-white py-4 shadow-md transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'
-                    }`}
-            >
+            <nav className={`flex items-center justify-between px-16 w-full bg-green-500 text-white py-4 shadow-md transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
                 <div className='flex items-center justify-center space-x-5'>
-
                     <button
-                        className="text-white  focus:outline-none"
+                        className="text-white focus:outline-none"
                         onClick={() => setSidebarOpen(!sidebarOpen)}
                     >
                         {/* Icon for the sidebar toggle */}
@@ -114,43 +121,38 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                 </div>
 
                 {/* Profile and Logout Section */}
-                <div
-                    className="relative flex items-center profile-dropdown"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                >
-                    <div className="flex items-center text-lg hover:text-green-600 transition duration-300 space-x-2 cursor-pointer">
-                        {user?.photoURL ? (
-                            <img src={user.photoURL} alt="Profile" className="h-8 w-8 rounded-full" />
-                        ) : (
+                {userData && (
+                    <div className="relative flex items-center profile-dropdown" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                        <div className="flex items-center text-lg hover:text-green-600 transition duration-300 space-x-2 cursor-pointer">
                             <img
-                                src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="Default Profile"
+                                src={`/images/profile/${userData}`}
+                                alt="Profile"
                                 className="h-12 w-12 rounded-full"
                             />
+                        </div>
+
+                        {/* Dropdown Menu for Profile and Logout */}
+                        {dropdownOpen && (
+                            <div className="absolute right-0 top-[60px] mt-2 w-40 bg-white rounded-md shadow-lg p-2 z-10">
+                                <Link
+                                    onClick={handleMenuClick}
+                                    to="/mitra/profile"
+                                    className="block px-4 py-2 text-gray-700 hover:bg-green-300 transition duration-200 rounded-md"
+                                >
+                                    <FaUser className='inline mr-2' />
+                                    Profile
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-300 transition duration-200 rounded-md"
+                                >
+                                    <FaSignOutAlt className="inline mr-2" />
+                                    Logout
+                                </button>
+                            </div>
                         )}
                     </div>
-
-                    {/* Dropdown Menu for Profile and Logout */}
-                    {dropdownOpen && (
-                        <div className="absolute right-0 top-[60px] mt-2 w-40 bg-white rounded-md shadow-lg p-2 z-10">
-                            <Link
-                                onClick={handleMenuClick}
-                                to="/mitra/profile"
-                                className="block px-4 py-2 text-gray-700 hover:bg-green-300 transition duration-200 rounded-md"
-                            >
-                                <FaUser className='inline mr-2' />
-                                Profile
-                            </Link>
-                            <button
-                                onClick={handleLogout}
-                                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-300 transition duration-200 rounded-md"
-                            >
-                                <FaSignOutAlt className="inline mr-2" />
-                                Logout
-                            </button>
-                        </div>
-                    )}
-                </div>
+                )}
             </nav>
         </div>
     );

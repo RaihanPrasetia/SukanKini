@@ -33,12 +33,14 @@ const getCounts = async (req, res) => {
                         ]
                     },
                     required: false,
+                    paranoid: false,
                 },
-            ]
+            ],
+            paranoid: false
         });
 
-        // Count total classes
-        const countClasses = classData.length;
+        // Count total classes where deletedAt is null
+        const countClasses = classData.filter(classItem => classItem.deletedAt === null).length;
 
         // Count total active memberships
         const countMemberships = classData.reduce((acc, classItem) => {

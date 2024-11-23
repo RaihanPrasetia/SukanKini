@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../../components/Navbar/Sidebar';
 import { getUserProfile, editUserProfile } from "../../../controllers/userController";
+import { FaPencilAlt } from "react-icons/fa";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -15,16 +16,17 @@ const Profile = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [showDetails, setShowDetails] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const userData = await getUserProfile(token);
+
+        const userData = await getUserProfile();
         setUser(userData);
-        // Set initial values for the form
         setName(userData.name || "");
         setEmail(userData.email || "");
         setPhone(userData.phone_number || "");
@@ -34,6 +36,7 @@ const Profile = () => {
         setKota(userData.kota || "");
         setWeight(userData.weight || "");
         setHeight(userData.height || "");
+        setImagePreview(userData.image_path || "");
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -43,34 +46,29 @@ const Profile = () => {
 
   if (!user) return <p>Loading...</p>;
 
-  const handleUpdateAccount = async () => {
-    try {
-
-
-      const token = localStorage.getItem("token");
-
-      const updatedData = {
-        id: user.id,
-        name,
-        email,
-        phone_number,
-        alamat,
-        age,
-        gender,
-        kota,
-        weight,
-        height
-      };
-
-      const updatedUser = await editUserProfile(token, updatedData);
-      setUser(updatedUser);
-      alert("Account updated successfully!");
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Failed to update account:", error);
-      alert("Failed to update account. Please try again.");
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file); // Menyimpan gambar yang dipilih dalam state
+      setImagePreview(URL.createObjectURL(file)); // Menampilkan pratinjau gambar
     }
   };
+
+  const handleUpdateAccount = async () => {
+    try {
+      const userId = user.id;
+
+      const updatedUser = await editUserProfile(userId, image, name, age, weight, height, phone_number, gender, kota, alamat);
+      setUser(updatedUser);
+      alert("Profile updated successfully!");
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
+  };
+
+
 
 
   const handleSearch = () => {
@@ -99,10 +97,11 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row md:justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-4">
               <img
-                src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src={user.image_path ? `/images/profile/${user.image_path}` : "https://via.placeholder.com/150"}
                 alt="Profile"
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-yellow-500"
               />
+
               <div>
                 <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">{name}</h2>
                 <p className="text-gray-600">{kota}, Indonesia</p>
@@ -154,8 +153,34 @@ const Profile = () => {
                 {isEditing ? "Batal Edit" : "Edit"}
               </button>
             </div>
+            <div className="flex items-center justify-center my-2">
+              <div className="relative">
+                <img
+                  src={isEditing && imagePreview ? imagePreview : `/images/profile/${user.image_path}`} // Preview or default image
+                  alt="Profile"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-yellow-500"
+                />
+                {/* Tombol pensil hanya muncul jika sedang dalam mode edit */}
+                {isEditing && (
+                  <button
+                    onClick={() => document.getElementById("fileInput").click()}
+                    className="absolute bottom-0 right-0 bg-yellow-500 text-white p-2 rounded-full"
+                  >
+                    <FaPencilAlt />
+                  </button>
+                )}
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </div>
+            </div>
 
-            {/* Editing Mode */}
+
+            {/* Mode Edit */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name" className="block text-gray-700">Full Name*</label>
@@ -174,7 +199,7 @@ const Profile = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled={!isEditing}
+                  disabled={!isEditing || isEditing}
                   className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
                 />
               </div>
@@ -254,6 +279,7 @@ const Profile = () => {
             )}
           </div>
         )}
+
 
         {/* Outlet for additional routes */}
         <Outlet />
