@@ -29,6 +29,7 @@ export default class Membership {
             name: classData.name,
             address: classData.alamat,
             imagePath: classData.image_path,
+            deletedAt: classData.deletedAt ? new Date(classData.deletedAt) : null, // Perbaikan di sini
             schedules: classData.schedules ? classData.schedules.map(schedule => ({
                 hari: schedule.hari, // Nama hari
                 jam: schedule.jam, // Jam

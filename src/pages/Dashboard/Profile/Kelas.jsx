@@ -18,9 +18,9 @@ const Kelas = () => {
         const allClasses = await profileClass.getAllClasses();
         const todayClasses = await profileClass.getClassesNow();
 
-        // Update state with fetched data
         setAllClass(allClasses);
         setClassDetails(todayClasses);
+
       } catch (err) {
         console.error("Error fetching classes:", err);
       } finally {
@@ -102,9 +102,16 @@ const Kelas = () => {
                   <FiCalendar className="h-5 w-5 mr-2 text-green-600" />
                   {kelas.class?.schedules?.length > 0 ? kelas.class.schedules[0].hari : 'Hari tidak tersedia'}
                 </p>
+
+                {/* Check if class is inactive */}
+                {kelas.class?.deletedAt !== null && (
+                  <p className="text-red-600 font-semibold text-sm">Kelas ini sudah tidak aktif</p>
+                )}
+
                 <button
                   onClick={() => navigate(`/kelas/${kelas.class?.id}`)}
-                  className="mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700"
+                  className={`mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 ${kelas.class?.deletedAt !== null ? 'bg-gray-500 cursor-not-allowed' : ''}`}
+                  disabled={kelas.class?.deletedAt !== null} // Disable the button if class is inactive
                 >
                   Lihat Detail Kelas
                 </button>
@@ -113,6 +120,7 @@ const Kelas = () => {
           ))}
         </div>
       )}
+
 
       {/* Kelas Favorit Section */}
       <motion.div
@@ -159,16 +167,25 @@ const Kelas = () => {
                 </div>
               ))}
 
-              <button
-                onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
-                className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700"
-              >
-                Lihat Detail Kelas
-              </button>
+              {/* Display Inactive Status */}
+              {favorite.class?.deletedAt !== null && (
+                <p className="text-red-600 font-semibold text-sm">Kelas ini sudah tidak aktif</p>
+              )}
+
+              {/* Render Button Only If Class Is Active */}
+              {favorite.class?.deletedAt === null && (
+                <button
+                  onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
+                  className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700"
+                >
+                  Lihat Detail Kelas
+                </button>
+              )}
             </motion.div>
           ))}
         </div>
       )}
+
     </div>
   );
 };

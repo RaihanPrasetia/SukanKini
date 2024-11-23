@@ -25,17 +25,18 @@ const getUserMemberships = async (req, res) => {
                 {
                     model: Class,
                     as: 'class',
-                    attributes: ['id', 'name', 'alamat', 'image_path'],
+                    attributes: ['id', 'name', 'alamat', 'image_path', 'deletedAt'],
                     include: [
                         {
                             model: ClassSchedule,
                             as: 'schedules',
                             attributes: ['hari', 'jam']
                         }
-                    ] // Include class data (can adjust as needed)
+                    ],
+                    paranoid: false, // Include class data (can adjust as needed)
                 }
             ],
-            attributes: ['id', 'user_id', 'class_id', 'createdAt', 'updatedAt'] // Include membership-related attributes
+            attributes: ['id', 'user_id', 'class_id', 'createdAt', 'updatedAt', 'deletedAt'] // Include membership-related attributes
         });
 
         res.status(200).json({ memberships });
@@ -69,7 +70,7 @@ const getClassNow = async (req, res) => {
                 {
                     model: Class,
                     as: 'class',
-                    attributes: ['id', 'name', 'alamat', 'price', 'image_path'], // Data kelas
+                    attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'deletedAt'], // Data kelas
                     include: [
                         {
                             model: ClassSchedule,
@@ -80,6 +81,9 @@ const getClassNow = async (req, res) => {
                             },
                         },
                     ],
+                    where: {
+                        deletedAt: null
+                    }
                 },
             ],
             attributes: ['id', 'user_id', 'class_id', 'createdAt', 'updatedAt'], // Data keanggotaan
@@ -131,7 +135,7 @@ const getClassById = async (req, res) => {
         });
 
         if (!allClass || allClass.length === 0) {
-            return res.status(404).json({ message: 'Class not available' });
+            return res.status(404).json({ message: 'Class Sudah Tidak Tersedia' });
         }
 
         // Get the createdBy value and category of the retrieved class

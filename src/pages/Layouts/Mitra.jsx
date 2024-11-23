@@ -69,7 +69,7 @@ const Mitra = () => {
     }
 
     if (!isPaymentActive) {
-        return <Navigate to="/mitra/konfimasi/payment" replace />;
+        return <Navigate to="/konfimasi/payment" replace />;
     }
 
     return (
