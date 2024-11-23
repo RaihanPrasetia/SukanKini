@@ -2,6 +2,8 @@ const { Class, User, Category, Trainer, ClassSchedule, Memberships } = require('
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
+const moment = require('moment'); // Pastikan moment.js terinstal
+moment.locale('id');
 
 
 const getUserClasses = async (req, res) => {
@@ -44,9 +46,6 @@ const getUserClasses = async (req, res) => {
             attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdAt', 'updatedAt', 'createdBy']
         });
 
-        if (classes.length === 0) {
-            return res.status(404).json({ message: 'Kamu Belum Memiliki Kelas' });
-        }
 
         res.status(200).json({ classes });
     } catch (error) {
@@ -155,6 +154,46 @@ const createClass = async (req, res) => {
     } catch (error) {
         console.error(error); // Print error
         res.status(500).json({ message: error.message });
+    }
+};
+
+const getClassNow = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        // Ambil hari ini dalam bahasa Indonesia (misalnya: "Senin", "Selasa", dll.)
+        const hariSekarang = moment().format('dddd');
+
+        // Cari memberships yang terkait dengan user_id dan memiliki jadwal untuk hari ini
+        const classNow = await Class.findAll({
+            where: {
+                [Op.and]: [
+                    { createdBy: userId },  // Menyaring berdasarkan user_id
+                ]
+            },
+            include: [
+                {
+                    model: ClassSchedule,
+                    as: 'schedules',
+                    attributes: ['hari', 'jam'],
+                    where: {
+                        hari: hariSekarang,
+                    },
+                },
+                {
+                    model: Trainer,
+                    as: 'trainer',
+                    attributes: ['id', 'name']
+                }
+            ],
+            attributes: ['id', 'name'], // Data keanggotaan
+        });
+
+
+
+        res.status(200).json({ classes: classNow });
+    } catch (error) {
+        res.status(500).json({ message: `Terjadi kesalahan: ${error.message}` });
     }
 };
 
@@ -292,4 +331,4 @@ const deleteClass = async (req, res) => {
 };
 
 
-module.exports = { getUserClasses, getClassById, createClass, updateClass, deleteClass };
+module.exports = { getUserClasses, getClassById, createClass, updateClass, deleteClass, getClassNow };

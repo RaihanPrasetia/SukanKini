@@ -11,6 +11,10 @@ import { useAuth } from '../contexts/AuthContext'; // Ensure to use your custom 
 import LoginMitraForm from './authModals/LoginMitraForm';
 import RegisterMitraForm from './authModals/RegisterMitraForm';
 import OtpFormMitra from './authModals/OtpFormMitra';
+import sendOtpService from '../service/sendOtpService';
+import Swal from 'sweetalert2';
+
+
 
 const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -22,6 +26,7 @@ function AuthModal({ isOpen, onClose }) {
     const [currentForm, setCurrentForm] = useState("login");
     const [userData, setUserData] = useState({ name: '', email: '', password: '', kota: '', alamat: '', bank: '', an: '', no_rek: '' });
     const [otp, setOtp] = useState(null);
+    const [message, setMessage] = useState(null)
     const navigate = useNavigate();
     const { login } = useAuth(); // Use your AuthContext's login function
 
@@ -31,40 +36,82 @@ function AuthModal({ isOpen, onClose }) {
     const handleRegister = () => setCurrentForm("register");
     const handleRegisterMitra = () => setCurrentForm("registerMitra");
     const handleLoginMitra = () => setCurrentForm("loginMitra");
+    const handleResendOtp = async () => {
+        const otp = Math.floor(10000 + Math.random() * 90000);
+        const email = userData.email
+        try {
+            const response = await sendOtpService.sendOtp(email, otp);
 
-    const handleSendOTP = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an }) => {
+            if (response && response.success) {
+                toast.success('OTP telah dikirim ke email Anda.');
+                const reMessage = response.message
+                setOtp(otp);
+                setMessage(reMessage)
+                Swal.fire({
+                    title: 'Cek Email Anda',
+                    text: message,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
+            } else {
+                toast.error('Gagal mengirim OTP. Coba lagi.');
+            }
+        } catch (error) {
+            console.error('Error sending OTP:', error);
+            toast.error('Terjadi kesalahan saat mengirim OTP. Silakan coba lagi.');
+        }
+    };
+    const handleSendOTP = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an, message }) => {
         setOtp(generatedOtp);  // Store generated OTP for validation later
+        setMessage(message);  // Store generated OTP for validation later
         setUserData({ name, email, password, kota, alamat, brand, no_rek, an });  // Store user data for registration
         setCurrentForm("otpConfirmation");  // Switch to OTP confirmation form
     }
-    const handleSendOTPMitra = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an }) => {
-        setOtp(generatedOtp);  // Store generated OTP for validation later
+    const handleSendOTPMitra = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an, message }) => {
+        setOtp(generatedOtp);
+        setMessage(message);  // Store generated OTP for validation later
         setUserData({ name, email, password, kota, alamat, brand, no_rek, an });  // Store user data for registration
         setCurrentForm("otpConfirmationMitra");  // Switch to OTP confirmation form
     }
 
     const handleConfirmOTP = async (inputOtp) => {
-        console.log("Entered OTP:", inputOtp);
-        console.log("Stored OTP:", otp);
-
         if (inputOtp === otp.toString()) {
             try {
                 const { token, user } = await register(userData); // Assuming this returns a promise
-                login(token, user.name, user.role); // Call the login method
-                navigate('/home'); // Navigate to home
+                login(token, user.name, user.role);
+                Swal.fire({
+                    title: 'Selamat Datang!',
+                    text: 'Pendaftaran Anda berhasil! Selamat bergabung bersama kami. Semoga pengalaman Anda menyenangkan.',
+                    icon: 'success',
+                    confirmButtonText: 'Lanjutkan',
+                    confirmButtonColor: '#4CAF50',
+                    background: '#f7f7f7',
+                    color: '#333',
+                    iconColor: '#28a745',
+                    padding: '20px',
+                    customClass: {
+                        popup: 'swal-popup-custom',
+                        title: 'swal-title-custom',
+                        icon: 'swal-icon-custom',
+                        confirmButton: 'swal-btn-custom'
+                    },
+                });
+                navigate('/home');
             } catch (error) {
                 console.error("Registration error:", error);
                 toast.error('Registration failed. Please try again.');
             }
         } else {
-            console.log("OTP is incorrect!");
-            toast.error('OTP tidak valid. Silakan coba lagi.');
+            Swal.fire({
+                title: 'OTP Salah!',
+                text: 'OTP yang Anda masukkan tidak valid. Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
         }
     };
-    const handleConfirmOTPMitra = async (inputOtp) => {
-        console.log("Entered OTP:", inputOtp);
-        console.log("Stored OTP:", otp);
 
+    const handleConfirmOTPMitra = async (inputOtp) => {
         if (inputOtp === otp.toString()) {
             try {
                 console.log("User data being sent to registerMitra:", userData); // Log the user data
@@ -72,17 +119,38 @@ function AuthModal({ isOpen, onClose }) {
                 login(token, user.name, user.role); // Log in the user with the received token and user data
 
                 if (user.role === 'mitra') {
+                    Swal.fire({
+                        title: 'Selamat Datang!',
+                        text: 'Pendaftaran Anda berhasil! Tinggal satu langkah lagi dan jadi bagian dari Mitra Kami.',
+                        icon: 'success',
+                        confirmButtonText: 'Lanjutkan',
+                        confirmButtonColor: '#4CAF50',
+                        background: '#f7f7f7',
+                        color: '#333',
+                        iconColor: '#28a745',
+                        padding: '20px',
+                        customClass: {
+                            popup: 'swal-popup-custom',
+                            title: 'swal-title-custom',
+                            icon: 'swal-icon-custom',
+                            confirmButton: 'swal-btn-custom'
+                        },
+                    });
                     navigate('/mitra/home'); // Redirect to mitra's home page if the user is a mitra
                 } else {
-                    navigate('/home'); // Regular users go to the home page
+                    navigate('/'); // Regular users go to the home page
                 }
             } catch (error) {
                 console.error("Registration error:", error);
                 toast.error('Registration failed. Please try again.');
             }
         } else {
-            console.log("OTP is incorrect!");
-            toast.error('OTP tidak valid. Silakan coba lagi.');
+            Swal.fire({
+                title: 'OTP Salah!',
+                text: 'OTP yang Anda masukkan tidak valid. Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
         }
     };
 
@@ -131,13 +199,17 @@ function AuthModal({ isOpen, onClose }) {
             case "otpConfirmation":
                 return (
                     <OtpForm
+                        reSendOtp={handleResendOtp}
+                        onMessage={message}
                         onConfirmOTP={handleConfirmOTP}
-                        onLogin={() => setCurrentForm("login")}
+                        onLogin={handleRegister}
                     />
                 );
             case "otpConfirmationMitra":
                 return (
                     <OtpFormMitra
+                        reSendOtp={handleResendOtp}
+                        onMessage={message}
                         onConfirmOTPMitra={handleConfirmOTPMitra}
                         onRegisterMitra={handleRegisterMitra}
                     />

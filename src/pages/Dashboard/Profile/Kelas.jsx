@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiMapPin, FiClock, FiCalendar } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import profileClass from '../../../service/User/profileClass';
+import profileClass from '../../../service/User/profileClass'; // Ensure this path is correct
 
 const Kelas = () => {
-  const [classDetails, setClassDetails] = useState([]);
-  const [allClass, setAllClass] = useState([]);
+  const [classDetails, setClassDetails] = useState([]); // Kelas Hari Ini
+  const [allClass, setAllClass] = useState([]); // Semua Kelas
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
         setLoading(true);
+        // Fetch data for today's classes and all classes
         const allClasses = await profileClass.getAllClasses();
         const todayClasses = await profileClass.getClassesNow();
 
+        // Update state with fetched data
         setAllClass(allClasses);
         setClassDetails(todayClasses);
       } catch (err) {
@@ -28,21 +32,11 @@ const Kelas = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="text-center text-2xl text-green-600">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <p>Loading...</p>
-        </motion.div>
-      </div>
-    );
+    return <p className="text-center text-xl text-green-600">Loading...</p>;
   }
 
   return (
-    <div className="w-full mx-auto lg:p-8 rounded-3xl transform transition duration-500 space-y-12">
+    <div className="w-full mx-auto lg:p-8 rounded-3xl transform transition duration-500">
       {/* Kelas Hari Ini Section */}
       {classDetails.length > 0 ? (
         <motion.div
@@ -71,14 +65,14 @@ const Kelas = () => {
           {classDetails.map((kelas) => (
             <motion.div
               key={kelas.id}
-              className="bg-white p-6 rounded-lg shadow-lg border border-green-300 hover:scale-105 hover:shadow-2xl transition-all duration-300"
+              className="bg-white p-5 rounded-lg shadow-xl border border-green-300 transition-transform transform hover:scale-105 hover:shadow-2xl"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: kelas.id * 0.1 }}
             >
               <div className="relative w-full mb-4">
                 <img
-                  src={kelas.class?.imagePath ? `/images/kelas/${kelas.class.imagePath}` : '/images/default.jpg'}
+                  src={kelas.class?.imagePath ? `/images/kelas/${kelas.class.imagePath}` : '/images/default.jpg'} // Image from public/images/kelas/
                   alt={`${kelas.class?.name} Class`}
                   className="w-full h-48 object-cover rounded-lg"
                 />
@@ -87,12 +81,11 @@ const Kelas = () => {
                 </span>
               </div>
               <div className="flex flex-col justify-center">
-                <h4 className="text-lg font-semibold text-green-800 mb-2">{kelas.class?.name}</h4>
+                <h4 className="text-lg font-semibold text-green-800 mb-1">{kelas.class?.name}</h4>
                 <p className="text-gray-600 text-sm flex items-center mb-1">
                   <FiMapPin className="h-5 w-5 mr-2 text-green-600" />
                   {kelas.class?.address || 'Alamat tidak tersedia'}
                 </p>
-
                 {/* Display Class Schedule */}
                 {kelas.class?.schedules?.map((schedule, index) => (
                   <div key={index} className="text-gray-600 text-sm flex items-center mb-1">
@@ -104,8 +97,9 @@ const Kelas = () => {
                   <FiCalendar className="h-5 w-5 mr-2 text-green-600" />
                   {kelas.class?.schedules?.length > 0 ? kelas.class.schedules[0].hari : 'Hari tidak tersedia'}
                 </p>
-
-                <button className="mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <button
+                  onClick={() => navigate(`/kelas/${kelas.class?.id}`)}
+                  className="mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
                   Lihat Detail Kelas
                 </button>
               </div>
@@ -133,14 +127,14 @@ const Kelas = () => {
           {allClass.map((favorite) => (
             <motion.div
               key={favorite.id}
-              className="bg-white p-6 rounded-lg shadow-lg border border-yellow-300 text-center hover:scale-105 hover:shadow-2xl transition-all duration-300"
+              className="bg-white p-6 rounded-lg shadow-xl border border-yellow-300 text-center transition-transform transform hover:scale-105 hover:shadow-2xl"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: favorite.id * 0.1 }}
             >
               <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
                 <img
-                  src={favorite.class?.imagePath ? `/images/kelas/${favorite.class.imagePath}` : '/images/default.jpg'}
+                  src={favorite.class?.imagePath ? `/images/kelas/${favorite.class.imagePath}` : '/images/default.jpg'} // Image path from public/images/kelas/
                   alt={`${favorite.class?.name} Class`}
                   className="w-full h-full object-cover rounded-lg"
                 />
@@ -149,7 +143,7 @@ const Kelas = () => {
                 </span>
               </div>
               <h4 className="text-xl font-semibold text-green-800 mb-2">{favorite.class?.name}</h4>
-              <p className="text-gray-600 text-center mb-2 text-lg">{favorite.class?.address || 'Alamat tidak tersedia'}</p>
+              <p className="text-gray-600 text-center mb-2 text-lg"> {favorite.class?.address || 'Alamat tidak tersedia'}</p>
 
               {/* Display Class Schedule */}
               {favorite.class?.schedules?.map((schedule, index) => (
@@ -159,7 +153,9 @@ const Kelas = () => {
                 </div>
               ))}
 
-              <button className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+              <button
+                onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
+                className="mt-4 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 hover:bg-green-700">
                 Lihat Detail Kelas
               </button>
             </motion.div>

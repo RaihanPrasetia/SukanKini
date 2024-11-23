@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AiOutlineLeft } from 'react-icons/ai';
-import classService from '../../../service/User/classService';  // Import the classService
+import classService from '../../../service/User/classService';
+import DaftarKelasPopup from "./DaftarKelas";
 
 const DetailKelas = () => {
   const { id } = useParams();  // Get class ID from URL parameters
@@ -12,13 +13,16 @@ const DetailKelas = () => {
   const [relatedClasses, setRelatedClasses] = useState([]);  // State for related classes
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+
 
   // Fetch class details using classService
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
         const fetchedClass = await classService.getClassById(id);
-        console.log('Fetched Class Details:', fetchedClass);  // Log the fetched class details to inspect the data
         setClassInfo(fetchedClass.class);
         setRelatedClasses(fetchedClass.relatedClasses);  // Directly set related classes
       } catch (error) {
@@ -39,9 +43,25 @@ const DetailKelas = () => {
     return <div>{error}</div>;  // Show error message if something goes wrong
   }
 
-  // Log classInfo and relatedClasses to ensure data is correctly fetched
-  console.log('Class Info:', classInfo);
-  console.log('Related Class Info:', relatedClasses);
+  const openPopup = (classInfo) => {
+    setSelectedClass(classInfo); // Mengatur data kelas yang dipilih
+    setIsPopupOpen(true); // Membuka modal
+  };
+
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedClass(null);
+  };
+
+  const goToKelas = () => {
+    navigate(-1);
+  };
+
+  const handleMenuClick = () => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
+
 
   return (
     <>
@@ -97,7 +117,9 @@ const DetailKelas = () => {
                 <span className='text-yellow-600 font-semibold'>{classInfo?.trainer?.name}</span> {/* Trainer name */}
               </p>
             </div>
-            <button className="mt-6 bg-green-500 text-white px-6 py-2 rounded-lg shadow hover:bg-green-600 transition">
+            <button
+              onClick={() => openPopup(classInfo)}
+              className="mt-6 bg-green-500 text-white px-6 py-2 rounded-lg shadow hover:bg-green-600 transition">
               Daftar Kelas
             </button>
           </div>
@@ -132,12 +154,15 @@ const DetailKelas = () => {
                     </p>
                   </div>
                   <div className='p-4 justify-end flex items-center gap-2'>
-                    <Link to={`/kelas/${relatedClass?.id}`}>
+                    <Link to={`/kelas/${relatedClass?.id}`}
+                      onClick={handleMenuClick}
+                    >
                       <button className="bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition-all">
                         Lihat Kelas
                       </button>
                     </Link>
                     <button
+                      onClick={() => openPopup(classInfo)}
                       className="bg-green-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-green-600 transition-all"
                     >
                       Daftar Kelas
@@ -147,14 +172,18 @@ const DetailKelas = () => {
 
               ))}
             </div>
-            <div className="flex justify-center mt-6">
-              <button className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow hover:bg-yellow-600 transition">
-                Lihat Kelas Lain
-              </button>
-            </div>
+
           </div>
         )}
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={goToKelas}  // Trigger the navigation to /kelas page
+            className="bg-gray-500 text-white px-6 py-2 rounded-lg text-lg font-semibold shadow hover:bg-yellow-600 transition">
+            Kembali
+          </button>
+        </div>
       </div>
+      {isPopupOpen && <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />}
     </>
   );
 };

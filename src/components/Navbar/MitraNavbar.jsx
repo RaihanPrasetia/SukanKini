@@ -78,8 +78,8 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/pembayaran')}`}>
                         <Link onClick={handleMenuClick} to="/mitra/pembayaran">Pembayaran</Link>
                     </li>
-                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/komunitas')}`}>
-                        <Link onClick={handleMenuClick} to="/mitra/komunitas">Komunitas</Link>
+                    <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/bank')}`}>
+                        <Link onClick={handleMenuClick} to="/mitra/bank">Bank</Link>
                     </li>
                 </ul>
             </div>

@@ -42,7 +42,7 @@ export default function AuthNavbar() {
 
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/dashboard" className="text-2xl font-bold  hover:text-yellow-500 transition duration-300">
+                <Link to="/home" className="text-2xl font-bold  hover:text-yellow-500 transition duration-300">
                     <span className="text-yellow-300">Sukan</span>Kini
                 </Link>
 

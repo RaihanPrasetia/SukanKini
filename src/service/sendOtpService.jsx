@@ -10,7 +10,6 @@ const sendOtp = async (email, otp) => {
         formData.append("email", email);
         formData.append("otp", otp);
 
-
         const response = await axios.post(`${apiUrl}/send-otp`, formData, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -18,17 +17,18 @@ const sendOtp = async (email, otp) => {
             },
         });
 
-        if (response.data && response.data.success) {
-            // Return only the message from the response
-            return { message: response.data.success };
+        if (response.data && response.data.success && response.data.message) {
+            // Return success and message
+            return { success: response.data.success, message: response.data.message };
         } else {
-            throw new Error("Payment creation failed. No message in response.");
+            throw new Error("Gagal mengirim OTP. Respons tidak memiliki pesan.");
         }
     } catch (error) {
-        console.error('Error fetching class info:', error);
-        throw new Error(error.response?.data?.message || 'Failed to fetch class info');
+        console.error("Error sending OTP:", error);
+        throw new Error(error.response?.data?.message || "Gagal mengirim OTP.");
     }
-}
+};
+
 
 const sendOtpService = {
     sendOtp,

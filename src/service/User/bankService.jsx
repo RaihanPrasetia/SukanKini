@@ -6,7 +6,7 @@ const apiKey = process.env.REACT_APP_API_KEY;
 
 const getBankMitraById = async (userId) => {
     try {
-        const response = await axios.get(`${apiUrl}/bank/mitra/${userId}`, {
+        const response = await axios.get(`${apiUrl}/bank/mitra/class/${userId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 api_key: apiKey,

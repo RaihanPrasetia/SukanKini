@@ -1,4 +1,4 @@
-const { Payment, User, Bank, Class, Memberships, Category, ClassSchedule } = require('../../associations');
+const { Payment, User, Bank, Class, Memberships, Category, ClassSchedule, Notification } = require('../../associations');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -53,7 +53,16 @@ const getUserPayments = async (req, res) => {
                 ]
             },
             include: [
-                { model: Bank, as: 'bank', attributes: ['an', 'no_rek', 'brand'] },
+                {
+                    model: Bank, as: 'bank', attributes: ['an', 'no_rek', 'brand'],
+                    where: {
+                        [Op.or]: [
+                            { deletedAt: null }, // Trainer aktif
+                            { deletedAt: { [Op.ne]: null } } // Trainer telah dihapus
+                        ]
+                    },
+                    paranoid: false,
+                },
                 {
                     model: Class, as: 'class', attributes: ['id', 'name'], include: [
                         {
@@ -92,6 +101,11 @@ const createPayment = async (req, res) => {
             return res.status(400).json({ message: 'Missing required fields: bank_id, total' });
         }
 
+        const userData = await User.findOne({ where: { id: userId } });
+        if (!userData) {
+            return res.status(404).json({ message: 'Pengguna tidak ditemukan.' });
+        }
+
         // Cek apakah kelas ada
         const classData = await Class.findOne({ where: { id: class_id } });
         if (!classData) {
@@ -120,6 +134,10 @@ const createPayment = async (req, res) => {
             return res.status(404).json({ message: 'Bank not found' });
         }
 
+        const userBank = await User.findOne({ where: { id: bankData.createdBy } })
+        if (!userBank) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         // Proses file bukti pembayaran
         let buktiPath = null;
         if (req.file) {
@@ -131,8 +149,6 @@ const createPayment = async (req, res) => {
         } else {
             return res.status(400).json({ message: 'Missing payment proof (bukti)' });
         }
-
-        // Buat entri pembayaran baru
         await Payment.create({
             user_id: classData.createdBy,
             bank_id,
@@ -147,8 +163,28 @@ const createPayment = async (req, res) => {
         await Memberships.create({
             class_id: class_id,
             user_id: userId,
-            status: 'panding',
+            status: 'pending',
         });
+
+        const notificationMessageToUser = `Pembayaran pendaftaran untuk kelas ${classData.name} Anda sebesar Rp${total.toLocaleString()} melalui bank ${bankData.brand} telah diterima dan sedang diproses oleh ${userBank.name}. Harap tunggu konfirmasi selanjutnya.`;
+        await Notification.create({
+            title: "Pembayaran Pendaftaran Kelas",
+            message: notificationMessageToUser,
+            type: "info",
+            user_id: userId,
+            createdBy: userId,
+        });
+
+        // Buat notifikasi untuk admin
+        const notificationMessageToRecipient = `${userData.name} telah mengirimkan pembayaran sebesar Rp${total.toLocaleString()} untuk kelas ${classData.name} melalui bank ${bankData.brand}. Mohon segera verifikasi pembayaran.`;
+        await Notification.create({
+            title: "Pembayaran Daftar Kelas",
+            message: notificationMessageToRecipient,
+            type: "warning",
+            user_id: userBank.id,
+            createdBy: userId,
+        });
+
 
         res.status(201).json({
             message: 'Payment created successfully',

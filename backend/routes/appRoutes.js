@@ -6,10 +6,12 @@ const paymentMitra = require('./mitra/paymentMitra');
 const bankMitra = require('./mitra/bankMitra');
 const trainerMitra = require('./mitra/trainerMitra');
 const categoryMitra = require('./mitra/categoryMitra');
+const dashboard = require('./mitra/dashboard');
 const classUser = require('./user/classUser');
 const paymentUser = require('./user/paymentUser');
 const getBankMitra = require('./user/bankMitra');
 const sendOtp = require('./sendOtpRoutes');
+const notifications = require('./notifikasiRoutes');
 
 const router = express.Router();
 
@@ -26,5 +28,7 @@ router.use(classUser);
 router.use(paymentUser);
 router.use(getBankMitra);
 router.use(sendOtp);
+router.use(notifications);
+router.use('/mitra', dashboard)
 
 module.exports = router;

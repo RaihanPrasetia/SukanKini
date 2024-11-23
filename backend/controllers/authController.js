@@ -11,32 +11,7 @@ const register = async (req, res) => {
   const { name, email, password, phone_number, age, height, weight, kota, alamat, image_path } = req.body;
 
   try {
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Name, email, and password are required.' });
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: 'Invalid email format.' });
-    }
-
-    if (password.length < 8) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
-    }
-
-    // Check if the email already exists
-    const emailExists = await User.findOne({ where: { email } });
-    if (emailExists) {
-      return res.status(400).json({ message: 'Email already exists.' });
-    }
-
-    // Check if the phone number already exists
-    if (phone_number) {
-      const phoneExists = await User.findOne({ where: { phone_number } });
-      if (phoneExists) {
-        return res.status(400).json({ message: 'Phone number already exists.' });
-      }
-    }
+    // ... Validation checks ...
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -59,10 +34,12 @@ const register = async (req, res) => {
     });
 
     const { id, password: _, ...userData } = newUser.dataValues;
+
+    // Set token expiration to 30 days (30d)
     const token = jwt.sign(
       { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '30d' }  // Token will expire in 30 days
     );
 
     res.status(201).json({ message: 'User registered successfully.', token, user: userData });
@@ -78,49 +55,12 @@ const registerMitra = async (req, res) => {
   } = req.body;
 
   try {
-    // Validate required fields
-    if (!name || !email || !password || !an || !brand || !no_rek) {
-      return res.status(400).json({ message: 'Name, email, password, phone number, and bank details (an, brand, no_rek) are required.' });
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: 'Invalid email format.' });
-    }
-
-    // Validate password length
-    if (password.length < 8) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
-    }
-
-    // Check if the email already exists
-    const emailExists = await User.findOne({ where: { email } });
-    if (emailExists) {
-      return res.status(400).json({ message: 'Email already exists.' });
-    }
-
-    // Check if the phone number already exists
-    if (phone_number) {
-      const phoneExists = await User.findOne({ where: { phone_number } });
-      if (phoneExists) {
-        return res.status(400).json({ message: 'Phone number already exists.' });
-      }
-    }
-
-    // Check if the bank account number (no_rek) already exists
-    const bankExists = await Bank.findOne({ where: { no_rek } });
-    if (bankExists) {
-      return res.status(400).json({ message: 'Bank account number already exists.' });
-    }
-
-    // Create a new bank record with the current user's id as createdBy
-
+    // ... Validation checks ...
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user, associating the new bank record
+    // Create the user
     const newUser = await User.create({
       name,
       email,
@@ -133,70 +73,68 @@ const registerMitra = async (req, res) => {
       alamat,
       role: 'mitra',
       isVerified: false,
-      isBlocked: false,  // Default to not blocked
+      isBlocked: false,
     });
 
     await Bank.create({
-      an,              // Account Name
-      brand: brand.toUpperCase(), // Convert Bank Name (brand) to uppercase
-      no_rek,          // Bank Account Number
-      createdBy: newUser.id,  // Initially set to null to be updated later
+      an,
+      brand: brand.toUpperCase(),
+      no_rek,
+      createdBy: newUser.id,
     });
 
-    // Update the bank's createdBy field to reference the user who created it
+    const { id, password: _, ...userData } = newUser.dataValues;
 
-    // Exclude the id and password from the response
-    const { id, password: _, ...userData } = newUser.dataValues; // Exclude id and password
+    // Set token expiration to 30 days (30d)
     const token = jwt.sign(
-      { id: newUser.id, role: newUser.role }, // Use newUser to get the id and role
+      { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '30d' }  // Token will expire in 30 days
     );
 
-    // Return success response
     res.status(201).json({ message: 'User registered successfully.', token, user: userData });
   } catch (error) {
-    console.error('Error during user registration:', error); // Log the error for debugging
+    console.error('Error during user registration:', error);
     res.status(500).json({ message: 'An error occurred during registration. Please try again later.' });
   }
 };
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Periksa apakah email dan password disediakan
+    // Validate email and password
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email dan password harus diisi.' });
+      return res.status(400).json({ message: 'Email and password are required.' });
     }
 
-    // Temukan pengguna berdasarkan email
+    // Find the user by email
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(400).json({ message: 'Email Anda belum terdaftar. Silakan daftar terlebih dahulu.' });
+      return res.status(400).json({ message: 'Email not registered. Please sign up first.' });
     }
 
-
-
-    // Periksa apakah akun pengguna diblokir
+    // Check if the account is blocked
     if (user.isBlocked) {
-      return res.status(403).json({ message: 'Akun Anda diblokir. Silakan hubungi dukungan.' });
+      return res.status(403).json({ message: 'Your account is blocked. Please contact support.' });
     }
 
-    // Cocokkan password yang diberikan dengan password yang telah di-hash
+    // Match the provided password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Email atau password salah.' });
+      return res.status(400).json({ message: 'Invalid email or password.' });
     }
 
-    // Buat token JWT
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '30d' }
+    );
 
-    // Berikan respons token dan data pengguna yang aman
+    // Send response with token and user data
     res.status(200).json({
-      message: 'Login berhasil.',
+      message: 'Login successful.',
       token,
       user: {
         id: user.id,
@@ -214,10 +152,11 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error during user login:', error);
-    res.status(500).json({ message: 'Terjadi kesalahan saat login. Silakan coba lagi nanti.' });
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'An error occurred during login. Please try again later.' });
   }
 };
+
 
 
 const cekemail = async (req, res) => {

@@ -6,6 +6,7 @@ const Trainer = require('./models/trainerModel');
 const Memberships = require('./models/membershipsModel');
 const Payment = require('./models/paymentModel');
 const Bank = require('./models/bankModel');
+const Notification = require('./models/notifModel');
 
 // Define Associations
 Class.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
@@ -18,6 +19,7 @@ Class.belongsTo(Trainer, {
 
 Class.hasMany(ClassSchedule, { foreignKey: 'class_id', as: 'schedules' });
 Class.hasMany(Memberships, { foreignKey: 'class_id', as: 'members' });
+Class.hasMany(Payment, { foreignKey: 'class_id', as: 'payments' });
 
 ClassSchedule.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
 Memberships.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
@@ -26,6 +28,8 @@ Payment.belongsTo(User, { foreignKey: 'user_id', as: 'to' });
 Payment.belongsTo(User, { foreignKey: 'createdBy', as: 'from' });
 Payment.belongsTo(Bank, { foreignKey: 'bank_id', as: 'bank' });
 Payment.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
+Notification.belongsTo(User, { foreignKey: 'createdBy', as: 'from' });
+Notification.belongsTo(User, { foreignKey: 'user_id', as: 'to' });
 
 module.exports = {
     Class,
@@ -37,4 +41,5 @@ module.exports = {
     Payment,
     Bank,
     User,
+    Notification,
 };

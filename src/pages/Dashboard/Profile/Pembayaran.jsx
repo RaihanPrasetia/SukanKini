@@ -38,24 +38,25 @@ export default function Pembayaran() {
 
   // Display loading or error states
   if (loading) {
-    return <div className="text-center text-gray-600">Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-600">Error: {error}</div>;
+    return <div>Error: {error}</div>;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl shadow-lg w-full max-w-4xl mx-auto space-y-8">
-      <h3 className="text-3xl font-bold text-blue-600 text-center">Informasi Pesanan</h3>
-      <p className="text-gray-700 text-center text-lg mb-6">
+    <div className="items-center justify-center p-6 flex flex-col rounded-lg bg-gray-100 shadow-xl w-full h-full max-w-none mx-auto animate__animated animate__fadeInUp">
+      <h3 className="text-blue-600 font-bold text-3xl mb-4 text-center animate__animated animate__zoomIn">
+        INFORMASI PESANAN
+      </h3>
+      <p className="text-gray-700 mb-8 text-center animate__animated animate__fadeInUp animate__delay-1s">
         Nikmati kelas dan fasilitas yang telah Anda pilih!
       </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
         {orderData.map((order, index) => (
-          <div key={index} className="bg-white p-6 rounded-lg border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
-            <div className="flex justify-between items-center">
+          <div key={index} className="bg-white p-6 rounded-lg border border-gray-300 shadow-lg">
+            <div className="flex flex-col items-center">
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium text-white ${order.paymentStatus === 'Diterima'
                   ? 'bg-green-500'
@@ -67,14 +68,14 @@ export default function Pembayaran() {
                 {order.paymentStatus}
               </span>
             </div>
-            <div className="mt-6">
+            <div className="mt-4">
               {[
                 { label: 'Nama Mitra', value: (order.to?.name || 'N/A').toUpperCase() },
                 { label: 'Kelas', value: order.classInfo?.name || 'N/A' },
                 { label: 'Tanggal Pembayaran', value: new Date(order.createdAt).toLocaleString() },
                 { label: 'Total', value: `Rp. ${order.total.toLocaleString()}` },
               ].map((item, index) => (
-                <div key={index} className="flex justify-between py-2 border-b border-gray-200 last:border-none">
+                <div key={index} className="flex justify-between py-1 border-b border-gray-200 last:border-none">
                   <p className="text-gray-600 font-semibold text-sm">{item.label}</p>
                   <p className="text-gray-800 text-sm">: {item.value}</p>
                 </div>
@@ -83,7 +84,7 @@ export default function Pembayaran() {
 
             <div className="mt-6 text-center">
               <button
-                className="px-6 py-3 rounded-full text-lg font-semibold bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-200"
+                className="px-5 py-2 rounded-full text-lg font-semibold bg-blue-600 text-white shadow-md hover:bg-blue-700 transition duration-300 animate__animated animate__fadeIn"
                 onClick={() => openModal(order)}
               >
                 Detail Pesanan

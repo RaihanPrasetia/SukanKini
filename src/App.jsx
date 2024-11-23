@@ -1,38 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import paymentService from './service/paymentService';
 import { useAuth, AuthProvider } from './contexts/AuthContext';
 import LandingPage from './pages/Layouts/LandingPage';
 import Dashboard from './pages/Layouts/Dashboard';
 import Admin from './pages/Layouts/Admin';
 import Mitra from './pages/Layouts/Mitra';
-import Payment from './pages/Mitra/Payment';
 import AdminLogin from './pages/Admin/AdminLogin';
+import Payment from './pages/Mitra/Payment';
+import NotFound from './components/NotFound';
+
 
 function AppRoutes() {
   const { isAuthenticated, userRole } = useAuth();
-  const [isPaymentActive, setIsPaymentActive] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (userRole === 'mitra') {
-      const checkUserPaymentStatus = async () => {
-        try {
-          const payments = await paymentService.getPaymentStatus();
-          if (payments && payments.length > 0) {
-            const activePayment = payments[0];
-            setIsPaymentActive(activePayment.paymentStatus === 'Diterima');
-          }
-        } catch (error) {
-          console.error('Error fetching payment status:', error);
-        } finally {
-          setIsLoading(false); // Set loading to false after the check
-        }
-      };
-      checkUserPaymentStatus();
-    } else {
-      setIsLoading(false); // Set loading to false directly if not mitra
-    }
+    setIsLoading(false); // Set loading to false directly if not mitra
   }, [userRole]);
 
   if (isLoading) {
@@ -63,27 +46,48 @@ function AppRoutes() {
 
   return (
     <Routes>
+      {/* Rute umum yang dapat diakses oleh semua pengguna */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/konfimasi/payment" element={<Payment />} />
+
+      {/* Jika pengguna terautentikasi */}
       {isAuthenticated ? (
         <>
-          {userRole === 'user' && <Route path="*" element={<Dashboard />} />}
+          {userRole === 'user' && (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              {/* Fallback untuk semua rute user yang tidak ada */}
+              <Route path="*" element={<Navigate to="/404" replace />} />
+            </>
+          )}
           {userRole === 'admin' && (
             <>
               <Route path="/admin/*" element={<Admin />} />
+              {/* Fallback untuk admin */}
+              <Route path="*" element={<Navigate to="/404" replace />} />
             </>
           )}
           {userRole === 'mitra' && (
-            <Route
-              path="/mitra/*"
-              element={isPaymentActive ? <Mitra /> : <Payment />}
-            />
+            <>
+              <Route path="/mitra/*" element={<Mitra />} />
+              {/* Fallback untuk mitra */}
+              <Route path="*" element={<Navigate to="/404" replace />} />
+            </>
           )}
         </>
       ) : (
-        <Route path="*" element={<Navigate to="/" replace />} />
+        // Jika tidak terautentikasi, arahkan ke halaman NotFound
+        <Route path="*" element={<Navigate to="/404" replace />} />
       )}
+
+      {/* Halaman NotFound secara eksplisit */}
+      <Route path="/404" element={<NotFound />} />
+
+      {/* Rute fallback global jika tidak ada yang cocok */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+
   );
 }
 
