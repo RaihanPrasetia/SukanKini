@@ -1,27 +1,56 @@
-import React, { useState } from 'react';
-import { FaSearch, FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
-
+import React, { useEffect, useState } from 'react';
+import { FaSearch, FaEye } from 'react-icons/fa';
+import adminUserService from '../../service/admin/adminUserService';
+import Swal from 'sweetalert2';
 
 export default function ProfilMitra() {
-  const initialMitraData = [
-    { id: 1, name: 'Mitra A', email: 'mitra@a.com', address: 'Alamat A', phone: '081234567890' },
-    { id: 2, name: 'Mitra B', email: 'mitra@b.com', address: 'Alamat B', phone: '081234567891' },
-    { id: 3, name: 'Mitra C', email: 'mitra@c.com', address: 'Alamat C', phone: '081234567892' },
-  ];
-  const [mitraData, setMitraData] = useState(initialMitraData);
+  const [mitraData, setMitraData] = useState([]); // Initial state as an empty array
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state for data fetch
+  const [selectedMitra, setSelectedMitra] = useState(null); // State to hold selected mitra for modal
 
-  const handleAdd = () => alert('Tambah Mitra belum diimplementasikan.');
-  const handleEdit = (id) => alert(`Edit Mitra dengan ID: ${id}`);
-  const handleDelete = (id) => {
-    const confirmed = window.confirm('Apakah Anda yakin ingin menghapus mitra ini?');
-    if (confirmed) {
-      setMitraData((prev) => prev.filter((mitra) => mitra.id !== id));
+  useEffect(() => {
+    const fetchUserMitra = async () => {
+      setLoading(true);
+      try {
+        const mitraData = await adminUserService.getAdminDataMitra();
+        setMitraData(mitraData);
+        console.log(mitraData) // Assign fetched data to mitraData state
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Gagal mengambil data mitra.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserMitra();
+  }, []);
+
+  // Handle view action (set selected mitra for modal)
+  const handleView = (id) => {
+    const mitra = mitraData.find((item) => item.id === id);
+    if (mitra) {
+      setSelectedMitra(mitra); // Set mitra data to state to display in modal
     }
   };
 
+  // Close the modal
+  const handleCloseModal = () => {
+    setSelectedMitra(null); // Close modal by setting selected mitra to null
+  };
+
+  // Filter mitra data based on search query
   const filteredMitra = mitraData.filter((mitra) =>
-    mitra.name.toLowerCase().includes(searchQuery.toLowerCase())
+    (mitra.name && mitra.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (mitra.phone_number && mitra.phone_number.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (mitra.email && mitra.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (mitra.kota && mitra.kota.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (mitra.alamat && mitra.alamat.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
@@ -40,13 +69,6 @@ export default function ProfilMitra() {
           />
           <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
         </div>
-        <button
-          onClick={handleAdd}
-          className="bg-indigo-500 text-white px-4 py-2 rounded-lg shadow flex items-center space-x-2 hover:bg-indigo-600 transition-all duration-300"
-        >
-          <FaPlusCircle />
-          <span>Tambah Mitra</span>
-        </button>
       </div>
 
       {/* Tabel Mitra */}
@@ -57,8 +79,8 @@ export default function ProfilMitra() {
               <th className="p-4">No</th>
               <th className="p-4">Nama Mitra</th>
               <th className="p-4">Email</th>
-              <th className="p-4">Alamat</th>
               <th className="p-4">No. Telepon</th>
+              <th className="p-4">Alamat</th>
               <th className="p-4">Aksi</th>
             </tr>
           </thead>
@@ -68,20 +90,16 @@ export default function ProfilMitra() {
                 <td className="p-4">{index + 1}</td>
                 <td className="p-4">{mitra.name}</td>
                 <td className="p-4">{mitra.email}</td>
-                <td className="p-4">{mitra.address}</td>
-                <td className="p-4">{mitra.phone}</td>
-                <td className="p-4 space-x-2">
+                <td className="p-4">{mitra.phone_number || 'Nomor tidak tersedia'}</td>
+                <td className="p-4">{mitra.kota}, {mitra.alamat}</td>
+                <td className="p-4">
                   <button
-                    onClick={() => handleEdit(mitra.id)}
-                    className="text-indigo-500 hover:text-indigo-700"
+                    onClick={() => handleView(mitra.id)}
+                    className="text-indigo-500 hover:text-indigo-700 text-center flex flex-col items-center justify-start"
                   >
-                    <FaEdit />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(mitra.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrashAlt />
+                    <span>
+                      <FaEye />
+                    </span>
                   </button>
                 </td>
               </tr>
@@ -89,7 +107,33 @@ export default function ProfilMitra() {
           </tbody>
         </table>
       </div>
+
+      {selectedMitra && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-96">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Detail Mitra</h2>
+              <button onClick={handleCloseModal} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            <div className="space-y-4">
+              <div className="flex flex-col items-center space-y4">
+                <strong>Foto Profil</strong>
+                {/* Cek apakah gambar ada, jika tidak tampilkan gambar default */}
+                <img
+                  src={selectedMitra.image_path ? `/images/${selectedMitra.image_path}` : '/images/default-profile.png'}
+                  alt="Foto Profil"
+                  className="w-32 h-32 object-cover rounded-full"
+                />
+              </div>
+              <p><strong>Nama Mitra:</strong> {selectedMitra.name}</p>
+              <p><strong>Email:</strong> {selectedMitra.email}</p>
+              <p><strong>No Telepon:</strong> {selectedMitra.phone_number || 'Tidak ada nomor telepon'}</p>
+              <p><strong>Alamat:</strong> {selectedMitra.alamat}, {selectedMitra.kota}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
-};
-
+}

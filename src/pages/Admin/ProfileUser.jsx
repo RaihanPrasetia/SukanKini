@@ -1,47 +1,56 @@
-// App.jsx
-import React, { useState } from 'react';
-import { FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaSearch, FaEye } from 'react-icons/fa';
+import adminUserService from '../../service/admin/adminUserService';
+import Swal from 'sweetalert2';
 
 export default function ProfilUser() {
-
-  const initialUserData = [
-    {
-      id: 1,
-      name: 'User A',
-      email: 'userA@example.com',
-      phone: '081234567890',
-      role: 'Admin',
-    },
-    {
-      id: 2,
-      name: 'User B',
-      email: 'userB@example.com',
-      phone: '081298765432',
-      role: 'Editor',
-    },
-    {
-      id: 3,
-      name: 'User C',
-      email: 'userC@example.com',
-      phone: '081334455667',
-      role: 'Viewer',
-    },
-  ];
-
-  const [userData, setUserData] = useState(initialUserData);
+  const [userData, setUserData] = useState([]); // Initial state as an empty array
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state for data fetch
+  const [selectedUser, setSelectedUser] = useState(null); // State to hold selected user for modal
 
-  const handleAdd = () => alert('Tambah User belum diimplementasikan.');
-  const handleEdit = (id) => alert(`Edit User dengan ID: ${id}`);
-  const handleDelete = (id) => {
-    const confirmed = window.confirm('Apakah Anda yakin ingin menghapus user ini?');
-    if (confirmed) {
-      setUserData((prev) => prev.filter((user) => user.id !== id));
+  useEffect(() => {
+    const fetchUserMitra = async () => {
+      setLoading(true);
+      try {
+        const userData = await adminUserService.getAdminDataUser();
+        setUserData(userData);
+        console.log(userData) // Assign fetched data to userData state
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Gagal mengambil data user.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserMitra();
+  }, []);
+
+  // Handle view action (set selected user for modal)
+  const handleView = (id) => {
+    const user = userData.find((item) => item.id === id);
+    if (user) {
+      setSelectedUser(user); // Set user data to state to display in modal
     }
   };
 
-  const filteredUsers = userData.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // Close the modal
+  const handleCloseModal = () => {
+    setSelectedUser(null); // Close modal by setting selected user to null
+  };
+
+  // Filter user data based on search query
+  const filteredMitra = userData.filter((user) =>
+    (user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (user.phone_number && user.phone_number.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (user.email && user.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (user.kota && user.kota.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (user.alamat && user.alamat.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
@@ -50,20 +59,16 @@ export default function ProfilUser() {
 
       {/* Action Buttons */}
       <div className="flex justify-between items-center mb-4">
-        <input
-          type="text"
-          placeholder="Cari User..."
-          className="p-2 border rounded-lg shadow-sm w-1/3"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button
-          onClick={handleAdd}
-          className="bg-indigo-500 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-600 transition-all duration-300"
-        >
-          <FaPlusCircle className="inline-block mr-2" />
-          Tambah User
-        </button>
+        <div className="relative w-1/3">
+          <input
+            type="text"
+            placeholder="Cari User..."
+            className="p-2 pl-10 border rounded-lg shadow-sm w-full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+        </div>
       </div>
 
       {/* Tabel User */}
@@ -75,34 +80,26 @@ export default function ProfilUser() {
               <th className="p-4">Nama User</th>
               <th className="p-4">Email</th>
               <th className="p-4">No. Telepon</th>
-              <th className="p-4">Role</th>
+              <th className="p-4">Alamat</th>
               <th className="p-4">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user, index) => (
-              <tr
-                key={user.id}
-                className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                  } hover:bg-gray-200`}
-              >
+            {filteredMitra.map((user, index) => (
+              <tr key={user.id} className="hover:bg-indigo-50">
                 <td className="p-4">{index + 1}</td>
                 <td className="p-4">{user.name}</td>
                 <td className="p-4">{user.email}</td>
-                <td className="p-4">{user.phone}</td>
-                <td className="p-4">{user.role}</td>
-                <td className="p-4 space-x-2">
+                <td className="p-4">{user.phone_number || 'Nomor tidak tersedia'}</td>
+                <td className="p-4">{user.kota}, {user.alamat}</td>
+                <td className="p-4">
                   <button
-                    onClick={() => handleEdit(user.id)}
-                    className="text-indigo-500 hover:text-indigo-700"
+                    onClick={() => handleView(user.id)}
+                    className="text-indigo-500 hover:text-indigo-700 text-center flex flex-col items-center justify-start"
                   >
-                    <FaEdit />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrashAlt />
+                    <span>
+                      <FaEye />
+                    </span>
                   </button>
                 </td>
               </tr>
@@ -110,7 +107,33 @@ export default function ProfilUser() {
           </tbody>
         </table>
       </div>
+
+      {selectedUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-96">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Detail User</h2>
+              <button onClick={handleCloseModal} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            <div className="space-y-4">
+              <div className="flex flex-col items-center space-y4">
+                <strong>Foto Profil</strong>
+                {/* Cek apakah gambar ada, jika tidak tampilkan gambar default */}
+                <img
+                  src={selectedUser.image_path ? `/images/${selectedUser.image_path}` : '/images/default-profile.png'}
+                  alt="Foto Profil"
+                  className="w-32 h-32 object-cover rounded-full"
+                />
+              </div>
+              <p><strong>Nama User:</strong> {selectedUser.name}</p>
+              <p><strong>Email:</strong> {selectedUser.email}</p>
+              <p><strong>No Telepon:</strong> {selectedUser.phone_number || 'Tidak ada nomor telepon'}</p>
+              <p><strong>Alamat:</strong> {selectedUser.alamat}, {selectedUser.kota}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
-};
-
+}
