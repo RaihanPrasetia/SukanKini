@@ -271,7 +271,6 @@ const updatePaymentStatus = async (req, res) => {
         }
         payment.status_pembayaran = status_pembayaran;
         await payment.save();
-        membership.status = 'active';
         await membership.save();
 
         res.status(200).json({ message: 'Payment status updated successfully', payment });

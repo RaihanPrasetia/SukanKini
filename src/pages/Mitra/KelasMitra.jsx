@@ -274,7 +274,7 @@ const KelasMitra = () => {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 p-6 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-2xl w-full sm:w-3/4 md:w-2/3 lg:w-full">
+                    <div className="bg-white p-6 rounded-lg shadow-2xl w-full sm:w-3/4 md:w-2/3 lg:w-2/3">
                         <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Buat Kelas</h3>
                         <form onSubmit={handleFormSubmit}>
 
@@ -325,168 +325,173 @@ const KelasMitra = () => {
 
                             </div>
 
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Jadwal</label>
-                                <div className="flex items-center space-x-2 mb-3">
-                                    <select name="hari" value={newSchedule.hari} onChange={(e) => setNewSchedule({
-                                        ...newSchedule,
-                                        hari: e.target.value
-                                    })}
-                                        className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2
-                            focus:ring-blue-500"
-                                    >
-                                        <option value="">Pilih Hari</option>
-                                        <option value="Senin">Senin</option>
-                                        <option value="Selasa">Selasa</option>
-                                        <option value="Rabu">Rabu</option>
-                                        <option value="Kamis">Kamis</option>
-                                        <option value="Jumat">Jumat</option>
-                                        <option value="Sabtu">Sabtu</option>
-                                        <option value="Minggu">Minggu</option>
-                                    </select>
+                            <div className='flex justify-between items-start space-x-4'>
+                                <div className="w-full">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Jadwal</label>
+                                    <div className="flex items-center space-x-2 ">
+                                        <select name="hari" value={newSchedule.hari} onChange={(e) => setNewSchedule({
+                                            ...newSchedule,
+                                            hari: e.target.value
+                                        })}
+                                            className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2
+                                            focus:ring-blue-500"
+                                        >
+                                            <option value="">Pilih Hari</option>
+                                            <option value="Senin">Senin</option>
+                                            <option value="Selasa">Selasa</option>
+                                            <option value="Rabu">Rabu</option>
+                                            <option value="Kamis">Kamis</option>
+                                            <option value="Jumat">Jumat</option>
+                                            <option value="Sabtu">Sabtu</option>
+                                            <option value="Minggu">Minggu</option>
+                                        </select>
 
-                                    <input type="time" name="jam" value={newSchedule.jam} onChange={(e) => setNewSchedule({
-                                        ...newSchedule, jam: e.target.value
-                                    })}
-                                        className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2
+                                        <input type="time" name="jam" value={newSchedule.jam} onChange={(e) => setNewSchedule({
+                                            ...newSchedule, jam: e.target.value
+                                        })}
+                                            className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2
                         focus:ring-blue-500"
-                                    />
+                                        />
 
-                                    <button type="button" onClick={() => {
-                                        if (newSchedule.hari && newSchedule.jam) {
-                                            setFormData((prev) => ({
-                                                ...prev,
-                                                schedules: [...prev.schedules, newSchedule],
-                                            }));
-                                            setNewSchedule({ hari: '', jam: '' });
-                                        } else {
-                                            alert("Mohon isi hari dan jam sebelum menambah jadwal.");
-                                        }
-                                    }}
-                                        className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none
-                            focus:ring-2 focus:ring-blue-400"
-                                    >
-                                        Tambah
-                                    </button>
-                                </div>
-
-                                <ul className="mt-2 space-y-1">
-                                    {formData.schedules.map((schedule, index) => (
-                                        <li key={index} className="flex justify-between items-center">
-                                            <span className="text-sm text-gray-700">{`${schedule.hari} (${schedule.jam})`}</span>
-                                            <button type="button" onClick={() =>
+                                        <button type="button" onClick={() => {
+                                            if (newSchedule.hari && newSchedule.jam) {
                                                 setFormData((prev) => ({
                                                     ...prev,
-                                                    schedules: prev.schedules.filter((_, i) => i !== index),
-                                                }))
-                                            }
-                                                className="text-red-500 hover:text-red-600 focus:outline-none"
-                                            >
-                                                Hapus
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Benefit</label>
-                                <div className="flex items-center space-x-2 mb-3">
-                                    {/* Input untuk nama Benefit */}
-                                    <input
-                                        type="text"
-                                        placeholder="Nama Benefit"
-                                        value={newBenefit.name}
-                                        onChange={(e) =>
-                                            setNewBenefit({
-                                                ...newBenefit,
-                                                name: e.target.value,
-                                            })
-                                        }
-                                        className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-
-                                    {/* Input untuk deskripsi Benefit */}
-                                    <input
-                                        type="text"
-                                        placeholder="Deskripsi Benefit"
-                                        value={newBenefit.description}
-                                        onChange={(e) =>
-                                            setNewBenefit({
-                                                ...newBenefit,
-                                                description: e.target.value,
-                                            })
-                                        }
-                                        className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-
-                                    {/* Tombol Tambah Benefit */}
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            if (newBenefit.name && newBenefit.description) {
-                                                setFormData((prev) => ({
-                                                    ...prev,
-                                                    benefits: [...prev.benefits, newBenefit],
+                                                    schedules: [...prev.schedules, newSchedule],
                                                 }));
-                                                setNewBenefit({ name: "", description: "" });
+                                                setNewSchedule({ hari: '', jam: '' });
                                             } else {
-                                                alert("Mohon isi nama dan deskripsi sebelum menambah benefit.");
+                                                alert("Mohon isi hari dan jam sebelum menambah jadwal.");
                                             }
                                         }}
-                                        className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    >
-                                        Tambah
-                                    </button>
+                                            className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none
+                            focus:ring-2 focus:ring-blue-400"
+                                        >
+                                            Tambah
+                                        </button>
+                                    </div>
+
+                                    <ul className="mt-2 space-y-1">
+                                        {formData.schedules.map((schedule, index) => (
+                                            <li key={index} className="flex justify-between items-center">
+                                                <span className="text-sm text-gray-700">{`${schedule.hari} (${schedule.jam})`}</span>
+                                                <button type="button" onClick={() =>
+                                                    setFormData((prev) => ({
+                                                        ...prev,
+                                                        schedules: prev.schedules.filter((_, i) => i !== index),
+                                                    }))
+                                                }
+                                                    className="text-red-500 hover:text-red-600 focus:outline-none"
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
 
-                                {/* Daftar Benefit */}
-                                <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {formData.benefits.map((benefit, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex flex-col justify-between bg-white p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
-                                        >
-                                            <div className='flex items-center justify-between'>
-                                                <div>
-                                                    <p className="text-lg font-semibold text-gray-800">{benefit.name}</p>
-                                                    <p className="text-sm text-gray-600 mt-2">{benefit.description}</p>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setFormData((prev) => ({
-                                                            ...prev,
-                                                            benefits: prev.benefits.filter((_, i) => i !== index),
-                                                        }))
-                                                    }
-                                                    className="text-red-500 hover:text-red-600 hover:scale-105  rounded-full transition-colors duration-300 mt-4 self-end"
-                                                    title="Hapus Benefit"
-                                                >
-                                                    <RiDeleteBin6Line className="text-xl" />
-                                                </button>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-
-                            </div>
-
-
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                                <div>
+                                <div className='w-full'>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
                                     <input type="text" name="address" value={formData.address} onChange={handleInputChange}
                                         className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         required />
                                 </div>
 
-                                <div>
+                                <div className='w-full'>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Harga</label>
                                     <input type="number" name="price" value={formData.price} onChange={handleInputChange}
                                         className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         required />
                                 </div>
+                            </div>
+
+
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div className="w-full">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Benefit</label>
+                                    <div className="flex items-center space-x-2 mb-3">
+                                        {/* Input untuk nama Benefit */}
+                                        <input
+                                            type="text"
+                                            placeholder="Nama Benefit"
+                                            value={newBenefit.name}
+                                            onChange={(e) =>
+                                                setNewBenefit({
+                                                    ...newBenefit,
+                                                    name: e.target.value,
+                                                })
+                                            }
+                                            className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+
+                                        {/* Input untuk deskripsi Benefit */}
+                                        <input
+                                            type="text"
+                                            placeholder="Deskripsi Benefit"
+                                            value={newBenefit.description}
+                                            onChange={(e) =>
+                                                setNewBenefit({
+                                                    ...newBenefit,
+                                                    description: e.target.value,
+                                                })
+                                            }
+                                            className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+
+                                        {/* Tombol Tambah Benefit */}
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                if (newBenefit.name && newBenefit.description) {
+                                                    setFormData((prev) => ({
+                                                        ...prev,
+                                                        benefits: [...prev.benefits, newBenefit],
+                                                    }));
+                                                    setNewBenefit({ name: "", description: "" });
+                                                } else {
+                                                    alert("Mohon isi nama dan deskripsi sebelum menambah benefit.");
+                                                }
+                                            }}
+                                            className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        >
+                                            Tambah
+                                        </button>
+                                    </div>
+
+                                    {/* Daftar Benefit */}
+                                    <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {formData.benefits.map((benefit, index) => (
+                                            <li
+                                                key={index}
+                                                className="flex flex-col justify-between bg-white p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+                                            >
+                                                <div className='flex items-center justify-between'>
+                                                    <div>
+                                                        <p className="text-lg font-semibold text-gray-800">{benefit.name}</p>
+                                                        <p className="text-sm text-gray-600 mt-2">{benefit.description}</p>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            setFormData((prev) => ({
+                                                                ...prev,
+                                                                benefits: prev.benefits.filter((_, i) => i !== index),
+                                                            }))
+                                                        }
+                                                        className="text-red-500 hover:text-red-600 hover:scale-105  rounded-full transition-colors duration-300 mt-4 self-end"
+                                                        title="Hapus Benefit"
+                                                    >
+                                                        <RiDeleteBin6Line className="text-xl" />
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                </div>
+
+
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Gambar</label>
@@ -807,7 +812,7 @@ const KelasMitra = () => {
                                     <th className="px-6 py-4">Alamat</th>
                                     <th className="px-6 py-4">Benefit</th>
                                     <th className="px-6 py-4">Harga</th>
-                                    <th className="px-6 py-4">Aksi</th>
+                                    <th className="px-6 py-4 w-max text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">

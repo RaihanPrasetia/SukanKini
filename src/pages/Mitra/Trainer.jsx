@@ -285,16 +285,16 @@ const Trainer = () => {
         </div>
       )}
 
-      <table className="min-w-full text-sm text-left text-gray-500 shadow-lg bg-white">
-        <thead className="bg-blue-600 text-white">
+      <table className="min-w-full text-sm text-left text-gray-500 shadow-lg bg-white rounded-lg border-separate border-spacing-0">
+        <thead className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
           <tr>
-            <th className="px-4 py-2">Nomor</th>
-            <th className="px-4 py-2">Image</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Phone</th>
-            <th className="px-4 py-2">Alamat</th>
-            <th className="px-4 py-2">Age</th>
-            <th className="px-4 py-2">Actions</th>
+            <th className="px-6 py-3 w-12">No</th>
+            <th className="px-6 py-3">Image</th>
+            <th className="px-6 py-3">Name</th>
+            <th className="px-6 py-3">Phone</th>
+            <th className="px-6 py-3">Alamat</th>
+            <th className="px-6 py-3">Age</th>
+            <th className="px-6 py-3 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -306,25 +306,30 @@ const Trainer = () => {
             </tr>
           ) : (
             trainers.map((trainer, index) => (
-              <tr key={index} className="border-b hover:bg-gray-100">
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">
-                  <img src={`/images/trainer/${trainer.imagePath}`} alt={trainer.name}
-                    className="w-16 h-16 object-cover rounded" />
+              <tr key={trainer.id} className={`border-b ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 transition duration-300`}>
+                <td className="px-6 py-4 text-gray-800">{index + 1}</td>
+                <td className="px-6 py-4">
+                  <img
+                    src={`/images/trainer/${trainer.imagePath}`}
+                    alt={trainer.name}
+                    className="w-16 h-16 object-cover rounded-full border-2 border-blue-500"
+                  />
                 </td>
-                <td className="px-4 py-2">{trainer.name}</td>
-                <td className="px-4 py-2">{trainer.phone}</td>
-                <td className="px-4 py-2">{trainer.alamat}</td>
-                <td className="px-4 py-2">{trainer.age}</td>
-                <td className="px-4 py-2">
+                <td className="px-6 py-4 text-gray-800">{trainer.name}</td>
+                <td className="px-6 py-4">{trainer.phone}</td>
+                <td className="px-6 py-4">{trainer.alamat}</td>
+                <td className="px-6 py-4">{trainer.age}</td>
+                <td className="px-6 py-4 text-center">
                   <div className="flex gap-2 items-center justify-center">
-                    <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600" onClick={() =>
-                      handleEditClick(trainer)} // Open update modal with selected trainer's data
+                    <button
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transform transition duration-300"
+                      onClick={() => handleEditClick(trainer)} // Open update modal with selected trainer's data
                     >
                       Edit
                     </button>
-                    <button onClick={() => handleDeleteClick(trainer.id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    <button
+                      onClick={() => handleDeleteClick(trainer.id)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transform transition duration-300"
                     >
                       Delete
                     </button>
@@ -335,6 +340,7 @@ const Trainer = () => {
           )}
         </tbody>
       </table>
+
     </div>
   );
 };

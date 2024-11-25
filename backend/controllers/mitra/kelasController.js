@@ -70,7 +70,9 @@ const getClassById = async (req, res) => {
                 { model: User, as: 'owner', attributes: ['id', 'name'] },
                 { model: Category, as: 'category', attributes: ['id', 'name'] },
                 {
-                    model: Trainer, as: 'trainer', attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number', 'deletedAt'],
+                    model: Trainer,
+                    as: 'trainer',
+                    attributes: ['id', 'name', 'age', 'image_path', 'alamat', 'phone_number', 'deletedAt'],
                     where: {
                         [Op.or]: [
                             { deletedAt: null }, // Trainer aktif
@@ -88,10 +90,10 @@ const getClassById = async (req, res) => {
                     model: Benefit,
                     as: 'benefits',
                     attributes: ['id', 'name', 'description']
-
                 },
                 {
                     model: Memberships,
+
                     as: 'members',
                     attributes: ['id', 'user_id', 'class_id', 'status', 'createdAt', 'updatedAt'],
                     include: [
@@ -103,9 +105,10 @@ const getClassById = async (req, res) => {
                     ]
                 }
             ],
-            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdBy', 'createdAt', 'updatedAt', 'createdBy']
+            attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'createdBy', 'createdAt', 'updatedAt']
         });
 
+        // Validasi akses
         if (!classData) {
             return res.status(404).json({ message: 'Class not found!' });
         }
@@ -114,11 +117,14 @@ const getClassById = async (req, res) => {
             return res.status(403).json({ message: 'Forbidden: You are not authorized to view this class!' });
         }
 
+        // Response sukses
         res.status(200).json({ class: classData });
     } catch (error) {
+        // Error handling
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const createClass = async (req, res) => {
     try {
@@ -225,7 +231,7 @@ const updateClass = async (req, res) => {
     try {
         const classId = req.params.id;  // Get classId from request parameters
         const userId = req.userId;  // Get the authenticated userId
-        const { name, alamat, category_id, trainer_id, schedules, price, } = req.body;
+        const { name, alamat, category_id, trainer_id, schedules, benefits, price, } = req.body;
 
         // Find the class by ID
         const classData = await Class.findOne({
@@ -304,6 +310,40 @@ const updateClass = async (req, res) => {
                     class_id: classId,
                     hari: schedule.hari,
                     jam: schedule.jam,
+                    createdBy: userId
+                });
+            }));
+        }
+        let benefitsArray = [];
+        if (benefits) {
+            try {
+                // Parse schedules if it's in string format
+                benefitsArray = typeof benefits === 'string' ? JSON.parse(benefits) : benefits;
+            } catch (error) {
+                return res.status(400).json({ message: 'Invalid schedules format.' });
+            }
+        }
+
+        // Check if there are any schedules to update
+        if (Array.isArray(benefitsArray) && benefitsArray.length > 0) {
+            // First, delete the old schedules for this class_id (only if there are new schedules)
+            Benefit.destroy({
+                where: { class_id: classId }
+            });
+
+            // Now, insert or update the new schedules
+            await Promise.all(benefitsArray.map(async (benefit) => {
+                // Ensure the user is authorized to create schedules
+                const userExists = await User.findOne({ where: { id: userId, role: 'mitra' } });
+                if (!userExists) {
+                    return res.status(400).json({ message: 'User must have "mitra" role to create schedules.' });
+                }
+
+                // Upsert new schedules based on class_id
+                return Benefit.upsert({
+                    class_id: classId,
+                    name: benefit.name,
+                    description: benefit.description,
                     createdBy: userId
                 });
             }));

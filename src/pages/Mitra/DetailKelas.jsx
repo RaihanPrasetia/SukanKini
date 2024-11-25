@@ -156,61 +156,62 @@ const DetailKelas = () => {
               </tr>
             </thead>
             <tbody>
-              {kelas.members && kelas.members.length > 0 ? (
-                kelas.members.map((member, index) => (
-                  <tr key={member.id} className="border-b border-gray-200 hover:bg-teal-50 transition duration-200">
-                    {/* No. */}
-                    <td className="py-4 px-6 text-center text-gray-800">{index + 1}</td>
+              {kelas.members && kelas.members.filter(member => member.status !== 'inactive').length > 0 ? (
+                kelas.members
+                  .filter(member => member.status !== 'inactive')
+                  .map((member, index) => (
+                    <tr key={member.id} className="border-b border-gray-200 hover:bg-teal-50 transition duration-200">
+                      {/* No. */}
+                      <td className="py-4 px-6 text-center text-gray-800">{index + 1}</td>
 
-                    {/* Nama */}
-                    <td className="py-4 px-6 text-gray-800">{member.user.name}</td>
+                      {/* Nama */}
+                      <td className="py-4 px-6 text-gray-800">{member.user.name}</td>
 
-                    {/* Kota */}
-                    <td className="py-4 px-6 text-gray-600">{member.user.city}</td>
+                      {/* Kota */}
+                      <td className="py-4 px-6 text-gray-600">{member.user.city}</td>
 
-                    {/* Alamat */}
-                    <td className="py-4 px-6 text-gray-600">{member.user.address}</td>
+                      {/* Alamat */}
+                      <td className="py-4 px-6 text-gray-600">{member.user.address}</td>
 
-                    {/* Telepon */}
-                    <td className="py-4 px-6 text-gray-600">{member.user.phone}</td>
+                      {/* Telepon */}
+                      <td className="py-4 px-6 text-gray-600">{member.user.phone}</td>
 
-                    {/* Tanggal & Jam */}
-                    <td className="py-4 px-6 text-gray-600">
-                      <span>{new Date(member.updatedAt).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                      <br />
-                      <span>Jam: {new Date(member.updatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false })} WIB</span>
-                    </td>
+                      {/* Tanggal & Jam */}
+                      <td className="py-4 px-6 text-gray-600">
+                        <span>{new Date(member.updatedAt).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <br />
+                        <span>Jam: {new Date(member.updatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false })} WIB</span>
+                      </td>
 
-                    {/* Status */}
-                    <td className="py-4 px-6">
-                      <span
-                        className={`py-1 px-2 text-center font-semibold rounded-full 
-              ${member.status === 'active' ? 'bg-green-500 text-white' :
-                            member.status === 'pending' ? 'bg-yellow-500 text-white' :
-                              'bg-red-500 text-white'}`}
-                      >
-                        {member.status}
-                      </span>
-                    </td>
+                      {/* Status */}
+                      <td className="py-4 px-6">
+                        <span
+                          className={`py-1 px-2 text-center font-semibold rounded-full 
+                ${member.status === 'active' ? 'bg-green-500 text-white' :
+                              member.status === 'pending' ? 'bg-yellow-500 text-white' :
+                                'bg-red-500 text-white'}`}
+                        >
+                          {member.status}
+                        </span>
+                      </td>
 
-                    {/* Profil Button */}
-                    <td className="py-4 px-6 text-center">
-                      <button
-                        onClick={() => handleProfileClick(member.user.id)}
-                        className="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 transform hover:scale-105"
-                      >
-                        <FaUserAlt className="inline-block mr-2" /> Lihat Profil
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                      {/* Profil Button */}
+                      <td className="py-4 px-6 text-center">
+                        <button
+                          onClick={() => handleProfileClick(member.user.id)}
+                          className="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 transform hover:scale-105"
+                        >
+                          <FaUserAlt className="inline-block mr-2" /> Lihat Profil
+                        </button>
+                      </td>
+                    </tr>
+                  ))
               ) : (
                 <tr>
                   <td colSpan="8" className="py-4 px-4 text-center text-gray-600 font-semibold">Belum ada anggota</td>
                 </tr>
               )}
             </tbody>
-
           </table>
         </div>
 

@@ -85,6 +85,7 @@ const DaftarKelasPopup = ({ onClose, classInfo }) => {
         icon: 'success',
         title: 'Pendaftaran Berhasil!',
         text: response.message || 'Silakan tunggu konfirmasi.',
+        confirmButtonText: 'Ya',
       }).then(() => {
         // After success, navigate to the profile or class page
         navigate(`/profile/pembayaran`);

@@ -4,10 +4,10 @@ import Swal from 'sweetalert2';
 import { FaPlus } from 'react-icons/fa';
 
 const Category = () => {
-    const [categories, setCategories] = useState([]);  
-    const [loading, setLoading] = useState(true);  
-    const [error, setError] = useState(null);  
-    const [isModalOpen, setIsModalOpen] = useState(false);  
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoryData, setCategoryData] = useState({
         name: '',
     });
@@ -46,14 +46,39 @@ const Category = () => {
 
         try {
             await categoryService.createCategory(name);
-            Swal.fire('Category added successfully');
+            Swal.fire({
+                title: 'Kategori Ditambahkan!',
+                text: 'Kategori baru Anda berhasil ditambahkan.',
+                icon: 'success', // Ikon centang hijau
+                confirmButtonText: 'Hebat!',
+                confirmButtonColor: '#3085d6',
+                background: '#f0f8ff', // Latar belakang yang lebih ringan dan ramah
+                showClass: {
+                    popup: 'swal2-animate-success-fade', // Animasi popup muncul dengan efek fade
+                },
+                timer: 1500, // Popup akan otomatis ditutup setelah 1.5 detik
+                position: 'top-center', // Posisi popup di bagian atas tengah
+            });
             setIsModalOpen(false);
             setCategoryData({ name: '' });
             const updatedCategory = await categoryService.getCategory();
             setCategories(updatedCategory);
         } catch (error) {
-            Swal.fire('Gagal menambahkan Kategori', error.message, 'error');
+            Swal.fire({
+                title: 'Gagal Menambahkan Kategori',
+                text: error.message,
+                icon: 'error', // Ikon merah untuk error
+                confirmButtonText: 'Coba Lagi',
+                confirmButtonColor: '#d33',
+                background: '#ffe5e5', // Latar belakang merah muda untuk kesan error
+                showClass: {
+                    popup: 'swal2-animate-error-fade', // Animasi popup error dengan efek fade
+                },
+                timer: 2500, // Popup akan otomatis ditutup setelah 2.5 detik
+                position: 'top-center', // Posisi popup di bagian atas tengah
+            });
         }
+
     };
 
     if (loading) {
@@ -117,15 +142,15 @@ const Category = () => {
             )}
 
             {/* Category Table */}
-            <div className="overflow-x-auto mt-8 shadow-lg bg-white rounded-lg p-4">
-                <table className="min-w-full text-sm text-left text-gray-700 shadow-md bg-white rounded-lg">
-                    <thead className="bg-gradient-to-r from-blue-500 to-blue-700 text-white">
+            <div className="overflow-x-auto mt-8">
+                <table className="min-w-full text-sm text-center text-gray-700 shadow-md bg-white rounded-lg border border-gray-300">
+                    <thead className="bg-gradient-to-r from-blue-500 to-blue-700 text-sm text-white">
                         <tr>
-                            <th className="px-6 py-3 font-semibold">Nomor</th>
-                            <th className="px-6 py-3 font-semibold">Category Name</th>
+                            <th className="px-6 py-3 font-semibold border-r border-white w-12">No</th> {/* Kolom No lebih sempit */}
+                            <th className="px-6 py-3 font-semibold  border-white">Category Name</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='text-sm'>
                         {categories.length === 0 ? (
                             <tr>
                                 <td colSpan="2" className="text-center py-5 text-xl font-semibold text-gray-500">
@@ -134,15 +159,22 @@ const Category = () => {
                             </tr>
                         ) : (
                             categories.map((category, index) => (
-                                <tr key={category.id} className="hover:bg-gray-100">
-                                    <td className="px-6 py-4 font-medium text-gray-700">{index + 1}</td>
-                                    <td className="px-6 py-4 font-medium text-gray-800 capitalize">{category.name}</td>
+                                <tr
+                                    key={category.id}
+                                    className={`hover:bg-gray-100 transition duration-300 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-t border-gray-200`}
+                                >
+                                    <td className="px-6 py-4 font-medium text-gray-700 border-r border-gray-200">{index + 1}</td>
+                                    <td className="px-6 py-4 font-medium text-gray-800 capitalize border-r border-gray-200">{category.name}</td>
                                 </tr>
                             ))
                         )}
                     </tbody>
                 </table>
             </div>
+
+
+
+
         </div>
     );
 };

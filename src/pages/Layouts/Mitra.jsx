@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Footer from '../../components/Footer';
 import HomeMitra from '../Mitra/HomeMitra';
 import MitraNavbar from '../../components/Navbar/MitraNavbar';
 import ProfileMitra from '../Mitra/ProfileMitra';
@@ -14,6 +13,7 @@ import Bank from '../Mitra/Bank';
 import NotFound from '../../components/NotFound';
 
 import paymentService from '../../service/paymentService';
+import AuthFooter from '../../components/AuthFooter';
 
 const Mitra = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -94,7 +94,7 @@ const Mitra = () => {
                 </Routes>
             </div>
             {/* Footer hanya dirender jika bukan halaman NotFound */}
-            {!isNotFoundPage && <Footer />}
+            {!isNotFoundPage && <AuthFooter />}
         </div>
     );
 };

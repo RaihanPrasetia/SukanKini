@@ -6,7 +6,8 @@ import classService from "../../../service/User/classService";
 
 const KelasPelatihan = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [priceSearchTerm, setPriceSearchTerm] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -24,6 +25,7 @@ const KelasPelatihan = () => {
       try {
         const classes = await classService.getAllClasses();
         setClassData(classes);
+        console.log(classes)
       } catch (err) {
         setError(err.message || "Failed to fetch classes.");
       } finally {
@@ -56,12 +58,23 @@ const KelasPelatihan = () => {
 
   // Filter data berdasarkan nama, kategori, dan lokasi
   const filteredClasses = classData.filter((classInfo) => {
-    const matchesSearchTerm = classInfo.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory ? classInfo.category?.name === selectedCategory : true;
-    const matchesLocation = selectedLocation ? classInfo.address === selectedLocation : true;
+    const normalizedSearchTerm = searchTerm.toLowerCase();
 
-    return matchesSearchTerm && matchesCategory && matchesLocation;
+    // Cek apakah harga lebih kecil atau sama dengan yang dimasukkan
+    const isPriceSearch = priceSearchTerm ? classInfo.price <= parseFloat(priceSearchTerm) : true;
+
+    // Pencocokan berdasarkan nama kelas, kategori, lokasi, atau pemilik
+    const matchesSearchTerm =
+      classInfo.name.toLowerCase().includes(normalizedSearchTerm) ||
+      (classInfo.category?.name && classInfo.category.name.toLowerCase().includes(normalizedSearchTerm)) ||
+      (classInfo.address && classInfo.address.toLowerCase().includes(normalizedSearchTerm)) ||
+      (classInfo.owner?.name && classInfo.owner.name.toLowerCase().includes(normalizedSearchTerm));
+
+    return matchesSearchTerm && isPriceSearch &&
+      (selectedCategory ? classInfo.category?.name === selectedCategory : true) &&
+      (selectedLocation ? classInfo.address === selectedLocation : true);
   });
+
 
   return (
     <>
@@ -92,58 +105,80 @@ const KelasPelatihan = () => {
         <div className="flex flex-col md:flex-row items-center justify-between w-full   md:space-y-0">
           <div className="flex space-x-6">
             {/* Dropdown for Categories */}
-            <div className="relative">
-              <select
-                className="border border-gray-300 rounded-full pl-6 pr-10  py-3 bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none cursor-pointer text-gray-600 font-semibold"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="">Semua Kategori </option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-              <span className="absolute top-[18px] right-4 text-gray-500">
-                <FaChevronDown size={16} />
-              </span>
+            <div className="flex flex-col items-center justify-center">
+              <span className="mb-2 text-lg font-semibold">Filter Kategori</span>
+              <div className=" relative flex items-center">
+                <select
+                  className="border border-gray-300 rounded-full pl-6 pr-10  py-3 bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none cursor-pointer text-gray-600 font-semibold"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="">Semua Kategori </option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                <span className="absolute top-[18px] right-4 text-gray-500">
+                  <FaChevronDown size={16} />
+                </span>
+              </div>
             </div>
 
-            {/* Dropdown for Locations */}
-            <div className="relative">
-              <select
-                className="border border-gray-300 rounded-full pl-6 pr-10 py-3 bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none cursor-pointer text-gray-600 font-semibold"
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-              >
-                <option value="">Semua Lokasi</option>
-                {locations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-              <span className="absolute right-4 top-[18px] text-gray-500">
-                <FaChevronDown size={16} />
-              </span>
+            <div className="flex flex-col items-center justify-center">
+              <span className="mb-2 text-lg font-semibold">Filter Lokasi</span>
+              <div className=" relative flex items-center">
+
+                <select
+                  className="border border-gray-300 rounded-full pl-6 pr-10 py-3 bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none cursor-pointer text-gray-600 font-semibold"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                >
+                  <option value="">Semua Lokasi</option>
+                  {locations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
+                <span className="absolute right-4 top-[18px] text-gray-500">
+                  <FaChevronDown size={16} />
+                </span>
+              </div>
             </div>
           </div>
-
-
-          <div className="relative flex items-center w-full md:w-auto">
+          <div className="relative flex flex-col items-center justify-start mt-4 ">
+            <span className="mb-2 text-lg font-semibold">Cari berdasarkan Harga</span>
             <input
-              type="text"
-              placeholder="Cari Kelas..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all"
+              type="number"
+              placeholder="Harga maksimal..."
+              value={priceSearchTerm}
+              onChange={(e) => setPriceSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-full px-4 py-2  focus:outline-none focus:border-green-500 transition-all"
             />
-            {/* Icon Search */}
-            <span className="absolute right-4 text-green-500 hover:text-green-700 cursor-pointer">
-              <FaSearch size={20} />
-            </span>
           </div>
+
+          <div className="relative flex flex-col items-center w-full md:w-auto">
+            <span className="mb-2 text-lg font-semibold">Cari Nama Kelas / Mitra</span>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                placeholder="Cari Kelas ..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all"
+              />
+              {/* Icon Search */}
+              <span className=" absolute right-4 text-green-500 hover:text-green-700 cursor-pointer">
+                <FaSearch size={20} />
+              </span>
+            </div>
+
+
+          </div>
+
+
 
         </div>
 
@@ -156,40 +191,34 @@ const KelasPelatihan = () => {
             {filteredClasses.map((classInfo) => (
               <div
                 key={classInfo.id}
-                className="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 overflow-hidden"
+                className="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-transform transform overflow-hidden flex flex-col"
               >
                 {/* Class Image */}
                 <div className="relative items-center justify-center flex">
-                  {/* Image with dark overlay */}
                   <div className="absolute inset-0 bg-black opacity-30 rounded-lg"></div>
                   <img
                     src={`/images/kelas/${classInfo.imagePath}`}
                     alt={classInfo.name}
                     className="w-full h-48 object-cover rounded-lg"
                   />
-
-                  {/* Owner Name Overlay */}
                   <h2 className="text-3xl absolute text-white font-bold">{classInfo.owner.name}</h2>
-
-                  {/* Gradient Details Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-transparent to-transparent text-white p-3">
                     <h2 className="text-lg font-semibold truncate">{classInfo.name}</h2>
                     <p className="text-sm">{classInfo.trainer.name}</p>
                   </div>
                 </div>
 
-
                 {/* Class Details */}
-                <div className="p-6 space-y-4">
+                <div className="p-6 flex flex-col flex-grow">
                   {/* Location */}
-                  <p className="text-gray-600 text-sm flex items-center">
+                  <p className="text-gray-600 text-sm flex items-center mb-2">
                     <span className="material-icons text-green-500 mr-2">Alamat di</span>
                     {classInfo.address}
                   </p>
 
                   {/* Schedule */}
                   {classInfo.schedules && classInfo.schedules.length > 0 && (
-                    <div>
+                    <div className="mb-4">
                       <h5 className="font-semibold text-gray-800 text-lg mb-2">Jadwal Kelas:</h5>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                         {classInfo.schedules.map((schedule, idx) => {
@@ -210,32 +239,13 @@ const KelasPelatihan = () => {
                   )}
 
                   {/* Price */}
-                  <p className="text-green-700 font-bold text-xl">
+                  <p className="text-green-700 font-bold text-xl mb-4">
                     Harga: Rp {classInfo.price.toLocaleString()}
                   </p>
 
-                  {/* Benefits */}
-                  {classInfo.benefits && classInfo.benefits.length > 0 && (
-                    <div>
-                      <h5 className="font-semibold text-gray-800 text-lg mb-2">Manfaat Kelas:</h5>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {classInfo.benefits.map((benefit, index) => (
-                          <div
-                            key={benefit.id}
-                            className="p-4 bg-gray-50 rounded-lg shadow-md hover:shadow-lg"
-                          >
-                            <h6 className="font-semibold text-green-600 text-base">
-                              {index + 1}. {benefit.name}
-                            </h6>
-                            <p className="text-gray-700 text-sm">{benefit.description}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Action Buttons */}
-                  <div className="flex justify-between items-center mt-4 space-x-4">
+                  <div className="mt-auto flex justify-between items-center space-x-4">
                     <Link to={`/kelas/${classInfo.id}`}>
                       <button className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
                         Lihat Kelas
@@ -252,6 +262,7 @@ const KelasPelatihan = () => {
               </div>
             ))}
           </div>
+
         )}
 
         {isPopupOpen && <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />}
