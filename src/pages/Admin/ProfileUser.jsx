@@ -16,7 +16,7 @@ export default function ProfilUser() {
       try {
         const userData = await adminUserService.getAdminDataUser();
         setUserData(userData);
-        console.log(userData) // Assign fetched data to userData state
+        console.log(userData); // Assign fetched data to userData state
       } catch (error) {
         Swal.fire({
           title: 'Error',
@@ -72,44 +72,53 @@ export default function ProfilUser() {
         </div>
       </div>
 
+      {/* Loading Indicator */}
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full border-4 border-t-4 border-indigo-500 w-16 h-16"></div>
+        </div>
+      )}
+
       {/* Tabel User */}
-      <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-indigo-500 text-white">
-              <th className="p-4">No</th>
-              <th className="p-4">Nama User</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">No. Telepon</th>
-              <th className="p-4">Alamat</th>
-              <th className="p-4">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMitra.map((user, index) => (
-              <tr key={user.id}
-                className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                  } hover:bg-gray-200`}>
-                <td className="p-4">{index + 1}</td>
-                <td className="p-4">{user.name}</td>
-                <td className="p-4">{user.email}</td>
-                <td className="p-4">{user.phone_number || 'Nomor tidak tersedia'}</td>
-                <td className="p-4">{user.kota}, {user.alamat}</td>
-                <td className="p-4">
-                  <button
-                    onClick={() => handleView(user.id)}
-                    className="bg-indigo-500 text-white px-3 py-1 rounded-lg shadow hover:bg-indigo-600 transition duration-300"
-                  >
-                    <span>
-                      <FaEye />
-                    </span>
-                  </button>
-                </td>
+      {!loading && (
+        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-indigo-500 text-white">
+                <th className="p-4">No</th>
+                <th className="p-4">Nama User</th>
+                <th className="p-4">Email</th>
+                <th className="p-4">No. Telepon</th>
+                <th className="p-4">Alamat</th>
+                <th className="p-4">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredMitra.map((user, index) => (
+                <tr key={user.id}
+                  className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                    } hover:bg-gray-200`}>
+                  <td className="p-4">{index + 1}</td>
+                  <td className="p-4">{user.name}</td>
+                  <td className="p-4">{user.email}</td>
+                  <td className="p-4">{user.phone_number || 'Nomor tidak tersedia'}</td>
+                  <td className="p-4">{user.kota}, {user.alamat}</td>
+                  <td className="p-4">
+                    <button
+                      onClick={() => handleView(user.id)}
+                      className="bg-indigo-500 text-white px-3 py-1 rounded-lg shadow hover:bg-indigo-600 transition duration-300"
+                    >
+                      <span>
+                        <FaEye />
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {selectedUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -126,7 +135,7 @@ export default function ProfilUser() {
                 <strong>Foto Profil</strong>
                 {/* Cek apakah gambar ada, jika tidak tampilkan gambar default */}
                 <img
-                  src={selectedUser.image_path ? `/images/${selectedUser.image_path}` : '/images/default-profile.png'}
+                  src={selectedUser.image_path ? `/images/profile/${selectedUser.image_path}` : '/images/default-profile.png'}
                   alt="Foto Profil"
                   className="w-32 h-32 object-cover rounded-full"
                 />
@@ -139,7 +148,6 @@ export default function ProfilUser() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

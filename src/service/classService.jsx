@@ -46,13 +46,14 @@ const getClassNow = async () => {
     }
 }
 
-const createClass = async ({ name, category_id, alamat, schedules, trainer_id, image_path, price }) => {
+const createClass = async ({ name, category_id, alamat, schedules, benefits, trainer_id, image_path, price }) => {
     try {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("category_id", category_id); // Perbaikan typo
         formData.append("alamat", alamat);
         formData.append("schedules", JSON.stringify(schedules)); // Pastikan schedules dalam bentuk string JSON
+        formData.append("benefits", JSON.stringify(benefits)); // Pastikan schedules dalam bentuk string JSON
         formData.append("trainer_id", trainer_id);
         if (image_path) {
             formData.append("image_path", image_path); // Tambahkan hanya jika ada file

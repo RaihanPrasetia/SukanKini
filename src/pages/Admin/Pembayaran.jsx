@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaEye, FaSearch } from 'react-icons/fa';
 import adminPaymentService from "../../service/admin/adminPaymentService";
 import Swal from "sweetalert2";
+import { AiOutlineClose } from 'react-icons/ai';
 
 const PembayaranAdmin = () => {
   const [payments, setPayments] = useState([]);
@@ -60,6 +61,8 @@ const PembayaranAdmin = () => {
         )
       );
       Swal.fire("Berhasil", "Pembayaran diterima.", "success");
+      handleClose()
+
     } catch (error) {
       Swal.fire("Error", "Gagal menyetujui pembayaran.", "error");
     } finally {
@@ -82,6 +85,7 @@ const PembayaranAdmin = () => {
         )
       );
       Swal.fire("Berhasil", "Pembayaran ditolak.", "success");
+      handleClose()
     } catch (error) {
       Swal.fire("Error", "Gagal menolak pembayaran.", "error");
     } finally {
@@ -120,8 +124,8 @@ const PembayaranAdmin = () => {
   const options = [
     { value: "", label: "Semua Status", hoverClass: "hover:bg-gray-200" },
     { value: "Diterima", label: "Diterima", hoverClass: "hover:bg-green-500 hover:text-white" },
-    { value: "Ditolak", label: "Ditolak", hoverClass: "hover:bg-red-500 hover:text-white" },
-    { value: "Diproses", label: "Diproses", hoverClass: "hover:bg-yellow-500 hover:text-black" },
+    { value: "Ditolak", label: "Ditolak", hoverClass: "hover:bg-red-500  hover:text-white" },
+    { value: "Diproses", label: "Diproses", hoverClass: "hover:bg-yellow-500  hover:text-white" },
   ];
 
 
@@ -188,6 +192,7 @@ const PembayaranAdmin = () => {
                   <th className="border-b p-4">Nama</th>
                   <th className="border-b p-4">Email</th>
                   <th className="border-b p-4">No Telepon</th>
+                  <th className="border-b p-4">Total</th>
                   <th className="border-b p-4">Status</th>
                   <th className="border-b p-4 text-center">Aksi</th>
                 </tr>
@@ -201,11 +206,15 @@ const PembayaranAdmin = () => {
                     <td className="border-b px-4 py-4">{item.nama}</td>
                     <td className="border-b px-4 py-4">{item.email}</td>
                     <td className="border-b px-4 py-4">{item.noTelepon}</td>
+                    <td className="border-b px-4 py-4">{new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(item.total)}</td>
                     <td className="border-b px-4 py-4">
                       <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold 
                         ${item.status === 'Diterima' ? 'bg-green-500 text-white' :
                           item.status === 'Ditolak' ? 'bg-red-500 text-white' :
-                            item.status === 'Diproses' ? 'bg-yellow-500 text-black' : ''}`}>
+                            item.status === 'Diproses' ? 'bg-yellow-500 text-white' : ''}`}>
                         {item.status}
                       </span>
                     </td>
@@ -256,7 +265,10 @@ const PembayaranAdmin = () => {
           <div className="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-semibold text-indigo-600">Detail Pembayaran</h2>
-              <button onClick={handleClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+              <button onClick={handleClose}
+                className=" text-red-500 bg-red-200 p-3 rounded-full shadow-lg hover:bg-gray-200 hover:rotate-45 hover:scale-110 transition-all focus:outline-none">
+                <AiOutlineClose size={18} />
+              </button>
             </div>
 
             <div className="space-y-4">

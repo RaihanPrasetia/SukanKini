@@ -3,6 +3,8 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../../../components/Navbar/Sidebar';
 import { getUserProfile, editUserProfile } from "../../../controllers/userController";
 import { FaPencilAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -55,16 +57,39 @@ const Profile = () => {
   };
 
   const handleUpdateAccount = async () => {
-    try {
-      const userId = user.id;
+    const confirmUpdate = await Swal.fire({
+      title: "Konfirmasi Pembaruan",
+      text: "Apakah Anda yakin ingin memperbaharui informasi akun?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, perbaharui!",
+      cancelButtonText: "Batal",
+    });
+    if (confirmUpdate.isConfirmed) {
+      try {
+        const userId = user.id;
 
-      const updatedUser = await editUserProfile(userId, image, name, age, weight, height, phone_number, gender, kota, alamat);
-      setUser(updatedUser);
-      alert("Profile updated successfully!");
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-      alert("Failed to update profile. Please try again.");
+        const updatedUser = await editUserProfile(userId, image, name, age, weight, height, phone_number, gender, kota, alamat);
+        setUser(updatedUser);
+
+        await Swal.fire({
+          title: "Berhasil!",
+          text: "Akun Anda berhasil diperbaharui.",
+          icon: "success",
+          confirmButtonText: "Oke",
+        });
+
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Failed to update account:", error);
+
+        await Swal.fire({
+          title: "Gagal!",
+          text: "Pembaruan akun gagal. Silakan coba lagi.",
+          icon: "error",
+          confirmButtonText: "Oke",
+        });
+      }
     }
   };
 
@@ -89,7 +114,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full flex flex-col md:flex-row py-6 space-y-7 md:space-y-0 md:space-x-4 pt-20">
+    <div className="w-full flex flex-col md:flex-row min-h-[100vh] py-6 space-y-7 md:space-y-0 md:space-x-4 px-6 pt-20">
       <Sidebar className="w-full md:w-1/4 lg:w-1/5" />
       <div className="flex flex-col space-y-4 w-full md:w-3/4 lg:w-4/5">
         {/* Profile Card */}

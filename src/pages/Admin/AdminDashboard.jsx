@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaUsers, FaChalkboardTeacher, FaUsersCog, FaMoneyBillWave, FaVideo } from 'react-icons/fa';
+import { FaUsers, FaChalkboardTeacher, FaMoneyBillWave, FaVideo } from 'react-icons/fa';
 import adminDashboardService from '../../service/admin/adminDashboard';
 import Swal from 'sweetalert2';
 

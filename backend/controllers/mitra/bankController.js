@@ -52,9 +52,6 @@ const getUserBanks = async (req, res) => {
             where: { createdBy: userId },
         });
 
-        if (!banks || banks.length === 0) {
-            return res.status(404).json({ message: 'No banks found for this user.' });
-        }
 
         res.status(200).json({ banks });
     } catch (error) {

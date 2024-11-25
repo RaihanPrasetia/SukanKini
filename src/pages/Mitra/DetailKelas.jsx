@@ -52,34 +52,32 @@ const DetailKelas = () => {
 
           {/* Kelas Data */}
           <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-4">
-            <div className="bg-[#E8BCB9] p-6 rounded-2xl shadow-xl w-full max-w-xl">
-              <h3 className="text-3xl font-semibold text-center text-white mb-6">Data Kelas</h3>
+            <div className="bg-gradient-to-r from-[#E8BCB9] to-[#F4D0D1] p-8 rounded-2xl shadow-xl w-full max-w-xl mx-auto">
+              <h3 className="text-3xl font-semibold text-center text-indigo-600 mb-6">Data Kelas</h3>
 
               {/* Kategori */}
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-gray-800 mb-4">
                 <span className="font-semibold text-indigo-600">Kategori:</span> {kelas.category.name}
               </p>
 
               {/* Harga */}
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-gray-800 mb-4">
                 <span className="font-semibold text-indigo-600">Harga:</span> Rp {kelas.price.toLocaleString()}
               </p>
 
               {/* Alamat */}
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-gray-800 mb-6">
                 <span className="font-semibold text-indigo-600">Alamat:</span> {kelas.address}
               </p>
 
               {/* Jadwal */}
               <div className="mt-6">
-                <p className="text-lg font-medium text-gray-700 mb-2">Jadwal:</p>
+                <p className="text-lg font-medium text-gray-800 mb-4">Jadwal:</p>
                 <ul className="list-none space-y-4">
                   {kelas.schedules.map((schedule, index) => {
-                    // Format waktu menjadi 15:40
                     const formattedTime = schedule.jam.split(':').slice(0, 2).join(':');
                     return (
-                      <li key={index}
-                        className="flex justify-between items-center px-4 py-2 bg-[#F4D0D1] rounded-lg">
+                      <li key={index} className="flex justify-between items-center px-4 py-3 bg-[#F9E2E6] rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
                         <span className="text-gray-800 font-medium">{schedule.hari}</span>
                         <span className="text-indigo-600 font-semibold">{formattedTime}</span>
                       </li>
@@ -87,7 +85,23 @@ const DetailKelas = () => {
                   })}
                 </ul>
               </div>
+
+              {/* Benefits */}
+              <div className="mt-6 w-full">
+                <p className="text-lg font-medium text-gray-800 mb-4">Benefit:</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+                  {kelas.benefits.map((benefit, index) => {
+                    return (
+                      <div key={index} className="w-full px-6 py-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h1 className="text-indigo-600 font-semibold text-lg mb-2">{index + 1}. {benefit.name}</h1>
+                        <p className="text-gray-700">{benefit.description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
+
           </div>
 
 

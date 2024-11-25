@@ -6,13 +6,12 @@ import {
   MdAttachMoney,
   MdVideocam,
   MdHourglassEmpty,
-  MdCheckCircle
+  MdCheckCircle,
+  MdCancel
 } from "react-icons/md";
 import classService from '../../service/classService';
 import countService from '../../service/countService';
 import Swal from 'sweetalert2';
-
-
 
 export default function HomeMitra({ sidebarOpen }) {
   const [classNowData, setClassNowData] = useState(null);
@@ -26,7 +25,7 @@ export default function HomeMitra({ sidebarOpen }) {
         const classData = await classService.getClassNow();
         setClassNowData(classData);
         const countData = await countService.getCountData();
-        setNewCountData(countData)
+        setNewCountData(countData);
         console.log(countData);
         console.log(classData) // Update state with new class data
       } catch (error) {
@@ -61,6 +60,7 @@ export default function HomeMitra({ sidebarOpen }) {
 
     return 'bg-red-600';
   };
+
   return (
     <div className={`flex flex-col bg-gray-100 items-start justify-start px-4 sm:p-16 py-24 lg:pt-32 transition-all
     duration-300 ${sidebarOpen ? "ml-64" : "ml-0"}`}>
@@ -144,7 +144,7 @@ export default function HomeMitra({ sidebarOpen }) {
                   </div>
                 </div>
                 <div className="flex items-center space-x-4 bg-red-500 text-white p-4 rounded-lg shadow-md w-full">
-                  <MdCheckCircle className="text-white text-3xl" />
+                  <MdCancel className="text-white text-3xl" />
                   <div className="flex flex-col">
                     <span className="font-medium text-lg">Ditolak</span>
                     <div className="flex items-center space-x-2 mt-1">
@@ -163,7 +163,9 @@ export default function HomeMitra({ sidebarOpen }) {
         <div className="w-full sm:w-1/3 lg:w-1/4 p-8 rounded-2xl bg-gray-800 text-white mt-8 shadow-xl">
           <h2 className="text-2xl font-semibold mb-6 text-center">Kelas yang Sedang Berjalan Hari Ini</h2>
           <div className="flex flex-col space-y-6">
-            {classNowData && classNowData.length > 0 ? (
+            {loading ? (
+              <div className="text-center text-white">Loading...</div>
+            ) : classNowData && classNowData.length > 0 ? (
               classNowData.map((classItem) => (
                 <div
                   key={classItem.id}

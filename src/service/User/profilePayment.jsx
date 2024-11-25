@@ -17,8 +17,6 @@ const getUserPayments = async () => {
         if (response.data && Array.isArray(response.data.payments)) {
             // Map response data to Membership instances
             return response.data.payments.map((payment) => new Payment(payment));
-        } else {
-            throw new Error("No Payment data found in the response.");
         }
     } catch (error) {
         // Handle specific error response if available

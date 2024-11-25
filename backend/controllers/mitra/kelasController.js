@@ -1,4 +1,4 @@
-const { Class, User, Category, Trainer, ClassSchedule, Memberships } = require('../../associations');
+const { Class, User, Category, Trainer, ClassSchedule, Memberships, Benefit } = require('../../associations');
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
@@ -29,6 +29,12 @@ const getUserClasses = async (req, res) => {
                     model: ClassSchedule,
                     as: 'schedules',  // Use the alias defined in the association
                     attributes: ['id', 'hari', 'jam']
+                },
+                {
+                    model: Benefit,
+                    as: 'benefits',
+                    attributes: ['id', 'name', 'description']
+
                 },
                 {
                     model: Memberships,
@@ -79,6 +85,12 @@ const getClassById = async (req, res) => {
                     attributes: ['id', 'hari', 'jam']
                 },
                 {
+                    model: Benefit,
+                    as: 'benefits',
+                    attributes: ['id', 'name', 'description']
+
+                },
+                {
                     model: Memberships,
                     as: 'members',
                     attributes: ['id', 'user_id', 'class_id', 'status', 'createdAt', 'updatedAt'],
@@ -114,6 +126,7 @@ const createClass = async (req, res) => {
         const userId = req.userId; // User ID from JWT
         const { name, alamat, category_id, trainer_id, price } = req.body;
         const schedules = req.body.schedules ? JSON.parse(req.body.schedules) : []; // Parse schedules
+        const benefits = req.body.benefits ? JSON.parse(req.body.benefits) : []; // Parse schedules
         const imagePath = req.file ? `${req.file.filename}` : null;
 
         // Validate required fields
@@ -145,6 +158,16 @@ const createClass = async (req, res) => {
                     class_id: newClass.id,
                     hari: schedule.hari,
                     jam: schedule.jam,
+                    createdBy: userId,
+                });
+            }));
+        }
+        if (benefits && benefits.length > 0) {
+            await Promise.all(benefits.map(benefit => {
+                return Benefit.create({
+                    class_id: newClass.id,
+                    name: benefit.name,
+                    description: benefit.description,
                     createdBy: userId,
                 });
             }));

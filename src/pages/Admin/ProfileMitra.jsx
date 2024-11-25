@@ -71,51 +71,57 @@ export default function ProfilMitra() {
           <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
         </div>
       </div>
-
-      {/* Tabel Mitra */}
-      <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-indigo-500 text-white">
-              <th className="p-4">No</th>
-              <th className="p-4">Nama Mitra</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">No. Telepon</th>
-              <th className="p-4">Alamat</th>
-              <th className="p-4">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMitra.map((mitra, index) => (
-              <tr key={mitra.id}
-                className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                  } hover:bg-gray-200`}>
-                <td className="p-4">{index + 1}</td>
-                <td className="p-4">{mitra.name}</td>
-                <td className="p-4">{mitra.email}</td>
-                <td className="p-4">
-                  {mitra.phone_number ? (
-                    mitra.phone_number
-                  ) : (
-                    <span className="text-red-500">Nomor tidak tersedia</span>
-                  )}
-                </td>
-                <td className="p-4">{mitra.kota}, {mitra.alamat}</td>
-                <td className="p-4">
-                  <button
-                    onClick={() => handleView(mitra.id)}
-                    className="bg-indigo-500 text-white px-3 py-1 rounded-lg shadow hover:bg-indigo-600 transition duration-300"
-                  >
-                    <span>
-                      <FaEye />
-                    </span>
-                  </button>
-                </td>
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full border-4 border-t-4 border-indigo-500 w-16 h-16"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-indigo-500 text-white">
+                <th className="p-4">No</th>
+                <th className="p-4">Nama Mitra</th>
+                <th className="p-4">Email</th>
+                <th className="p-4">No. Telepon</th>
+                <th className="p-4">Alamat</th>
+                <th className="p-4">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredMitra.map((mitra, index) => (
+                <tr key={mitra.id}
+                  className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                    } hover:bg-gray-200`}>
+                  <td className="p-4">{index + 1}</td>
+                  <td className="p-4">{mitra.name}</td>
+                  <td className="p-4">{mitra.email}</td>
+                  <td className="p-4">
+                    {mitra.phone_number ? (
+                      mitra.phone_number
+                    ) : (
+                      <span className="text-red-500">Nomor tidak tersedia</span>
+                    )}
+                  </td>
+                  <td className="p-4">{mitra.kota}, {mitra.alamat}</td>
+                  <td className="p-4">
+                    <button
+                      onClick={() => handleView(mitra.id)}
+                      className="bg-indigo-500 text-white px-3 py-1 rounded-lg shadow hover:bg-indigo-600 transition duration-300"
+                    >
+                      <span>
+                        <FaEye />
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
 
       {selectedMitra && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -132,7 +138,7 @@ export default function ProfilMitra() {
                 <strong>Foto Profil</strong>
                 {/* Cek apakah gambar ada, jika tidak tampilkan gambar default */}
                 <img
-                  src={selectedMitra.image_path ? `/images/${selectedMitra.image_path}` : '/images/default-profile.png'}
+                  src={selectedMitra.image_path ? `/images/profile/${selectedMitra.image_path}` : '/images/default-profile.png'}
                   alt="Foto Profil"
                   className="w-32 h-32 object-cover rounded-full"
                 />

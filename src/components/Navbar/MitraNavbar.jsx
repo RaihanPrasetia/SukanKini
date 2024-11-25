@@ -23,7 +23,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
         const fetchUserData = async () => {
             try {
                 const data = await getUserProfile();
-                setUserData(data.image_path); // Assuming 'data' contains the necessary fields (name, image_path, etc.)
+                setUserData(data); // Assuming 'data' contains the necessary fields (name, image_path, etc.)
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -60,7 +60,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
     };
 
     return (
-        <div className="flex fixed top-0 w-full">
+        <div className="flex fixed top-0 w-full z-50">
             {/* Sidebar */}
             <div
                 className={`fixed top-0 left-0 h-full w-64 bg-green-600 p-2 text-white transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} z-50`}
@@ -70,7 +70,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                         <span className="text-yellow-300">Sukan</span>Kini
                     </Link>
                 </div>
-                <ul className="mt-4 text-center space-y-5">
+                <ul className="mt-4 text-center space-y-5 font-semibold">
                     <li className={`py-2 rounded-lg cursor-pointer ${isActive('/mitra/home')}`}>
                         <Link onClick={handleMenuClick} to="/mitra/home">Home</Link>
                     </li>
@@ -125,7 +125,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                     <div className="relative flex items-center profile-dropdown" onClick={() => setDropdownOpen(!dropdownOpen)}>
                         <div className="flex items-center text-lg hover:text-green-600 transition duration-300 space-x-2 cursor-pointer">
                             <img
-                                src={`/images/profile/${userData}`}
+                                src={`/images/profile/${userData.image_path}`}
                                 alt="Profile"
                                 className="h-12 w-12 rounded-full"
                             />

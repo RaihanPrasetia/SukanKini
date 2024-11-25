@@ -6,7 +6,7 @@ const apiKey = process.env.REACT_APP_API_KEY;
 
 const getAdminClasses = async () => {
     try {
-        const response = await axios.get(`${apiUrl}/mitra/class`, {
+        const response = await axios.get(`${apiUrl}/admin/class`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
                 api_key: apiKey,
