@@ -15,7 +15,8 @@ const Footer = () => {
                     <p className="text-sm text-gray-400">Tau yang terbaik untuk hidup sehat Anda.</p>
                 </div>
 
-                {/* Links Section */}
+
+
                 <div className="space-y-6 flex flex-col items-center sm:items-start">
                     <h3 className="text-lg font-semibold text-green-500">Dapatkan Latihan</h3>
                     <ul className="space-y-3">
