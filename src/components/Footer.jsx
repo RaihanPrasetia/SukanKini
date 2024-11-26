@@ -9,13 +9,11 @@ const Footer = () => {
         <footer className="bg-gray-900 text-white py-16 lg:px-20 px-6">
             <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-12 text-center sm:text-left">
 
-                {/* Logo and Slogan */}
                 <div className="flex flex-col items-center sm:items-start space-y-3">
                     <img src={logo} alt="SukanKini FitLife Logo" className="w-40 h-32 object-cover " />
                     <p className="text-sm text-gray-400">Tau yang terbaik untuk hidup sehat Anda.</p>
                 </div>
 
-                {/* Links Section */}
                 <div className="space-y-6 flex flex-col items-center sm:items-start">
                     <h3 className="text-lg font-semibold text-green-500">Dapatkan Latihan</h3>
                     <ul className="space-y-3">
@@ -56,7 +54,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Customer Service */}
                 <div className="md:col-span-2 lg:col-span-2 space-y-6 text-center sm:text-left">
                     <h3 className="text-lg font-semibold">Layanan Pengaduan Konsumen</h3>
                     <p className="text-sm text-gray-400">
@@ -70,7 +67,6 @@ const Footer = () => {
                     </p>
                 </div>
 
-                {/* Operational Hours */}
                 <div className="space-y-6 flex flex-col lg:col-span-2 items-center sm:items-start">
                     <h3 className="text-lg font-semibold">Jam Operasional</h3>
                     <p className="text-sm text-gray-400">
@@ -95,7 +91,6 @@ const Footer = () => {
 
             </div>
 
-            {/* Copyright */}
             <div className="text-center mt-12 text-sm text-gray-500">
                 © {new Date().getFullYear()} PT. Gajah Mada Properti. All Rights Reserved.
             </div>
