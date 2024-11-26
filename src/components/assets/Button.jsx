@@ -7,15 +7,15 @@ export default function Button({ title, icon, link, onClick, type, className }) 
     const ButtonContent = (
         <div className="flex items-center space-x-2">
             {icon && <span className="text-lg"><FontAwesomeIcon icon={icon} /></span>} {/* Render the icon */}
-            <span>{title}</span>
+            <span className='text-center'>{title}</span>
         </div>
     );
 
     // Base styles for the button
     const baseStyles =
-        "flex items-center space-x-2 bg-green-500 text-white px-6 text-lg font-semibold py-2 rounded-lg transition duration-300";
+        "flex items-center space-x-2 bg-green-500 text-white text-center px-6 text-lg font-semibold py-2 rounded-lg transition duration-300";
     const hoverStyles =
-        "hover:bg-white hover:shadow-lg  hover:text-green-500";
+        "hover:bg-white hover:shadow-lg  ";
     const buttonStyles = `${baseStyles} ${hoverStyles} ${className || ''}`;
 
     return link ? (

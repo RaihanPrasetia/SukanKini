@@ -24,6 +24,26 @@ export const login = async (email, password) => {
     };
 };
 
+export const loginWithGoogle = async (tokenId) => {
+    try {
+        const response = await fetch('http://localhost:9000/auth/google/callback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api_key': apiKey,
+            },
+            body: JSON.stringify({ tokenId })
+        });
+
+        if (!response.ok) throw new Error('Google login failed');
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
 
 // Assuming you're using an API to check email availability
 export const checkEmailAvailability = async (email) => {

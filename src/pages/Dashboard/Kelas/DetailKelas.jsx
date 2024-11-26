@@ -44,10 +44,19 @@ const DetailKelas = () => {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-100">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-red-500">{error}</h2>
+          <h1 className="text-6xl font-bold text-red-600 mb-4">404</h1>
+          <h2 className="text-3xl font-semibold text-gray-700 mb-4">
+            Oops! Halaman Tidak Ditemukan
+          </h2>
+          <p className="text-lg text-gray-500 mb-6">
+            Kami tidak dapat menemukan halaman yang Anda cari. Mungkin alamatnya salah atau halaman sudah dihapus.
+          </p>
+
+
+          {/* Button to go back */}
           <button
             onClick={() => navigate('/kelas')}
-            className="mt-4 bg-gray-500 text-white px-6 py-2 rounded-lg text-lg font-semibold shadow hover:bg-yellow-600 transition"
+            className="mt-4 bg-red-600 text-white px-8 py-3 rounded-lg text-lg font-semibold shadow-lg hover:bg-red-500 transition duration-300"
           >
             Kembali ke Daftar Kelas
           </button>
@@ -108,7 +117,7 @@ const DetailKelas = () => {
 
           {/* Details Section */}
           <div className="w-full md:w-1/2">
-            <h2 className="text-2xl md:text-3xl font-bold text-green-500">{classInfo?.owner?.name}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-green-500 capitalize">{classInfo?.owner?.name}</h2>
             <h2 className="text-xl md:text-2xl font-bold text-gray-500">{classInfo?.name} - {classInfo?.category?.name}</h2>
 
             <div className="mt-2">

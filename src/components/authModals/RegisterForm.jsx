@@ -140,7 +140,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
                         </div>
 
                         <div className="flex items-center justify-center">
-                            <Button title="Daftar" type="submit" />
+                            <Button title="Daftar" type="submit" className='hover:text-green-500' />
                         </div>
                     </form>
 
@@ -150,7 +150,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
                         <div className="flex-1 border-t border-green-500"></div>
                     </div>
                     <div className="flex items-center justify-center mb-4">
-                        <Button title="Google" icon={faGoogle} />
+                        <Button title="Google" icon={faGoogle} className='hover:text-green-500' />
                     </div>
 
                     <p className="text-sm text-right font-medium text-gray-600">

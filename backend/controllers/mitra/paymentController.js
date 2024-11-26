@@ -159,7 +159,7 @@ const createPayment = async (req, res) => {
             return res.status(400).json({ message: 'Bank ID dan jumlah total pembayaran diperlukan.' });
         }
 
-        // Validasi bank
+
         const bankData = await Bank.findOne({ where: { id: bank_id } });
         if (!bankData) {
             return res.status(404).json({ message: 'Bank yang dipilih tidak ditemukan.' });

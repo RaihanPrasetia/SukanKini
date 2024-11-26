@@ -122,7 +122,7 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row md:justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-4">
               <img
-                src={user.image_path ? `/images/profile/${user.image_path}` : "https://via.placeholder.com/150"}
+                src={user.image_path ? `/images/profile/${user.image_path}` : "/default_profile.jpg"}
                 alt="Profile"
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-yellow-500"
               />
@@ -181,7 +181,7 @@ const Profile = () => {
             <div className="flex items-center justify-center my-2">
               <div className="relative">
                 <img
-                  src={isEditing && imagePreview ? imagePreview : `/images/profile/${user.image_path}`} // Preview or default image
+                  src={isEditing && imagePreview ? imagePreview : user.image_path ? `/images/profile/${user.image_path}` : `/default_profile.jpg`} // Preview or default image
                   alt="Profile"
                   className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-yellow-500"
                 />
