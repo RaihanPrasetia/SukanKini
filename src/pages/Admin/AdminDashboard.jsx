@@ -13,7 +13,6 @@ export default function AdminDashboard() {
       try {
         const data = await adminDashboardService.getDashboardCount();
         setCountData(data);
-        console.log(data);
       } catch (error) {
         Swal.fire({
           title: 'Upss!!!',

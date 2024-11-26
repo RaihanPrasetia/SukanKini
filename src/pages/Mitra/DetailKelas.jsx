@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import classService from '../../service/classService'; // Import the service function
-import { FaUserAlt, FaCity } from 'react-icons/fa'; // Icons for profile
+import { FaUserAlt, FaCity, FaHome } from 'react-icons/fa'; // Icons for profile
 
 const DetailKelas = () => {
   const { id } = useParams(); // Get the class ID from the URL
   const navigate = useNavigate(); // For navigation
 
-  const [kelas, setKelas] = useState(null); // State to store the class details
+  const [kelas, setKelas] = useState(null);
+  const [notFound, setNotFound] = useState(false);// State to store the class details
 
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
-        const classData = await classService.getClassById(id); // Fetch class data using the service function
-        setKelas(classData);
-        console.log(classData)
+        const classData = await classService.getClassById(id);
+        if (classData) {
+          setKelas(classData);
+        } else {
+          setNotFound(true); // Trigger 404 state
+        }
       } catch (error) {
         console.error('Error fetching class details:', error);
+        setNotFound(true); // Trigger 404 state if there's an error
       }
     };
 
@@ -27,6 +32,25 @@ const DetailKelas = () => {
     // Navigate to member's profile page
     navigate(`/mitra/profile/${memberId}`);
   };
+
+  if (notFound) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="text-center">
+          <h1 className="text-6xl font-bold text-green-600">404</h1>
+          <p className="text-2xl mt-4 text-gray-700">Kelas Tidak Ditemukan</p>
+          <p className="text-md mt-2 text-gray-500">Maaf, kelas yang Anda cari tidak tersedia atau telah dihapus.</p>
+          <button
+            onClick={() => navigate('/mitra/kelas')}
+            className="mt-6 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-all"
+          >
+            <FaHome className="inline-block mr-2" />
+            Kembali ke Daftar Kelas
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!kelas) {
     return (

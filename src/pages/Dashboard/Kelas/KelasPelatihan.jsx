@@ -25,7 +25,6 @@ const KelasPelatihan = () => {
       try {
         const classes = await classService.getAllClasses();
         setClassData(classes);
-        console.log(classes)
       } catch (err) {
         setError(err.message || "Failed to fetch classes.");
       } finally {

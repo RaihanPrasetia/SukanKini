@@ -127,11 +127,11 @@ const Bank = () => {
         <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[80vh]">
             <div className="flex flex-col lg:flex-row justify-between mb-5">
                 <h2 className="text-3xl font-semibold mb-4 lg:mb-0">Bank List</h2>
-                <button className="flex items-center bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600"
+                <button className="flex items-center  bg-gradient-to-r from-green-400 to-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-600"
                     onClick={() => setIsModalOpen(true)}
                 >
                     <FaPlus className="mr-2" />
-                    Add Bank
+                    Tambah Bank
                 </button>
             </div>
 
@@ -150,50 +150,57 @@ const Bank = () => {
             )}
 
             {/* Bank List Table */}
-            <table className="min-w-full text-sm text-left text-gray-700 shadow-lg rounded-lg overflow-hidden">
-                <thead className="bg-gradient-to-r from-blue-500 to-blue-700 text-white">
-                    <tr>
-                        <th className="px-6 py-3 font-semibold text-sm tracking-wide">No</th>
-                        <th className="px-6 py-3 font-semibold text-sm tracking-wide">Bank Name</th>
-                        <th className="px-6 py-3 font-semibold text-sm tracking-wide">Account Number</th>
-                        <th className="px-6 py-3 font-semibold text-sm tracking-wide">Account Holder</th>
-                        <th className="px-6 py-3 font-semibold text-sm tracking-wide">Actions</th>
-                    </tr>
-                </thead>
-                <tbody className="bg-white">
-                    {banks.length === 0 ? (
-                        <tr>
-                            <td colSpan="5" className="text-center py-5 text-xl font-semibold text-gray-500">
-                                No bank data available
-                            </td>
-                        </tr>
-                    ) : (
-                        banks.map((bank, index) => (
-                            <tr key={bank.id}>
-                                <td className="border-b px-6 py-4">{index + 1}</td>
-                                <td className="border-b px-6 py-4 font-medium text-gray-800">{bank.brand}</td>
-                                <td className="border-b px-6 py-4">{bank.no_rek}</td>
-                                <td className="border-b px-6 py-4">{bank.an}</td>
-                                <td className="border-b px-6 py-4">
-                                    <div className="flex gap-3 items-center justify-center">
-                                        <button
-                                            className="bg-yellow-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-yellow-600"
-                                            onClick={() => handleEditClick(bank)}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button onClick={() => handleDeleteClick(bank.id)}
-                                            className="bg-red-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-red-600"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+            <div className="overflow-x-auto mt-6">
+                {banks.length === 0 ? (
+                    <div className="text-center py-6 text-gray-600 font-semibold text-xl">
+                        No bank data available
+                    </div>
+                ) : (
+                    <div className="overflow-hidden rounded-lg shadow-lg bg-white">
+                        <table className="min-w-full text-sm text-left text-gray-700">
+                            <thead className="bg-green-600 text-white text-xs uppercase tracking-wide">
+                                <tr>
+                                    <th className="px-6 py-4 font-medium">No</th>
+                                    <th className="px-6 py-4 font-medium">Nama Bank</th>
+                                    <th className="px-6 py-4 font-medium">Nomor Rekening</th>
+                                    <th className="px-6 py-4 font-medium">Nama Pemilik</th>
+                                    <th className="px-6 py-4 font-medium text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200 bg-white">
+                                {banks.map((bank, index) => (
+                                    <tr
+                                        key={bank.id}
+                                        className={`hover:bg-gray-50 transition-all duration-200 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                                            }`}
+                                    >
+                                        <td className="px-6 py-4 text-center font-medium">{index + 1}</td>
+                                        <td className="px-6 py-4 text-gray-800">{bank.brand}</td>
+                                        <td className="px-6 py-4">{bank.no_rek}</td>
+                                        <td className="px-6 py-4">{bank.an}</td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex justify-center gap-3">
+                                                <button
+                                                    className="bg-yellow-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none transition-all"
+                                                    onClick={() => handleEditClick(bank)}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 focus:outline-none transition-all"
+                                                    onClick={() => handleDeleteClick(bank.id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
 
         </div>
     );

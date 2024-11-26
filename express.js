@@ -7,9 +7,9 @@ const PORT = process.env.PORT_API || 3000;
 const HOST = process.env.DB_HOST || 'localhost';
 
 // Middleware setup
-app.use(corsHelper()); // Use the CORS helper
-app.use(express.json()); // Parse JSON bodies
-app.use(apiKeyMiddleware); // Your custom API key middleware
+app.use(corsHelper());
+app.use(express.json());
+app.use(apiKeyMiddleware);
 
 // Ensure this is the correct router middleware
 app.use('/api', appRoutes);

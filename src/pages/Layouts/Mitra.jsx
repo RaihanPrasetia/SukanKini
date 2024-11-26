@@ -78,7 +78,7 @@ const Mitra = () => {
             {!isNotFoundPage && (
                 <MitraNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             )}
-            <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64 ml-0' : 'ml-0'
+            <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'lg:ml-0 ml-0' : 'ml-0'
                 }`}>
                 <Routes>
                     <Route path="/home" element={<HomeMitra />} />

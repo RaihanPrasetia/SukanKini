@@ -69,7 +69,6 @@ const PembayaranAdmin = () => {
       setActionLoading(null); // Reset action loading
     }
   };
-  console.log(viewedItem)
 
 
   const handleReject = async (id) => {

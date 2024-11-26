@@ -14,7 +14,6 @@ export default function DataKelas() {
       try {
         const classData = await adminClassService.getAdminClasses();
         setClassData(classData);
-        console.log(classData);
       } catch (error) {
         console.error("Gagal mengambil data kelas", error);
       } finally {

@@ -151,7 +151,7 @@ const getPaymentById = async (req, res) => {
 
 const createPayment = async (req, res) => {
     try {
-        const userId = req.userId; // ID pengguna yang melakukan pembayaran
+        const userId = req.userId;
         const { bank_id, total } = req.body;
 
         // Validasi input

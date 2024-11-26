@@ -115,7 +115,13 @@ const createPayment = async (req, res) => {
             where: {
                 [Op.and]: [
                     { user_id: userId },
-                    { class_id: class_id }
+                    { class_id: class_id },
+                    {
+                        [Op.or]: [
+                            { status: 'active' },
+                            { status: 'pending' }
+                        ]
+                    }
                 ]
             },
         });

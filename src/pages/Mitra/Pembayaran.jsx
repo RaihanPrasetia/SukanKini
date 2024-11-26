@@ -187,106 +187,122 @@ const Pembayaran = () => {
     };
 
     return (
-        <div className="w-full bg-gray-50 p-6 py-24 lg:pt-32 rounded-lg shadow-lg min-h-[80vh]">
+        <div className="w-full bg-gray-50 p-6 lg:px-16 py-24 lg:pt-32 rounded-lg shadow-lg min-h-[80vh]">
             <h2 className="text-3xl font-semibold mb-6 text-green-600">Daftar Pembayaran Member</h2>
 
-            {loading ? (
-                <div className="text-center">Loading...</div>
-            ) : (
-                <div className="overflow-x-auto bg-white shadow-lg sm:rounded-lg">
-                    <table className="min-w-full text-sm text-left text-gray-600 border border-gray-300">
-                        <thead className="text-xs text-white uppercase bg-gradient-to-r from-blue-500 to-indigo-600">
-                            <tr>
-                                <th className="px-6 py-4 border-b">No</th>
-                                <th className="px-6 py-4 border-b">Nama Anggota</th>
-                                <th className="px-6 py-4 border-b">Jam</th>
-                                <th className="px-6 py-4 border-b">Hari</th>
-                                <th className="px-6 py-4 border-b">Nama Kelas</th>
-                                <th className="px-6 py-4 border-b">Nomor HP</th>
-                                <th className="px-6 py-4 border-b">Bukti Pembayaran</th>
-                                <th className="px-6 py-4 border-b">Total</th>
-                                <th className="px-6 py-4 border-b">Status</th>
-                                <th className="px-6 py-4 border-b">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {payments.length === 0 ? (
+            <div className="overflow-x-auto mt-6">
+                {loading ? (
+                    <div className="text-center text-gray-600 font-medium">Loading...</div>
+                ) : (
+                    <div className="overflow-hidden bg-white shadow-md rounded-lg">
+                        <table className="min-w-full text-sm text-left text-gray-700 border-collapse">
+                            <thead className="bg-green-600 text-white text-xs uppercase tracking-wide">
                                 <tr>
-                                    <td colSpan="10" className="px-6 py-4 text-xl text-center text-gray-600 font-semibold border-b">
-                                        Belum ada pembayaran
-                                    </td>
+                                    <th className="px-6 py-4 text-center">No</th>
+                                    <th className="px-6 py-4">Nama Anggota</th>
+                                    <th className="px-6 py-4">Jam</th>
+                                    <th className="px-6 py-4">Hari</th>
+                                    <th className="px-6 py-4">Nama Kelas</th>
+                                    <th className="px-6 py-4">Nomor HP</th>
+                                    <th className="px-6 py-4">Bukti Pembayaran</th>
+                                    <th className="px-6 py-4">Total</th>
+                                    <th className="px-6 py-4">Status</th>
+                                    <th className="px-6 py-4 text-center">Aksi</th>
                                 </tr>
-                            ) : (
-                                payments.map((payment, index) => (
-                                    <tr key={payment.id}
-                                        className="border-b border-gray-200 hover:bg-gray-100 hover:shadow-lg transition-all duration-300 ease-in-out">
-                                        <td className="px-6 py-4 border-b">{index + 1}</td>
-                                        <td className="px-6 py-4 border-b">{payment.name}</td>
-                                        <td className="px-6 py-4 border-b">
-                                            {payment.schedules.length > 0 ? (
-                                                <ul className="list-disc pl-6">
-                                                    {payment.schedules.map((schedule, idx) => (
-                                                        <li key={idx}>
-                                                            {/* Memformat jam dan menit dengan tanda ":" */}
-                                                            {schedule.jam.slice(0, 5)}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            ) : "-"}
-                                        </td>
-
-                                        <td className="px-6 py-4 border-b">
-                                            {payment.schedules.length > 0 ? (
-                                                <ul className="list-disc pl-6">
-                                                    {payment.schedules.map((schedule, idx) => (
-                                                        <li key={idx}>{schedule.hari}</li>
-                                                    ))}
-                                                </ul>
-                                            ) : "-"}
-                                        </td>
-                                        <td className="px-6 py-4 border-b">{payment.className}</td>
-                                        <td className="px-6 py-4 border-b">{payment.phone}</td>
-                                        <td className="px-6 py-4 border-b">
-                                            <button className="text-blue-600 hover:text-blue-800 focus:outline-none" onClick={() =>
-                                                handleView(payment)}
-                                            >
-                                                Lihat Bukti
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 border-b">{formatRupiah(payment.total)}</td>
-                                        <td className="px-6 py-4 border-b">
-                                            <span className={`inline-block px-4 py-2 text-sm font-semibold rounded-full ${payment.status === "Diproses" ? "bg-yellow-200 text-yellow-800" : payment.status === "Diterima"
-                                                    ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}>
-                                                {payment.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 border-b space-x-2">
-                                            {payment.status === "Diproses" && (
-                                                <>
-                                                    <button
-                                                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none transition-all duration-200"
-                                                        onClick={() => handleAccept(payment.id)}
-                                                    >
-                                                        Terima
-                                                    </button>
-                                                    <button
-                                                        className="ml-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none transition-all duration-200"
-                                                        onClick={() => handleReject(payment.id)}
-                                                    >
-                                                        Tolak
-                                                    </button>
-                                                </>
-                                            )}
+                            </thead>
+                            <tbody className="divide-y divide-gray-200">
+                                {payments.length === 0 ? (
+                                    <tr>
+                                        <td
+                                            colSpan="10"
+                                            className="px-6 py-6 text-center text-gray-600 font-semibold"
+                                        >
+                                            Belum ada pembayaran
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                                ) : (
+                                    payments.map((payment, index) => (
+                                        <tr
+                                            key={payment.id}
+                                            className={`hover:bg-green-50 transition-all duration-200 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                                }`}
+                                        >
+                                            <td className="px-6 py-4 text-center">{index + 1}</td>
+                                            <td className="px-6 py-4 font-medium">{payment.name}</td>
+                                            <td className="px-6 py-4">
+                                                {payment.schedules.length > 0 ? (
+                                                    <ul className="list-disc pl-6 space-y-1 text-gray-600">
+                                                        {payment.schedules.map((schedule, idx) => (
+                                                            <li key={idx}>{schedule.jam.slice(0, 5)}</li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    "-"
+                                                )}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {payment.schedules.length > 0 ? (
+                                                    <ul className="list-disc pl-6 space-y-1 text-gray-600">
+                                                        {payment.schedules.map((schedule, idx) => (
+                                                            <li key={idx}>{schedule.hari}</li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    "-"
+                                                )}
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-700">{payment.className}</td>
+                                            <td className="px-6 py-4">{payment.phone}</td>
+                                            <td className="px-6 py-4">
+                                                <button
+                                                    className="text-blue-600 hover:underline focus:outline-none"
+                                                    onClick={() => handleView(payment)}
+                                                >
+                                                    Lihat Bukti
+                                                </button>
+                                            </td>
+                                            <td className="px-6 py-4 font-semibold text-gray-900">
+                                                {formatRupiah(payment.total)}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span
+                                                    className={`inline-block px-4 py-2 text-xs font-medium rounded-full ${payment.status === "Diproses"
+                                                        ? "bg-yellow-200 text-yellow-800"
+                                                        : payment.status === "Diterima"
+                                                            ? "bg-green-200 text-green-800"
+                                                            : "bg-red-200 text-red-800"
+                                                        }`}
+                                                >
+                                                    {payment.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2 text-center">
+                                                {payment.status === "Diproses" && (
+                                                    <div className="space-x-2 flex">
+                                                        <button
+                                                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all"
+                                                            onClick={() => handleAccept(payment.id)}
+                                                        >
+                                                            Terima
+                                                        </button>
+                                                        <button
+                                                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all"
+                                                            onClick={() => handleReject(payment.id)}
+                                                        >
+                                                            Tolak
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
 
-
-            )}
 
             {/* Modal */}
             {modalOpen && selectedPayment && (

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   MdPeople,
   MdClass,
-  MdGroupWork,
   MdAttachMoney,
   MdVideocam,
   MdHourglassEmpty,
@@ -26,8 +25,7 @@ export default function HomeMitra({ sidebarOpen }) {
         setClassNowData(classData);
         const countData = await countService.getCountData();
         setNewCountData(countData);
-        console.log(countData);
-        console.log(classData) // Update state with new class data
+        // Update state with new class data
       } catch (error) {
         Swal.fire({
           title: 'Upss!!!',
@@ -76,7 +74,7 @@ export default function HomeMitra({ sidebarOpen }) {
       <div className="flex flex-col-reverse gap-8 sm:flex-row space-y-6 sm:space-y-0 sm:space-x-8 justify-between w-full mt-8">
         {/* Stats Section */}
         <div className="w-full sm:w-2/3 lg:w-3/4 p-8 rounded-2xl bg-white shadow-xl border border-gray-200">
-          <h2 className="text-2xl font-semibold mb-6 text-green-600">Statistik Anda</h2>
+          <h2 className="text-4xl font-bold text-center mb-6 text-green-600">Statistik Anda</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
             {/* Stat 1 - Jumlah Member */}
             <div className="flex flex-col items-center bg-green-500 p-6 rounded-xl shadow-xl">
@@ -92,12 +90,6 @@ export default function HomeMitra({ sidebarOpen }) {
               <div className="text-xl text-white">Jumlah Kelas</div>
             </div>
 
-            {/* Stat 3 - Jumlah Komunitas */}
-            <div className="flex flex-col items-center bg-cyan-500 p-6 rounded-xl shadow-xl">
-              <MdGroupWork className="text-4xl mb-3 text-white" />
-              <div className="text-4xl font-bold text-white">8</div>
-              <div className="text-xl text-white">Jumlah Komunitas</div>
-            </div>
 
             {/* Stat 4 - Penghasilan */}
             <div className="flex flex-col items-center bg-indigo-700 p-6 rounded-xl shadow-xl">
@@ -118,10 +110,10 @@ export default function HomeMitra({ sidebarOpen }) {
             </div>
 
             {/* Stat 6 - Status Pembayaran */}
-            <div className="flex flex-col bg-pink-500 p-8 rounded-xl shadow-xl">
+            <div className="flex flex-col col-span-2 bg-pink-500 p-6 rounded-xl shadow-xl">
               <div className="font-semibold text-center text-2xl text-white mb-6">Status Pembayaran</div>
               {/* Payment Status List */}
-              <div className="flex flex-col items-start space-y-6">
+              <div className="flex  items-start space-x-6">
                 <div className="flex items-center space-x-4 bg-yellow-500 text-white p-4 rounded-lg shadow-md w-full mb-6">
                   <MdHourglassEmpty className="text-white text-3xl animate-spin" />
                   <div className="flex flex-col">

@@ -149,7 +149,7 @@ const Trainer = () => {
     <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[80vh]">
       <div className="flex flex-col lg:flex-row justify-between mb-5">
         <h2 className="text-3xl font-semibold mb-4 lg:mb-0">Trainer List</h2>
-        <button className="flex items-center bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600" onClick={() =>
+        <button className="flex items-center  bg-gradient-to-r from-green-400 to-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-600" onClick={() =>
           setIsModalOpen(true)} // Open modal when button is clicked
         >
           <FaPlus className="mr-2" />
@@ -209,11 +209,11 @@ const Trainer = () => {
                 <button type="button" onClick={() => setIsModalOpen(false)}
                   className="bg-gray-400 text-white px-6 py-2 rounded-md hover:bg-gray-500 focus:outline-none"
                 >
-                  Cancel
+                  Batal
                 </button>
                 <button type="submit"
                   className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none">
-                  Add Trainer
+                  Tambah Trainer
                 </button>
               </div>
             </form>
@@ -273,11 +273,11 @@ const Trainer = () => {
                 <button type="button" onClick={() => setIsUpdateModalOpen(false)}
                   className="bg-gray-400 text-white px-6 py-2 rounded-md hover:bg-gray-500 focus:outline-none"
                 >
-                  Cancel
+                  Batal
                 </button>
                 <button type="submit"
                   className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none">
-                  Update Trainer
+                  Perbaharui Trainer
                 </button>
               </div>
             </form>
@@ -285,51 +285,55 @@ const Trainer = () => {
         </div>
       )}
 
-      <table className="min-w-full text-sm text-left text-gray-500 shadow-lg bg-white rounded-lg border-separate border-spacing-0">
-        <thead className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <table className="min-w-full text-sm text-left text-gray-700 bg-white shadow-md rounded-lg overflow-hidden border-spacing-0">
+        <thead className=" bg-green-600  text-white uppercase tracking-wide">
           <tr>
-            <th className="px-6 py-3 w-12">No</th>
-            <th className="px-6 py-3">Image</th>
-            <th className="px-6 py-3">Name</th>
-            <th className="px-6 py-3">Phone</th>
-            <th className="px-6 py-3">Alamat</th>
-            <th className="px-6 py-3">Age</th>
-            <th className="px-6 py-3 text-center">Actions</th>
+            <th className="px-6 py-4 text-center font-semibold w-12">No</th>
+            <th className="px-6 py-4 font-semibold text-left">Foto</th>
+            <th className="px-6 py-4 font-semibold text-left">Nama</th>
+            <th className="px-6 py-4 font-semibold text-left">Nomor Telepon</th>
+            <th className="px-6 py-4 font-semibold text-left">Alamat</th>
+            <th className="px-6 py-4 font-semibold text-center">Umur</th>
+            <th className="px-6 py-4 font-semibold text-center">Aksi</th>
           </tr>
         </thead>
         <tbody>
           {trainers.length === 0 ? (
             <tr>
-              <td colSpan="7" className="text-center py-5 text-xl font-semibold text-gray-500">
+              <td colSpan="7" className="py-6 text-center text-lg font-medium text-gray-500">
                 Belum ada data trainer
               </td>
             </tr>
           ) : (
             trainers.map((trainer, index) => (
-              <tr key={trainer.id} className={`border-b ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 transition duration-300`}>
-                <td className="px-6 py-4 text-gray-800">{index + 1}</td>
+              <tr
+                key={trainer.id}
+                className={`transition duration-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                  } hover:bg-green-50`}
+              >
+                <td className="px-6 py-4 text-center font-medium text-gray-800">{index + 1}</td>
                 <td className="px-6 py-4">
                   <img
                     src={`/images/trainer/${trainer.imagePath}`}
                     alt={trainer.name}
-                    className="w-16 h-16 object-cover rounded-full border-2 border-blue-500"
+                    className="w-12 h-12 object-cover rounded-full border-2 border-blue-500"
                   />
                 </td>
-                <td className="px-6 py-4 text-gray-800">{trainer.name}</td>
-                <td className="px-6 py-4">{trainer.phone}</td>
-                <td className="px-6 py-4">{trainer.alamat}</td>
-                <td className="px-6 py-4">{trainer.age}</td>
+                <td className="px-6 py-4 font-medium text-gray-900 capitalize">{trainer.name}</td>
+                <td className="px-6 py-4 text-gray-700">{trainer.phone}</td>
+                <td className="px-6 py-4 text-gray-700">{trainer.alamat}</td>
+                <td className="px-6 py-4 text-center text-gray-700">{trainer.age}</td>
                 <td className="px-6 py-4 text-center">
-                  <div className="flex gap-2 items-center justify-center">
+                  <div className="flex gap-4 items-center justify-center">
                     <button
-                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transform transition duration-300"
-                      onClick={() => handleEditClick(trainer)} // Open update modal with selected trainer's data
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 hover:scale-105 transform transition duration-300"
+                      onClick={() => handleEditClick(trainer)}
                     >
                       Edit
                     </button>
                     <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 hover:scale-105 transform transition duration-300"
                       onClick={() => handleDeleteClick(trainer.id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transform transition duration-300"
                     >
                       Delete
                     </button>
@@ -340,6 +344,7 @@ const Trainer = () => {
           )}
         </tbody>
       </table>
+
 
     </div>
   );

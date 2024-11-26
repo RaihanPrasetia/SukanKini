@@ -141,39 +141,40 @@ const Category = () => {
                 </div>
             )}
 
-            {/* Category Table */}
             <div className="overflow-x-auto mt-8">
-                <table className="min-w-full text-sm text-center text-gray-700 shadow-md bg-white rounded-lg border border-gray-300">
-                    <thead className="bg-gradient-to-r from-blue-500 to-blue-700 text-sm text-white">
+                <table className="min-w-full text-sm text-left text-gray-700 bg-white shadow-lg rounded-lg">
+                    <thead className="bg-green-600 text-white">
                         <tr>
-                            <th className="px-6 py-3 font-semibold border-r border-white w-12">No</th> {/* Kolom No lebih sempit */}
-                            <th className="px-6 py-3 font-semibold  border-white">Category Name</th>
+                            <th className="px-6 py-4 font-semibold uppercase tracking-wider text-center w-12 rounded-tl-lg">No</th>
+                            <th className="px-6 py-4 font-semibold uppercase tracking-wider text-center rounded-tr-lg">Kategori</th>
                         </tr>
                     </thead>
-                    <tbody className='text-sm'>
+                    <tbody>
                         {categories.length === 0 ? (
                             <tr>
-                                <td colSpan="2" className="text-center py-5 text-xl font-semibold text-gray-500">
-                                    Belum ada data category
+                                <td colSpan="2" className="text-center py-6 text-lg font-medium text-gray-500">
+                                    Belum ada data kategori
                                 </td>
                             </tr>
                         ) : (
                             categories.map((category, index) => (
                                 <tr
                                     key={category.id}
-                                    className={`hover:bg-gray-100 transition duration-300 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-t border-gray-200`}
+                                    className={`transition duration-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                                        } hover:bg-green-50`}
                                 >
-                                    <td className="px-6 py-4 font-medium text-gray-700 border-r border-gray-200">{index + 1}</td>
-                                    <td className="px-6 py-4 font-medium text-gray-800 capitalize border-r border-gray-200">{category.name}</td>
+                                    <td className="px-6 py-4 font-medium text-gray-800 text-center border-b border-gray-200">
+                                        {index + 1}
+                                    </td>
+                                    <td className="px-6 py-4 text-gray-900 text-center font-semibold capitalize border-b border-gray-200">
+                                        {category.name}
+                                    </td>
                                 </tr>
                             ))
                         )}
                     </tbody>
                 </table>
             </div>
-
-
-
 
         </div>
     );

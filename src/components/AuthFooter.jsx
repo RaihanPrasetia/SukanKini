@@ -6,25 +6,13 @@ import { faInstagram, faFacebook, faTiktok } from "@fortawesome/free-brands-svg-
 const AuthFooter = () => {
     return (
         <footer className="bg-gray-900 text-white py-8 px-10">
-            <div className="container mx-auto px-6 flex flex-col items-center justify-between md:flex-row space-y-6 md:space-y-0">
+            <div className="container flex flex-col items-center justify-between md:flex-row space-y-6 md:space-y-0">
                 {/* Logo dan Nama Website */}
-                <div className="flex flex-col items-center">
-                    <img
-                        src="/assets/images/Logo_SukanKini.png" // Ganti dengan path logo Anda
-                        alt="Logo Sukan Kini"
-                        className="w-32 h-32 object-cover"
-                    />
+                <div className="flex flex-col items-center w-full justify-between">
+                    <h1 className="text-yellow-500 text-[50px] font-bold">Sukan<span className="text-white">Kini</span></h1>
+                    <span className="text-[20px] font-semibold">Untuk Hidup Lebih Produktif!</span>
                 </div>
-
-                {/* Navigasi */}
-                <div className="flex flex-col items-center md:flex-row space-y-2 md:space-y-0 md:gap-6">
-                    <Link to="/about" className="hover:text-green-400 transition duration-300">About Us</Link>
-                    <Link to="/services" className="hover:text-green-400 transition duration-300">Services</Link>
-                    <Link to="/contact" className="hover:text-green-400 transition duration-300">Contact</Link>
-                </div>
-
-                {/* Sosial Media Links */}
-                <div className="flex gap-6 mt-4 md:mt-0">
+                <div className="flex gap-12 mt-4 md:mt-0 w-full items-center justify-center">
                     <Link to="#" className="text-pink-500 hover:text-pink-700 transition duration-300">
                         <FontAwesomeIcon icon={faInstagram} size="2x" />
                     </Link>
@@ -35,9 +23,15 @@ const AuthFooter = () => {
                         <FontAwesomeIcon icon={faTiktok} size="2x" />
                     </Link>
                 </div>
+                <div className="flex flex-col items-center space-y-2 text-green-500 text-lg font-bold md:space-y-0 md:gap-6 w-full justify-center">
+                    <Link to="/about" className="hover:text-green-400 transition duration-300">Beranda</Link>
+                    <Link to="/services" className="hover:text-green-400 transition duration-300">Tim Saya</Link>
+                    <Link to="/contact" className="hover:text-green-400 transition duration-300">Tentang Kami</Link>
+                </div>
+
+
             </div>
 
-            {/* Copyright */}
             <div className="text-center mt-6 text-sm text-gray-200">
                 <p>&copy; {new Date().getFullYear()} FitLife. Semua hak dilindungi.</p>
             </div>
