@@ -151,7 +151,7 @@ const getPaymentById = async (req, res) => {
 
 const createPayment = async (req, res) => {
     try {
-        const userId = req.userId; // ID pengguna yang melakukan pembayaran
+        const userId = req.userId;
         const { bank_id, total } = req.body;
 
         // Validasi input
@@ -159,7 +159,7 @@ const createPayment = async (req, res) => {
             return res.status(400).json({ message: 'Bank ID dan jumlah total pembayaran diperlukan.' });
         }
 
-        // Validasi bank
+
         const bankData = await Bank.findOne({ where: { id: bank_id } });
         if (!bankData) {
             return res.status(404).json({ message: 'Bank yang dipilih tidak ditemukan.' });
@@ -271,7 +271,6 @@ const updatePaymentStatus = async (req, res) => {
         }
         payment.status_pembayaran = status_pembayaran;
         await payment.save();
-        membership.status = 'active';
         await membership.save();
 
         res.status(200).json({ message: 'Payment status updated successfully', payment });

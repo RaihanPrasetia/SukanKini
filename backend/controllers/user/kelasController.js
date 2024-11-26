@@ -1,4 +1,4 @@
-const { Memberships, User, Class, ClassSchedule, Category, Trainer } = require('../../associations');
+const { Memberships, User, Class, ClassSchedule, Category, Trainer, Benefit } = require('../../associations');
 const moment = require('moment'); // Pastikan moment.js terinstal
 moment.locale('id');
 const { Op } = require('sequelize');
@@ -25,17 +25,18 @@ const getUserMemberships = async (req, res) => {
                 {
                     model: Class,
                     as: 'class',
-                    attributes: ['id', 'name', 'alamat', 'image_path'],
+                    attributes: ['id', 'name', 'alamat', 'image_path', 'deletedAt'],
                     include: [
                         {
                             model: ClassSchedule,
                             as: 'schedules',
                             attributes: ['hari', 'jam']
                         }
-                    ] // Include class data (can adjust as needed)
+                    ],
+                    paranoid: false, // Include class data (can adjust as needed)
                 }
             ],
-            attributes: ['id', 'user_id', 'class_id', 'createdAt', 'updatedAt'] // Include membership-related attributes
+            attributes: ['id', 'user_id', 'class_id', 'createdAt', 'updatedAt', 'deletedAt'] // Include membership-related attributes
         });
 
         res.status(200).json({ memberships });
@@ -69,7 +70,7 @@ const getClassNow = async (req, res) => {
                 {
                     model: Class,
                     as: 'class',
-                    attributes: ['id', 'name', 'alamat', 'price', 'image_path'], // Data kelas
+                    attributes: ['id', 'name', 'alamat', 'price', 'image_path', 'deletedAt'], // Data kelas
                     include: [
                         {
                             model: ClassSchedule,
@@ -80,6 +81,9 @@ const getClassNow = async (req, res) => {
                             },
                         },
                     ],
+                    where: {
+                        deletedAt: null
+                    }
                 },
             ],
             attributes: ['id', 'user_id', 'class_id', 'createdAt', 'updatedAt'], // Data keanggotaan
@@ -110,6 +114,12 @@ const getClassById = async (req, res) => {
                     attributes: ['id', 'hari', 'jam']
                 },
                 {
+                    model: Benefit,
+                    as: 'benefits',
+                    attributes: ['id', 'name', 'description']
+
+                },
+                {
                     model: Category,
                     as: 'category',
                     attributes: ['id', 'name']
@@ -131,7 +141,7 @@ const getClassById = async (req, res) => {
         });
 
         if (!allClass || allClass.length === 0) {
-            return res.status(404).json({ message: 'Class not available' });
+            return res.status(404).json({ message: 'Class Sudah Tidak Tersedia' });
         }
 
         // Get the createdBy value and category of the retrieved class
@@ -141,8 +151,9 @@ const getClassById = async (req, res) => {
         // Retrieve related/recommended classes - for example, same category
         const relatedClasses = await Class.findAll({
             where: {
-                [Op.or]: [
-                    { category_id: categoryId },  // Menyaring berdasarkan user_id
+                [Op.and]: [
+                    { category_id: categoryId },
+                    { deletedAt: null },  // Menyaring berdasarkan user_id
                 ]
             },
             include: [
@@ -152,12 +163,19 @@ const getClassById = async (req, res) => {
                     attributes: ['id', 'hari', 'jam']
                 },
                 {
+                    model: Benefit,
+                    as: 'benefits',
+                    attributes: ['id', 'name', 'description']
+
+                },
+                {
                     model: Category,
                     as: 'category',
                     attributes: ['id', 'name']
                 },
                 {
                     model: Trainer,
+                    where: { deletedAt: null },
                     as: 'trainer',
                     attributes: ['id', 'name', 'image_path']
                 },
@@ -192,6 +210,12 @@ const getAllClass = async (req, res) => {
                     model: ClassSchedule,
                     as: 'schedules',
                     attributes: ['id', 'hari', 'jam']
+                },
+                {
+                    model: Benefit,
+                    as: 'benefits',
+                    attributes: ['id', 'name', 'description']
+
                 },
                 {
                     model: Category,

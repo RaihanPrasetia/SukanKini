@@ -26,19 +26,17 @@ const getCounts = async (req, res) => {
                     model: Payment,
                     as: 'payments',
                     where: {
-                        [Op.or]: [
-                            { status_pembayaran: 'Diterima' },
-                            { status_pembayaran: 'Ditolak' },
-                            { status_pembayaran: 'Diproses' }
-                        ]
+                        status_pembayaran: 'Diterima', // Only fetch accepted payments
                     },
                     required: false,
+                    paranoid: false,
                 },
-            ]
+            ],
+            paranoid: false,
         });
 
-        // Count total classes
-        const countClasses = classData.length;
+        // Count total classes where deletedAt is null
+        const countClasses = classData.filter(classItem => classItem.deletedAt === null).length;
 
         // Count total active memberships
         const countMemberships = classData.reduce((acc, classItem) => {
@@ -46,10 +44,15 @@ const getCounts = async (req, res) => {
             return acc + activeMembers.length;
         }, 0);
 
-        // Count total income from payments
+        // Count total income only from 'Diterima' payments
         const countTotal = classData.reduce((acc, classItem) => {
-            const paidPayments = classItem.payments.filter(payment => payment.status_pembayaran === 'Diterima');
-            return acc + (classItem.price * paidPayments.length);
+            const totalFromClass = classItem.payments.reduce((sum, payment) => {
+                if (payment.status_pembayaran === 'Diterima') {
+                    return sum + classItem.price; // Add the price of the class
+                }
+                return sum;
+            }, 0);
+            return acc + totalFromClass;
         }, 0);
 
         // Count payments status
@@ -70,8 +73,8 @@ const getCounts = async (req, res) => {
         res.status(200).json({
             countClasses,
             countMemberships,
-            countTotal,
-            paymentStatusCounts, // Adding payment status counts
+            countTotal, // Only accepted payments included
+            paymentStatusCounts,
         });
 
     } catch (error) {

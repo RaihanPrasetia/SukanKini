@@ -56,7 +56,7 @@ function AppRoutes() {
         <>
           {userRole === 'user' && (
             <>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="*" element={<Dashboard />} />
               {/* Fallback untuk semua rute user yang tidak ada */}
               <Route path="*" element={<Navigate to="/404" replace />} />
             </>

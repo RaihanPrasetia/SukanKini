@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Footer from '../../components/Footer';
 import HomeMitra from '../Mitra/HomeMitra';
 import MitraNavbar from '../../components/Navbar/MitraNavbar';
 import ProfileMitra from '../Mitra/ProfileMitra';
@@ -14,6 +13,7 @@ import Bank from '../Mitra/Bank';
 import NotFound from '../../components/NotFound';
 
 import paymentService from '../../service/paymentService';
+import AuthFooter from '../../components/AuthFooter';
 
 const Mitra = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,7 +69,7 @@ const Mitra = () => {
     }
 
     if (!isPaymentActive) {
-        return <Navigate to="/mitra/konfimasi/payment" replace />;
+        return <Navigate to="/konfimasi/payment" replace />;
     }
 
     return (
@@ -78,7 +78,7 @@ const Mitra = () => {
             {!isNotFoundPage && (
                 <MitraNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             )}
-            <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64 ml-0' : 'ml-0'
+            <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'lg:ml-0 ml-0' : 'ml-0'
                 }`}>
                 <Routes>
                     <Route path="/home" element={<HomeMitra />} />
@@ -90,12 +90,11 @@ const Mitra = () => {
                     <Route path="/notif" element={<NotifMitra />} />
                     <Route path="/pembayaran" element={<Pembayaran />} />
                     <Route path="/bank" element={<Bank />} />
-                    {/* Wildcard route to catch undefined paths */}
                     <Route path="/*" element={<NotFound />} />
                 </Routes>
             </div>
             {/* Footer hanya dirender jika bukan halaman NotFound */}
-            {!isNotFoundPage && <Footer />}
+            {!isNotFoundPage && <AuthFooter />}
         </div>
     );
 };

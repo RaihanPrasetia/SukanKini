@@ -89,7 +89,7 @@ const registerMitra = async (req, res) => {
     const token = jwt.sign(
       { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET,
-      { expiresIn: '30d' }  // Token will expire in 30 days
+      { expiresIn: '30d' }
     );
 
     res.status(201).json({ message: 'User registered successfully.', token, user: userData });

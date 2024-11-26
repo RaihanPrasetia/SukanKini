@@ -7,6 +7,7 @@ const Memberships = require('./models/membershipsModel');
 const Payment = require('./models/paymentModel');
 const Bank = require('./models/bankModel');
 const Notification = require('./models/notifModel');
+const Benefit = require('./models/benefitModel');
 
 // Define Associations
 Class.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
@@ -20,14 +21,24 @@ Class.belongsTo(Trainer, {
 Class.hasMany(ClassSchedule, { foreignKey: 'class_id', as: 'schedules' });
 Class.hasMany(Memberships, { foreignKey: 'class_id', as: 'members' });
 Class.hasMany(Payment, { foreignKey: 'class_id', as: 'payments' });
+Class.hasMany(Benefit, { foreignKey: 'class_id', as: 'benefits' });
+
+Trainer.hasMany(Class, { foreignKey: 'trainer_id', as: 'class' });
+Trainer.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
+
+Benefit.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
+Benefit.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
 
 ClassSchedule.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
+
 Memberships.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
 Memberships.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
 Payment.belongsTo(User, { foreignKey: 'user_id', as: 'to' });
 Payment.belongsTo(User, { foreignKey: 'createdBy', as: 'from' });
 Payment.belongsTo(Bank, { foreignKey: 'bank_id', as: 'bank' });
 Payment.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
+
 Notification.belongsTo(User, { foreignKey: 'createdBy', as: 'from' });
 Notification.belongsTo(User, { foreignKey: 'user_id', as: 'to' });
 
@@ -42,4 +53,5 @@ module.exports = {
     Bank,
     User,
     Notification,
+    Benefit,
 };

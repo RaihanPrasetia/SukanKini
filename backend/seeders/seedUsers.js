@@ -7,6 +7,7 @@ const Category = require('../models/categoryModel');
 const Class = require('../models/classModel');
 const Trainer = require('../models/trainerModel');
 const Membership = require('../models/membershipsModel');
+const Benefit = require('../models/benefitModel');
 
 const seedData = async () => {
   try {
@@ -14,7 +15,7 @@ const seedData = async () => {
     // Seed User Data
     const hashedPassword = await bcrypt.hash('12345678', 10);
 
-    // Create admin user
+    // // Create admin user
     const adminUser = await User.create({
       name: 'admin',
       password: hashedPassword,
@@ -55,13 +56,14 @@ const seedData = async () => {
     });
 
     console.log('Users seeded successfully.');
-    // Seed Bank Data
+    // // Seed Bank Data
     await Bank.create({
       brand: 'BRI',
       an: 'Admin',
       no_rek: '5267891022',
       createdBy: adminUser.id,
     });
+    console.log('Bank seeded successfully.');
 
     await Bank.create({
       brand: 'MANDIRI',
@@ -157,6 +159,27 @@ const seedData = async () => {
       }
     ]);
 
+    await Benefit.create({
+      name: 'Personal Training',
+      description: 'Dapatkan Pelatihan dengan Trainer yang berpengalaman dan bersertifikat internasional',
+      class_id: 1,
+      createdBy: mitraUser.id,
+    })
+    await Benefit.create({
+      name: 'Makan & Minuman',
+      description: 'Gratis cemilan dan minuman setiap sesi',
+      class_id: 1,
+      createdBy: mitraUser.id,
+    })
+
+    await Benefit.create({
+      name: 'Personal Training',
+      description: 'Dapatkan Pelatihan dengan Trainer yang berpengalaman dan bersertifikat internasional',
+      class_id: 2,
+      createdBy: mitraUser.id,
+    })
+
+
     await Payment.create({
       user_id: adminUser.id, // Payment for the admin user
       bank_id: 1, // Associated with Bank A
@@ -207,7 +230,7 @@ const seedData = async () => {
       status: 'active'
     })
 
-    console.log('Payments seeded successfully.');
+    console.log('User seeded successfully.');
   } catch (error) {
     console.error('Error seeding data:', error);
   }

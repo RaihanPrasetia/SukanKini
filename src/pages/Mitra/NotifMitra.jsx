@@ -42,7 +42,7 @@ const NotifMitra = () => {
     const markAsRead = async (notifId) => {
         try {
             // Call the API to update the notification status to read
-            const updatedNotif = await notifService.updateNotifications(notifId);
+            await notifService.updateNotifications(notifId);
 
             // Update the state to mark the notification as read
             setNotifications((prevNotifications) =>

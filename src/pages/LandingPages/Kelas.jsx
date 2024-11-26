@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import throttle from "lodash.throttle";
 
@@ -6,26 +6,25 @@ const Kelas = () => {
   const sectionRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
 
-  // Memoize the throttled function
-  const throttledScrollHandler = useCallback(
-    throttle(() => {
+  useEffect(() => {
+    // Throttled scroll handler inside useEffect
+    const throttledScrollHandler = throttle(() => {
       if (sectionRef.current) {
         const rect = sectionRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         setIsInView(rect.top <= windowHeight - 100 && rect.bottom >= 0);
       }
-    }, 100),
-    []
-  );
+    }, 100);
 
-  useEffect(() => {
+    // Add event listener for scroll
     window.addEventListener("scroll", throttledScrollHandler);
 
+    // Clean up the event listener and throttle cancel on component unmount
     return () => {
       window.removeEventListener("scroll", throttledScrollHandler);
-      throttledScrollHandler.cancel(); // Cancel pending executions on unmount
+      throttledScrollHandler.cancel();
     };
-  }, [throttledScrollHandler]);
+  }, []); // Empty dependency array means this effect runs only once
 
   const communityData = [
     { id: 1, title: "Yoga & Flexibilitas", image: "/assets/images/kelasuser/yoga.jpg" },
@@ -77,9 +76,9 @@ const Kelas = () => {
           <motion.div
             key={community.id}
             className="relative w-full group overflow-hidden rounded-md shadow-lg transition-transform duration-500 transform hover:scale-105"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.95 }}
-            transition={{ delay: index * 0.15, duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}  // Initial opacity and y-axis position
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}  // Animate opacity and translateY
+            transition={{ delay: index * 0.1, duration: 0.8, ease: "easeOut" }}  // Individual delay for each card
           >
             <img
               src={community.image}

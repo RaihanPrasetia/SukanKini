@@ -48,6 +48,7 @@ const getClassById = async (classId) => {
                 address: classData.alamat || 'No address available',  // Corrected from 'owner.alamat' to 'alamat'
                 price: classData.price,
                 schedules: classData.schedules || [],  // Default to empty if not available
+                benefits: classData.benefits || [],  // Default to empty if not available
                 trainer: classData.trainer || { name: 'Unknown', image_path: '' },  // Default to 'Unknown' if no trainer
                 category: classData.category || { name: 'Unknown' },  // Default to 'Unknown' if no category
                 createdBy: classData.createdBy,

@@ -136,8 +136,8 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
                             </span>
                         </p>
                         <div className="flex items-center space-x-5 justify-center">
-                            <Button title="Masuk" type="submit" className="text-nowrap" onClick={handleMenuClick} />
-                            <Button title="Google" icon={faGoogle} className="text-nowrap" />
+                            <Button title="Masuk" type="submit" className="text-nowrap hover:text-green-500" onClick={handleMenuClick} />
+                            <Button title="Google" icon={faGoogle} className="text-nowrap hover:text-green-500" />
                         </div>
                     </form>
                     <p className="text-sm text-center font-medium text-gray-600 my-5">
@@ -154,7 +154,7 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
 
 
                     <div className='flex w-full justify-center space-x-4 items-center'>
-                        <Button title="Masuk Mitra" onClick={onLoginMitra} className="text-nowrap" />
+                        <Button title="Masuk Mitra" onClick={onLoginMitra} className="text-nowrap hover:text-green-500" />
                     </div>
                     <ToastContainer
                         position="top-right"

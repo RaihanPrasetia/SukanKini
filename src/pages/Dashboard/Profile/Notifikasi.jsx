@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import notifService from '../../../service/notifService';
 import { FiCheck } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import notifService from '../../../service/notifService';
 
 function Notifikasi() {
   const [notifications, setNotifications] = useState([]);
@@ -17,7 +17,7 @@ function Notifikasi() {
       try {
         const fetchedNotifications = await notifService.getNotifications();
         setNotifications(fetchedNotifications);
-        setFilteredNotifications(fetchedNotifications); // Initialize filtered notifications
+        setFilteredNotifications(fetchedNotifications);
       } catch (err) {
         setError(err.message || 'Failed to fetch notifications.');
       } finally {
@@ -50,7 +50,7 @@ function Notifikasi() {
   // Mark notification as read
   const markAsRead = async (notifId) => {
     try {
-      const updatedNotif = await notifService.updateNotifications(notifId);
+      await notifService.updateNotifications(notifId);
       setNotifications((prevNotifications) =>
         prevNotifications.map((notif) =>
           notif.id === notifId ? { ...notif, isRead: true } : notif
@@ -75,24 +75,24 @@ function Notifikasi() {
   }
 
   return (
-    <div className="w-full bg-gray-50 p-6 rounded-xl shadow-lg">
-      <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Daftar Pemberitahuan</h2>
+    <div className="w-full px-4 py-6">
+      <h2 className="text-4xl font-bold mb-4 text-center text-gray-800">Notifikasi</h2>
 
       {/* Search Input */}
-      <div className="mb-6 text-center">
+      <div className="mb-4 flex justify-center">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Cari berdasarkan judul..."
-          className="p-2 border rounded-md text-gray-800 w-full lg:w-1/2"
+          className="p-3 border border-gray-300 rounded-lg w-full md:w-2/3 text-gray-800"
         />
       </div>
 
       {/* Filter Options */}
-      <div className="mb-6 text-center flex justify-center">
+      <div className="mb-6 text-center">
         <select
-          className="p-2 border rounded-md text-gray-800"
+          className="p-3 border border-gray-300 rounded-lg text-gray-800"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
         >
@@ -103,20 +103,28 @@ function Notifikasi() {
         </select>
       </div>
 
-      {/* Notification List */}
-      <div className="space-y-6">
-        {filteredNotifications.length > 0 ? (
-          filteredNotifications.map((notif) => (
-            <div
+      {/* No Notifications */}
+      {filteredNotifications.length === 0 ? (
+        <div className="text-center p-6 bg-gray-100 rounded-xl shadow-md">
+          <h3 className="text-xl font-semibold text-gray-700">Notifikasi tidak tersedia</h3>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Notification List */}
+          {filteredNotifications.map((notif) => (
+            <motion.div
               key={notif.id}
-              className={`p-6 rounded-xl shadow-md ${notif.type === 'info'
-                ? 'bg-blue-100 border-l-4 border-blue-500'
+              className={`p-4 rounded-lg shadow-sm border-l-4 transition duration-200 ease-in-out ${notif.type === 'info'
+                ? 'bg-blue-50 border-blue-500'
                 : notif.type === 'warning'
-                  ? 'bg-yellow-100 border-l-4 border-yellow-500'
-                  : 'bg-green-100 border-l-4 border-green-500'
+                  ? 'bg-yellow-50 border-yellow-500'
+                  : 'bg-green-50 border-green-500'
                 }`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
-              <div className="flex items-start space-x-4">
+              <div className="flex items-start space-x-3">
                 {/* Icon */}
                 <div
                   className={`h-10 w-10 rounded-full flex items-center justify-center text-white ${notif.type === 'info'
@@ -126,38 +134,7 @@ function Notifikasi() {
                       : 'bg-green-500'
                     }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    {notif.type === 'info' && (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 16h-1v-4h-1m1 8h.01M12 4v4m0 8h.01"
-                      />
-                    )}
-                    {notif.type === 'warning' && (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M10 14h2m-1-5v6m-1-7h2m-1 8h.01M12 4v4m0 8h.01"
-                      />
-                    )}
-                    {notif.type === 'success' && (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    )}
-                  </svg>
+                  <FiCheck className="h-6 w-6" />
                 </div>
 
                 {/* Notification Details */}
@@ -181,18 +158,16 @@ function Notifikasi() {
                 {!notif.isRead && (
                   <button
                     onClick={() => markAsRead(notif.id)}
-                    className="mt-4 p-3 bg-blue-400 text-white rounded-md shadow-md hover:bg-blue-500 transition-all ease-in-out transform hover:scale-105 focus:outline-none"
+                    className="mt-2 p-2 bg-blue-400 text-white rounded-md shadow-md hover:bg-blue-500 transition-all ease-in-out transform hover:scale-105 focus:outline-none"
                   >
-                    <FiCheck className="h-6 w-6 text-white" />
+                    <FiCheck className="h-5 w-5" />
                   </button>
                 )}
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No notifications available</p>
-        )}
-      </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

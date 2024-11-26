@@ -10,6 +10,7 @@ export default class Class {
         trainer = {},
         schedules = [],
         members = [],
+        benefits = [],
         createdBy,
         createdAt,
         updatedAt,
@@ -72,6 +73,15 @@ export default class Class {
                 },
             }))
             : [];
+
+        this.benefits = Array.isArray(benefits)
+            ? benefits.map((benefit) => ({
+                id: benefit.id,
+                name: benefit.name,
+                description: benefit.description || "No description provided",
+            }))
+            : [];
+
     }
 
     // A method to check if the class has any members

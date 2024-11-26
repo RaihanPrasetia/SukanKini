@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DaftarKelasPopup from "./DaftarKelas";
-import { FaArrowDown } from "react-icons/fa";
+import { FaArrowDown, FaChevronDown, FaSearch } from "react-icons/fa";
 import classService from "../../../service/User/classService";
 
 const KelasPelatihan = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [priceSearchTerm, setPriceSearchTerm] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [classData, setClassData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const categories = Array.from(new Set(classData.map((cls) => cls.category?.name)));
+  const locations = Array.from(new Set(classData.map((cls) => cls.address)));
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -18,7 +24,7 @@ const KelasPelatihan = () => {
       setError(null);
       try {
         const classes = await classService.getAllClasses();
-        setClassData(classes); // Assign data directly
+        setClassData(classes);
       } catch (err) {
         setError(err.message || "Failed to fetch classes.");
       } finally {
@@ -30,10 +36,9 @@ const KelasPelatihan = () => {
   }, []);
 
   const openPopup = (classInfo) => {
-    setSelectedClass(classInfo); // Mengatur data kelas yang dipilih
-    setIsPopupOpen(true); // Membuka modal
+    setSelectedClass(classInfo);
+    setIsPopupOpen(true);
   };
-
 
   const closePopup = () => {
     setIsPopupOpen(false);
@@ -50,117 +55,213 @@ const KelasPelatihan = () => {
     }
   };
 
+  // Filter data berdasarkan nama, kategori, dan lokasi
+  const filteredClasses = classData.filter((classInfo) => {
+    const normalizedSearchTerm = searchTerm.toLowerCase();
+
+    // Cek apakah harga lebih kecil atau sama dengan yang dimasukkan
+    const isPriceSearch = priceSearchTerm ? classInfo.price <= parseFloat(priceSearchTerm) : true;
+
+    // Pencocokan berdasarkan nama kelas, kategori, lokasi, atau pemilik
+    const matchesSearchTerm =
+      classInfo.name.toLowerCase().includes(normalizedSearchTerm) ||
+      (classInfo.category?.name && classInfo.category.name.toLowerCase().includes(normalizedSearchTerm)) ||
+      (classInfo.address && classInfo.address.toLowerCase().includes(normalizedSearchTerm)) ||
+      (classInfo.owner?.name && classInfo.owner.name.toLowerCase().includes(normalizedSearchTerm));
+
+    return matchesSearchTerm && isPriceSearch &&
+      (selectedCategory ? classInfo.category?.name === selectedCategory : true) &&
+      (selectedLocation ? classInfo.address === selectedLocation : true);
+  });
+
+
   return (
     <>
       {/* Hero Section */}
-      <section className="w-full min-h-[70vh] relative">
+      <section className="w-full min-h-[100vh] relative">
         <div
-          className="flex flex-col items-center justify-center text-center p-10 absolute inset-0 bg-cover bg-center rounded-lg"
+          className="flex flex-col items-center justify-center text-center p-10 absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1728486145245-d4cb0c9c3470?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
           }}
         >
           <div className="absolute inset-0 bg-black opacity-40 rounded-lg"></div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg z-10">
+          <h1 className="text-5xl font-extrabold text-white leading-tight drop-shadow-lg z-10">
             Ayo Jadi Lebih Sehat dan Bugar!
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-semibold text-white drop-shadow-lg z-10">
-            Temukan Kelas Kebugaran yang Paling Tepat untukmu
-          </p>
-          <p className="mt-2 text-sm sm:text-base text-white drop-shadow-lg z-10">
-            Kami punya berbagai pilihan kelas kebugaran yang siap membantumu mencapai tujuan fitnessmu. Yuk, mulai sekarang!
-          </p>
           <button
             onClick={scrollToKelas}
-            className="absolute bottom-5 p-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-semibold shadow-lg transform transition-all hover:scale-105 focus:outline-none animate-bounce z-10"
+            className="absolute bottom-5 p-4 bg-green-600 hover:bg-green-700 text-white rounded-full font-semibold shadow-lg transform transition-all hover:scale-105 focus:outline-none animate-bounce z-10"
           >
-            <FaArrowDown size={18} />
+            <FaArrowDown size={20} />
           </button>
         </div>
       </section>
 
       {/* Daftar Kelas Section */}
       <section id="daftarkelas" className="py-16 px-6 lg:px-20 min-h-screen bg-gray-50">
-        <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl mb-8 space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row items-center justify-between w-full   md:space-y-0">
           <div className="flex space-x-6">
-            <Link to="/semua-kelas">
-              <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
-                Semua Kelas
-              </button>
-            </Link>
-            <Link to="/daftar-pelatih">
-              <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
-                Pilih Kategori
-              </button>
-            </Link>
-            <button className="text-green-700 font-semibold hover:text-green-900 transition-all">
-              Lokasi
-            </button>
+            {/* Dropdown for Categories */}
+            <div className="flex flex-col items-center justify-center">
+              <span className="mb-2 text-lg font-semibold">Filter Kategori</span>
+              <div className=" relative flex items-center">
+                <select
+                  className="border border-gray-300 rounded-full pl-6 pr-10  py-3 bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none cursor-pointer text-gray-600 font-semibold"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="">Semua Kategori </option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                <span className="absolute top-[18px] right-4 text-gray-500">
+                  <FaChevronDown size={16} />
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center justify-center">
+              <span className="mb-2 text-lg font-semibold">Filter Lokasi</span>
+              <div className=" relative flex items-center">
+
+                <select
+                  className="border border-gray-300 rounded-full pl-6 pr-10 py-3 bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none cursor-pointer text-gray-600 font-semibold"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                >
+                  <option value="">Semua Lokasi</option>
+                  {locations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
+                <span className="absolute right-4 top-[18px] text-gray-500">
+                  <FaChevronDown size={16} />
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="relative flex items-center w-full md:w-auto">
+          <div className="relative flex flex-col items-center justify-start mt-4 ">
+            <span className="mb-2 text-lg font-semibold">Cari berdasarkan Harga</span>
             <input
-              type="text"
-              placeholder="Cari Kelas"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all"
+              type="number"
+              placeholder="Harga maksimal..."
+              value={priceSearchTerm}
+              onChange={(e) => setPriceSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-full px-4 py-2  focus:outline-none focus:border-green-500 transition-all"
             />
-            <button className="absolute right-2 text-green-500 hover:text-green-700 transition-all">
-              🔍
-            </button>
           </div>
+
+          <div className="relative flex flex-col items-center w-full md:w-auto">
+            <span className="mb-2 text-lg font-semibold">Cari Nama Kelas / Mitra</span>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                placeholder="Cari Kelas ..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all"
+              />
+              {/* Icon Search */}
+              <span className=" absolute right-4 text-green-500 hover:text-green-700 cursor-pointer">
+                <FaSearch size={20} />
+              </span>
+            </div>
+
+
+          </div>
+
+
+
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-green-800">
-          DAFTAR KELAS PELATIHAN
-        </h1>
-
         {loading ? (
-          <p className="text-center text-green-600">Loading classes...</p>
+          <p className="text-center text-green-600 font-semibold">Loading classes...</p>
         ) : error ? (
-          <p className="text-center text-red-600">{error}</p>
+          <p className="text-center text-red-600 font-semibold">{error}</p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {classData
-              .filter((classInfo) =>
-                classInfo.name.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((classInfo) => (
-                <div
-                  key={classInfo.id}
-                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all transform hover:scale-105"
-                >
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 pt-6">
+            {filteredClasses.map((classInfo) => (
+              <div
+                key={classInfo.id}
+                className="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-transform transform overflow-hidden flex flex-col"
+              >
+                {/* Class Image */}
+                <div className="relative items-center justify-center flex">
+                  <div className="absolute inset-0 bg-black opacity-30 rounded-lg"></div>
                   <img
                     src={`/images/kelas/${classInfo.imagePath}`}
                     alt={classInfo.name}
-                    className="w-full h-56 object-cover rounded-lg mb-4"
+                    className="w-full h-48 object-cover rounded-lg"
                   />
+                  <h2 className="text-3xl absolute text-white font-bold">{classInfo.owner.name}</h2>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-transparent to-transparent text-white p-3">
+                    <h2 className="text-lg font-semibold truncate">{classInfo.name}</h2>
+                    <p className="text-sm">{classInfo.trainer.name}</p>
+                  </div>
+                </div>
 
-                  <h2 className="text-xl font-semibold mb-2">{classInfo.name}</h2>
-                  <p className="text-green-700 font-semibold">{classInfo.trainer.name}</p>
-                  <p className="text-gray-600 text-sm">{classInfo.alamat}</p>
-                  <p className="text-gray-600 text-sm">
-                    Jadwal:{" "}
-                    {classInfo.schedules.map((schedule) => `${schedule.hari} ${schedule.jam}`).join(", ")}
+                {/* Class Details */}
+                <div className="p-6 flex flex-col flex-grow">
+                  {/* Location */}
+                  <p className="text-gray-600 text-sm flex items-center mb-2">
+                    <span className="material-icons text-green-500 mr-2">Alamat di</span>
+                    {classInfo.address}
                   </p>
-                  <p className="text-green-700 font-semibold">Harga: Rp {classInfo.price.toLocaleString()}</p>
-                  <div className="mt-4 flex space-x-4">
+
+                  {/* Schedule */}
+                  {classInfo.schedules && classInfo.schedules.length > 0 && (
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-800 text-lg mb-2">Jadwal Kelas:</h5>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {classInfo.schedules.map((schedule, idx) => {
+                          const time = schedule.jam.slice(0, 5); // Get only hour and minute
+                          return (
+                            <div
+                              key={idx}
+                              className="bg-gray-50 p-2 rounded-lg shadow-md flex items-center justify-center text-center"
+                            >
+                              <h6 className="text-blue-600 font-semibold text-sm">
+                                {schedule.hari} - {time}
+                              </h6>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Price */}
+                  <p className="text-green-700 font-bold text-xl mb-4">
+                    Harga: Rp {classInfo.price.toLocaleString()}
+                  </p>
+
+
+                  {/* Action Buttons */}
+                  <div className="mt-auto flex justify-between items-center space-x-4">
                     <Link to={`/kelas/${classInfo.id}`}>
-                      <button className="bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition-all">
+                      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
                         Lihat Kelas
                       </button>
                     </Link>
                     <button
                       onClick={() => openPopup(classInfo)}
-                      className="bg-green-500 text-white px-4 py-2 text-sm font-semibold rounded-lg shadow hover:bg-green-600 transition-all"
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition"
                     >
                       Daftar Kelas
                     </button>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
+
         )}
 
         {isPopupOpen && <DaftarKelasPopup onClose={closePopup} classInfo={selectedClass} />}

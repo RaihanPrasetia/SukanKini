@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { FaComments } from 'react-icons/fa';
 import AuthNavbar from '../../components/Navbar/AuthNavbar';
-import Footer from '../../components/Footer';
 import Home from '../Dashboard/Home';
 import Community from '../Dashboard/Community';
 import VideoCategory from '../Dashboard/VideoCategory';
@@ -15,6 +14,7 @@ import DetailKelas from '../Dashboard/Kelas/DetailKelas';
 import { AiOutlineClose } from 'react-icons/ai';
 import { motion } from 'framer-motion';
 import NotFound from '../../components/NotFound';
+import AuthFooter from '../../components/AuthFooter';
 
 const Dashboard = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -72,7 +72,7 @@ const Dashboard = () => {
                 </Routes>
             </div>
             {/* Tampilkan footer jika bukan halaman NotFound */}
-            {!isNotFoundPage && <Footer />}
+            {!isNotFoundPage && <AuthFooter />}
 
             {/* Chat Button */}
             <div

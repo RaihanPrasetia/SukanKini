@@ -88,9 +88,12 @@ function AdminLogin({ onForgotPassword, onRegister }) {
                         />
                         {errors.password && <p className="text-red-600 text-sm mt-2">{errors.password}</p>}
                     </div>
-                    <div className="flex justify-center">
-                        <Button title="Masuk" type="submit"
-                            className="w-full py-3 text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all font-semibold" />
+                    <div className="flex justify-center items-center text-center">
+                        <div>
+
+                            <Button title="Masuk" type="submit"
+                                className="w-full py-3 text-center text-white bg-indigo-600 rounded-lg hover:text-blue-500 hover:bg-indigo-700 transition-all font-semibold" />
+                        </div>
                     </div>
 
 
