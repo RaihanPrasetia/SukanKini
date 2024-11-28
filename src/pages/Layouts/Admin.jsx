@@ -7,6 +7,7 @@ import ProfileUser from '../Admin/ProfileUser';
 import ProfileMitra from '../Admin/ProfileMitra';
 import ProfileTrainer from '../Admin/ProfileTrainer';
 import DataKelas from '../Admin/DataKelas';
+import DataVideo from '../Admin/DataVideo';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Dashboard = () => {
@@ -89,6 +90,12 @@ const Dashboard = () => {
                         >
                             <span className="mr-3 text-xl">📦</span> Kelas
                         </button>
+                        <button
+                            onClick={() => handleMenuClick('admin/video')}
+                            className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
+                        >
+                            <span className="mr-3 text-xl">📦</span> Video
+                        </button>
 
                         {/* Pembayaran */}
                         <button
@@ -115,6 +122,7 @@ const Dashboard = () => {
                         <Route path="profile/trainer" element={<ProfileTrainer />} />
                         <Route path="kelas" element={<DataKelas />} />
                         <Route path="pembayaran" element={<Pembayaran />} />
+                        <Route path="video" element={<DataVideo />} />
                     </Routes>
                 </div>
             </div>

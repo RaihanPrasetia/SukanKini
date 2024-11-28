@@ -8,6 +8,8 @@ const Class = require('../models/classModel');
 const Trainer = require('../models/trainerModel');
 const Membership = require('../models/membershipsModel');
 const Benefit = require('../models/benefitModel');
+const Video = require('../models/videoModel');
+const Comment = require('../models/commentModel');
 
 const seedData = async () => {
   try {
@@ -110,6 +112,38 @@ const seedData = async () => {
     }
 
     console.log('Mitras seeded successfully.');
+
+    // Seed Videos
+    const videos = [];
+    for (let i = 1; i <= 5; i++) {
+      const video = await Video.create({
+        title: `Video ${i}`,
+        description: `Deskripsi Video ${i}`,
+        video_link: `https://youtube.com/video${i}`,
+        video_path: `video${i}.mp4`,
+        thumbnail_link: `https://youtube.com/video${i}`,
+        thumbnail_path: `video${i}.jpg`,
+        createdBy: mitraUsers[i - 1].id,
+        view_count: Math.floor(Math.random() * 100),
+        like_count: Math.floor(Math.random() * 50),
+      });
+      videos.push(video);
+    }
+
+    console.log('Videos seeded successfully.');
+
+    // Seed Comments
+    for (let i = 0; i < videos.length; i++) {
+      for (let j = 1; j <= 3; j++) {
+        await Comment.create({
+          video_id: videos[i].id,
+          createdBy: regularUsers[j - 1].id,
+          message: `Comment ${j} on Video ${videos[i].title}`,
+        });
+      }
+    }
+
+    console.log('Comments seeded successfully.');
 
     // Register Users to Classes
     for (const user of regularUsers) {
