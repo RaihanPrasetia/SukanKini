@@ -44,6 +44,24 @@ const userLikeVideo = async (videoId) => {
         throw new Error(error.response?.data?.message || "Failed to like video");
     }
 };
+const incrementViewCount = async (videoId) => {
+
+    try {
+
+        const response = await axios.put(`${apiUrl}/videos/${videoId}/view`, null, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                api_key: apiKey,
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return response.data; // Kembalikan data dari server
+    } catch (error) {
+        console.error("Error liking video:", error.message || error);
+        throw new Error(error.response?.data?.message || "Failed to like video");
+    }
+};
 
 const userCommentVideo = async (formData) => {
 
@@ -70,6 +88,8 @@ const userVideoService = {
     getUserVideo,
     userLikeVideo,
     userCommentVideo,
+    incrementViewCount
+
 
 };
 

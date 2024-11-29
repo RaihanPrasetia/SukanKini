@@ -26,6 +26,17 @@ const VideoCategory = () => {
     fetchVideos();
   }, []);
 
+  // Increment view count
+  const incrementViewCount = async (videoId) => {
+    try {
+      await videoService.incrementViewCount(videoId);  // Call the backend API to increment view count
+      const updatedVideos = await videoService.getUserVideo();  // Fetch updated videos data
+      setVideos(updatedVideos);  // Update the UI with the new view count
+    } catch (error) {
+      console.error("Failed to update view count:", error.message);
+    }
+  };
+
   const handleLike = async (videoId) => {
     try {
       await videoService.userLikeVideo(videoId);
@@ -95,6 +106,11 @@ const VideoCategory = () => {
     );
   };
 
+  const handleVideoPlay = () => {
+    // Increment view count when the video is played
+    incrementViewCount(currentVideo.id);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-900 text-white">
       <div className="w-full lg:w-1/3 flex flex-col items-center bg-gray-800 px-4 pt-20 lg:pt-24">
@@ -123,6 +139,7 @@ const VideoCategory = () => {
                 className="w-full h-full"
                 allow="autoplay; encrypted-media; picture-in-picture"
                 frameBorder="0"
+                onLoad={handleVideoPlay}  // Call handleVideoPlay when the video is ready to be played
               ></iframe>
             </div>
             <div className="my-4 text-center">
