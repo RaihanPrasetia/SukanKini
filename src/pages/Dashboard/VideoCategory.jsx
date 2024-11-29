@@ -1,104 +1,247 @@
-import React, { useState } from "react";
-
-const categories = [
-  {
-    title: "Dance",
-    image:
-      "https://images.unsplash.com/photo-1505527385992-63e06a393342?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Pembentukan Otot",
-    image:
-      "https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Yoga & Fleksibilitas",
-    image:
-      "https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Relaksasi",
-    image:
-      "https://images.unsplash.com/photo-1611566620327-5e879d9b0955?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
+import React, { useEffect, useState } from "react";
+import videoService from "../../service/User/videoService";
+import { FaArrowUp, FaArrowDown, FaHeart, FaEye, FaComment } from "react-icons/fa";
 
 const VideoCategory = () => {
+  const [videos, setVideos] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 4;
+  const [showComments, setShowComments] = useState(false);
 
-  // Filter categories based on the search term
-  const filteredCategories = categories.filter((category) =>
-    category.title.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const videosData = await videoService.getUserVideo();
+        setVideos(videosData);
+        console.log(videosData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  const handleLike = async (videoId) => {
+    try {
+      await videoService.userLikeVideo(videoId);
+      const videosData = await videoService.getUserVideo();
+      setVideos(videosData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleComment = async (videoId) => {
+    try {
+      const formData = new FormData();
+      formData.append("video_id", videoId);
+      formData.append("message", commentText);
+
+      const response = await videoService.userCommentVideo(formData);
+      console.log(response.message);
+
+      const videosData = await videoService.getUserVideo();
+      setVideos(videosData);
+
+      setIsModalOpen(false);
+      setCommentText("");
+    } catch (error) {
+      console.error("Failed to add comment:", error.message);
+    }
+  };
+
+  const filteredVideos = videos.filter((video) =>
+    video.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  if (videos.length === 0) {
+    return <p className="text-white text-center mt-20">Loading videos...</p>;
+  }
+
+  const currentVideo = filteredVideos[currentIndex % filteredVideos.length] || {};
+
+  const sortedComments = currentVideo.comments ? [...currentVideo.comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = sortedComments.slice(indexOfFirstComment, indexOfLastComment);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(sortedComments.length / commentsPerPage);
+
+  const getEmbedUrl = (url) => {
+    if (url && typeof url === 'string' && url.includes("youtube.com/embed")) {
+      return url;
+    }
+    if (url && typeof url === 'string') {
+      const videoId = url.split("v=")[1]?.split("&")[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+    return null;
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % filteredVideos.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? filteredVideos.length - 1 : prevIndex - 1
+    );
+  };
 
   return (
-    <div
-      className="relative flex flex-col items-center min-h-screen pt-28 pb-20 text-white"
-      style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1716307043003-dbe6a5cc496e?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Overlay to darken background */}
-      <div className="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-6xl px-6">
-        <h1 className="text-4xl font-bold text-center mb-10 text-green-400">
-          Semua Kategori Video
-        </h1>
-
-        {/* Search Input */}
-        <div className="w-full flex justify-center mb-8">
-          <div className="relative w-full max-w-lg">
-            <input
-              type="text"
-              placeholder="Cari Kelas"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 text-gray-800 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-            <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400 hover:text-green-600">
-              🔍
-            </button>
-          </div>
-        </div>
-
-        {/* Category Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-10">
-          {filteredCategories.length > 0 ? (
-            filteredCategories.map((category, index) => (
-              <div
-                key={index}
-                className="relative overflow-hidden rounded-xl shadow-lg group transform hover:scale-105 transition-transform duration-300 bg-gray-800"
-              >
-                {/* Image */}
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="w-full h-64 object-cover rounded-t-xl"
-                />
-                {/* Hover Effect */}
-                <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <button className="text-white text-5xl font-semibold">
-                    ▶️
-                  </button>
-                </div>
-                {/* Title */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent text-center text-lg font-semibold text-white">
-                  {category.title}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-400 text-lg text-center">
-              Kategori tidak ditemukan.
-            </p>
-          )}
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-900 text-white">
+      <div className="w-full lg:w-1/3 flex flex-col items-center bg-gray-800 px-4 pt-20 lg:pt-24">
+        <div className="w-full mb-6">
+          <input
+            type="text"
+            placeholder="Cari Judul Video..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-3 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
         </div>
       </div>
+
+      <div className="flex-grow flex flex-col w-full justify-center items-center relative pt-16">
+        {filteredVideos.length === 0 ? (
+          <div className="text-white text-center mt-20">
+            Video yang anda cari tidak ditemukan.
+          </div>
+        ) : (
+          <>
+            <div className="relative w-full lg:w-2/3 h-64 lg:h-96 bg-black rounded-lg overflow-hidden">
+              <iframe
+                src={getEmbedUrl(currentVideo.videoLink)}
+                title={currentVideo.title}
+                className="w-full h-full"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                frameBorder="0"
+              ></iframe>
+            </div>
+            <div className="my-4 text-center">
+              <h3 className="text-2xl font-semibold">{currentVideo.title}</h3>
+              <p className="text-gray-400">{currentVideo.description}</p>
+            </div>
+
+            <div className="absolute top-1/2 right-5 transform -translate-y-1/2 flex flex-col items-center space-y-4">
+              <div className="cursor-pointer" onClick={handlePrevious}>
+                <FaArrowUp className="text-2xl" />
+              </div>
+              <div className="cursor-pointer" onClick={handleNext}>
+                <FaArrowDown className="text-2xl" />
+              </div>
+
+              <div className="mt-6 text-center">
+                <button
+                  className={`flex items-center space-x-2 text-lg ${currentVideo.isLiked === 1 ? "text-red-500" : "text-gray-400"}`}
+                  onClick={() => handleLike(currentVideo.id)}
+                >
+                  <FaHeart />
+                </button>
+                <span>{currentVideo.likeCount}</span>
+                <div className="flex items-center space-x-2 text-lg mt-2">
+                  <FaEye />
+                </div>
+                <span>{currentVideo.viewCount}</span>
+                <div
+                  className="flex items-center space-x-2 mt-2 cursor-pointer"
+                  onClick={() => setShowComments(!showComments)}
+                >
+                  <FaComment />
+                </div>
+                <span>{currentVideo.comments.length}</span>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="w-full lg:w-1/3 bg-gray-800 px-4 lg:pt-24 pt-4">
+        <h3 className="text-xl font-semibold mb-4">Komentar</h3>
+
+        {showComments && (
+          <>
+            <div className="my-4">
+              <button
+                className="w-full px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Buat Komentar
+              </button>
+            </div>
+            {currentComments.map((comment, index) => (
+              <div key={index} className="bg-gray-700 rounded-lg p-3 mb-3 shadow-md">
+                <div className="flex gap-2 items-center mb-2">
+                  <img
+                    src={comment.owner.imagePath ? `/images/profile/${comment.owner.imagePath}` : '/default_profile.jpg'}
+                    alt={comment.owner.name}
+                    className="w-10 h-10 rounded-full object-cover border"
+                  />
+                  <p className="text-sm font-bold">{comment.owner.name}</p>
+                </div>
+
+                <p className="text-sm text-gray-300">{comment.message}</p>
+                <p className="text-xs text-gray-500 text-end">{new Date(comment.createdAt).toLocaleString()}</p>
+              </div>
+            ))}
+            <div className="flex justify-center space-x-4 mt-4">
+              <button
+                className="px-4 py-2 bg-gray-700 text-white rounded-md disabled:opacity-50"
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-white">{currentPage}</span>
+              <button
+                className="px-4 py-2 bg-gray-700 text-white rounded-md disabled:opacity-50"
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-4/5 sm:w-1/3">
+            <h3 className="text-xl font-semibold text-center text-gray-600">Tulis Komentar untuk</h3>
+            <div className="flex justify-center items-center mb-2">
+              <span className="text-gray-700 text-xl font-semibold">{currentVideo.title}</span>
+            </div>
+            <textarea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              className="w-full p-4 border-2 border-gray-300 rounded-lg text-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 mb-4"
+              placeholder="Tulis komentar di sini..."
+            />
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition duration-200"
+              >
+                Batal
+              </button>
+              <button
+                onClick={() => handleComment(currentVideo.id)}
+                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md transition duration-200"
+              >
+                Kirim
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

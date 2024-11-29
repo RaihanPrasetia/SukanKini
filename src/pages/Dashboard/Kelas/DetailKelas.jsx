@@ -25,7 +25,6 @@ const DetailKelas = () => {
         }
         setClassInfo(fetchedClass.class);
         setRelatedClasses(fetchedClass.relatedClasses);
-        console.log("Relet class :", fetchedClass.relatedClasses)
       } catch (error) {
         setError(error.message || "Failed to fetch class details.");
       } finally {

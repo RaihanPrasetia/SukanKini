@@ -1,7 +1,6 @@
 import React from 'react';
 
 const DetailPembayaran = ({ order, closeModal }) => {
-    console.log(order)
     return (
         <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-8 rounded-xl w-11/12 sm:w-2/3 md:w-1/2 lg:w-1/3 space-y-6 shadow-xl transform transition-all animate__animated animate__zoomIn">

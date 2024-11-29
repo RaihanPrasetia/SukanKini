@@ -10,6 +10,7 @@ const Notification = require('./models/notifModel');
 const Benefit = require('./models/benefitModel');
 const Video = require('./models/videoModel');
 const Comment = require('./models/commentModel');
+const Like = require('./models/likeModel');
 
 // Define Associations
 Class.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
@@ -49,11 +50,15 @@ Comment.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
 
 Video.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
 Video.hasMany(Comment, { foreignKey: 'video_id', as: 'comments' });
+Video.hasMany(Like, { foreignKey: 'video_id', as: 'likes' });
+
+Like.belongsTo(Video, { foreignKey: 'video_id', as: 'video' });
 
 module.exports = {
     Class,
     ClassSchedule,
     Category,
+    Like,
     User,
     Trainer,
     Memberships,

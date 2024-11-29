@@ -114,7 +114,6 @@ function AuthModal({ isOpen, onClose }) {
     const handleConfirmOTPMitra = async (inputOtp) => {
         if (inputOtp === otp.toString()) {
             try {
-                console.log("User data being sent to registerMitra:", userData); // Log the user data
                 const { token, user } = await registerMitra(userData); // Call the updated registerMitra function
                 login(token, user.name, user.role); // Log in the user with the received token and user data
 
