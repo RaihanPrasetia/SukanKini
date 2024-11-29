@@ -17,7 +17,6 @@ const VideoCategory = () => {
       try {
         const videosData = await videoService.getUserVideo();
         setVideos(videosData);
-        console.log(videosData);
       } catch (err) {
         console.error(err);
       }
@@ -26,12 +25,11 @@ const VideoCategory = () => {
     fetchVideos();
   }, []);
 
-  // Increment view count
   const incrementViewCount = async (videoId) => {
     try {
-      await videoService.incrementViewCount(videoId);  // Call the backend API to increment view count
-      const updatedVideos = await videoService.getUserVideo();  // Fetch updated videos data
-      setVideos(updatedVideos);  // Update the UI with the new view count
+      await videoService.incrementViewCount(videoId);
+      const updatedVideos = await videoService.getUserVideo();
+      setVideos(updatedVideos);
     } catch (error) {
       console.error("Failed to update view count:", error.message);
     }
@@ -53,12 +51,9 @@ const VideoCategory = () => {
       formData.append("video_id", videoId);
       formData.append("message", commentText);
 
-      const response = await videoService.userCommentVideo(formData);
-      console.log(response.message);
-
+      await videoService.userCommentVideo(formData);
       const videosData = await videoService.getUserVideo();
       setVideos(videosData);
-
       setIsModalOpen(false);
       setCommentText("");
     } catch (error) {
@@ -69,9 +64,6 @@ const VideoCategory = () => {
   const filteredVideos = videos.filter((video) =>
     video.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  if (videos.length === 0) {
-    return <p className="text-white text-center mt-20">Loading videos...</p>;
-  }
 
   const currentVideo = filteredVideos[currentIndex % filteredVideos.length] || {};
 
@@ -101,18 +93,16 @@ const VideoCategory = () => {
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? filteredVideos.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? filteredVideos.length - 1 : prevIndex - 1));
   };
 
   const handleVideoPlay = () => {
-    // Increment view count when the video is played
     incrementViewCount(currentVideo.id);
   };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-900 text-white">
+      {/* Left Sidebar: Search */}
       <div className="w-full lg:w-1/3 flex flex-col items-center bg-gray-800 px-4 pt-20 lg:pt-24">
         <div className="w-full mb-6">
           <input
@@ -125,6 +115,7 @@ const VideoCategory = () => {
         </div>
       </div>
 
+      {/* Main Video Area */}
       <div className="flex-grow flex flex-col w-full justify-center items-center relative pt-16">
         {filteredVideos.length === 0 ? (
           <div className="text-white text-center mt-20">
@@ -139,7 +130,7 @@ const VideoCategory = () => {
                 className="w-full h-full"
                 allow="autoplay; encrypted-media; picture-in-picture"
                 frameBorder="0"
-                onLoad={handleVideoPlay}  // Call handleVideoPlay when the video is ready to be played
+                onLoad={handleVideoPlay}
               ></iframe>
             </div>
             <div className="my-4 text-center">
@@ -147,6 +138,7 @@ const VideoCategory = () => {
               <p className="text-gray-400">{currentVideo.description}</p>
             </div>
 
+            {/* Video Controls */}
             <div className="absolute top-1/2 right-5 transform -translate-y-1/2 flex flex-col items-center space-y-4">
               <div className="cursor-pointer" onClick={handlePrevious}>
                 <FaArrowUp className="text-2xl" />
@@ -180,6 +172,7 @@ const VideoCategory = () => {
         )}
       </div>
 
+      {/* Right Sidebar: Comments */}
       <div className="w-full lg:w-1/3 bg-gray-800 px-4 lg:pt-24 pt-4">
         <h3 className="text-xl font-semibold mb-4">Komentar</h3>
 
@@ -229,6 +222,7 @@ const VideoCategory = () => {
         )}
       </div>
 
+      {/* Comment Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg w-4/5 sm:w-1/3">

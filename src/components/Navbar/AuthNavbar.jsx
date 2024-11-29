@@ -133,7 +133,7 @@ export default function AuthNavbar() {
                         <img
                             src={userData ? `/images/profile/${userData}` : '/default_profile.jpg'}
                             alt="Profile"
-                            className="h-14 w-14 rounded-full border-2 border-white"
+                            className="h-12 w-12 rounded-full border-2 border-white"
                         />
                     </div>
 

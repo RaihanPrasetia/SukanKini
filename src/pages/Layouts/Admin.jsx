@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; // Tambahkan useState
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import Footer from '../../components/Footer';
+import { FaTachometerAlt, FaUsers, FaChalkboardTeacher, FaBoxOpen, FaDollarSign, FaSignOutAlt } from 'react-icons/fa'; // Import React Icons
 import AdminDashboard from '../Admin/AdminDashboard';
 import Pembayaran from '../Admin/Pembayaran';
 import ProfileUser from '../Admin/ProfileUser';
@@ -9,6 +9,7 @@ import ProfileTrainer from '../Admin/ProfileTrainer';
 import DataKelas from '../Admin/DataKelas';
 import DataVideo from '../Admin/DataVideo';
 import { useAuth } from '../../contexts/AuthContext';
+import AuthFooter from '../../components/AuthFooter';
 
 const Dashboard = () => {
     const { logout } = useAuth();
@@ -43,7 +44,7 @@ const Dashboard = () => {
                             onClick={() => handleMenuClick('admin/dashboard')}
                             className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                         >
-                            <span className="mr-3 text-xl">📄</span> Dashboard
+                            <FaTachometerAlt className="mr-3 text-xl" /> Dashboard
                         </button>
 
                         {/* Data Pengguna Dropdown */}
@@ -53,7 +54,7 @@ const Dashboard = () => {
                                 className="w-full flex items-center justify-between text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                             >
                                 <div className="flex items-center">
-                                    <span className="mr-3 text-xl">👥</span> Data Pengguna
+                                    <FaUsers className="mr-3 text-xl" /> Data Pengguna
                                 </div>
                                 <span>{isDropdownOpen ? '▲' : '▼'}</span>
                             </button>
@@ -80,7 +81,7 @@ const Dashboard = () => {
                             onClick={() => handleMenuClick('admin/profile/trainer')}
                             className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                         >
-                            <span className="mr-3 text-xl">🎓</span> Profil Trainer
+                            <FaChalkboardTeacher className="mr-3 text-xl" /> Profil Trainer
                         </button>
 
                         {/* Kelas */}
@@ -88,13 +89,13 @@ const Dashboard = () => {
                             onClick={() => handleMenuClick('admin/kelas')}
                             className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                         >
-                            <span className="mr-3 text-xl">📦</span> Kelas
+                            <FaBoxOpen className="mr-3 text-xl" /> Kelas
                         </button>
                         <button
                             onClick={() => handleMenuClick('admin/video')}
                             className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                         >
-                            <span className="mr-3 text-xl">📦</span> Video
+                            <FaBoxOpen className="mr-3 text-xl" /> Video
                         </button>
 
                         {/* Pembayaran */}
@@ -102,7 +103,7 @@ const Dashboard = () => {
                             onClick={() => handleMenuClick('admin/pembayaran')}
                             className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                         >
-                            <span className="mr-3 text-xl">💰</span> Pembayaran
+                            <FaDollarSign className="mr-3 text-xl" /> Pembayaran
                         </button>
 
                         {/* Logout */}
@@ -110,7 +111,7 @@ const Dashboard = () => {
                             onClick={() => handleMenuClick('logout')}
                             className="w-full flex items-center text-white px-4 py-3 text-lg hover:bg-indigo-700 hover:text-gray-300 rounded-lg transition-all duration-300 ease-in-out"
                         >
-                            <span className="mr-3 text-xl">🚪</span> Logout
+                            <FaSignOutAlt className="mr-3 text-xl" /> Logout
                         </button>
                     </nav>
                 </aside>
@@ -126,7 +127,7 @@ const Dashboard = () => {
                     </Routes>
                 </div>
             </div>
-            <Footer />
+            <AuthFooter />
         </>
     );
 };
