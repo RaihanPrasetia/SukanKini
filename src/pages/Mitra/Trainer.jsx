@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import trainerService from '../../service/trainerService';
-import Swal from 'sweetalert2';
-import { FaPlus } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import trainerService from "../../service/trainerService";
+import Swal from "sweetalert2";
+import { FaPlus } from "react-icons/fa";
 
 const Trainer = () => {
   const [trainers, setTrainers] = useState([]); // State to store the fetched trainers data
@@ -10,10 +10,10 @@ const Trainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // State to control update modal visibility
   const [trainerData, setTrainerData] = useState({
-    name: '',
-    age: '',
-    phone: '',
-    alamat: '',
+    name: "",
+    age: "",
+    phone: "",
+    alamat: "",
     image_path: null,
   });
   const [selectedTrainer, setSelectedTrainer] = useState(null); // To store the trainer being edited
@@ -25,7 +25,7 @@ const Trainer = () => {
         const fetchedTrainers = await trainerService.getTrainer();
         setTrainers(fetchedTrainers);
       } catch (error) {
-        setError(error.message || 'Failed to fetch trainer data');
+        setError(error.message || "Failed to fetch trainer data");
       } finally {
         setLoading(false); // Set loading to false after data is fetched
       }
@@ -54,24 +54,30 @@ const Trainer = () => {
     const { name, age, image_path, phone, alamat } = trainerData;
 
     if (!name || !age || !alamat) {
-      Swal.fire('Semua Data wajib Diisi');
+      Swal.fire("Semua Data wajib Diisi");
       return;
     }
     if (!phone) {
-      Swal.fire('Nomor Telepon wajib di isi');
+      Swal.fire("Nomor Telepon wajib di isi");
       return;
     }
 
     try {
       await trainerService.createTrainer(name, age, image_path, phone, alamat);
-      Swal.fire('Trainer added successfully');
+      Swal.fire("Trainer added successfully");
       setIsModalOpen(false); // Close modal after success
-      setTrainerData({ name: '', age: '', image_path: null, phone: '', alamat: '' }); // Reset form
+      setTrainerData({
+        name: "",
+        age: "",
+        image_path: null,
+        phone: "",
+        alamat: "",
+      }); // Reset form
       // Optionally, you could refetch trainers after adding a new one
       const updatedTrainers = await trainerService.getTrainer(); // Re-fetch trainers
       setTrainers(updatedTrainers);
     } catch (error) {
-      Swal.fire('Error adding trainer', error.message, 'error');
+      Swal.fire("Error adding trainer", error.message, "error");
     }
   };
 
@@ -80,25 +86,38 @@ const Trainer = () => {
     const { name, age, phone, alamat, image_path } = trainerData;
 
     if (!name || !age || !alamat) {
-      Swal.fire('Semua Data wajib Diisi');
+      Swal.fire("Semua Data wajib Diisi");
       return;
     }
     if (!phone) {
-      Swal.fire('Nomor Telepon wajib di isi');
+      Swal.fire("Nomor Telepon wajib di isi");
       return;
     }
 
     try {
       if (selectedTrainer) {
-        await trainerService.updateTrainer(name, age, image_path, phone, alamat, selectedTrainer.id);
-        Swal.fire('Trainer updated successfully');
+        await trainerService.updateTrainer(
+          name,
+          age,
+          image_path,
+          phone,
+          alamat,
+          selectedTrainer.id
+        );
+        Swal.fire("Trainer updated successfully");
         setIsUpdateModalOpen(false); // Close update modal
-        setTrainerData({ name: '', age: '', image_path: null, phone: '', alamat: '' }); // Reset form
+        setTrainerData({
+          name: "",
+          age: "",
+          image_path: null,
+          phone: "",
+          alamat: "",
+        }); // Reset form
         const updatedTrainers = await trainerService.getTrainer(); // Re-fetch trainers
         setTrainers(updatedTrainers);
       }
     } catch (error) {
-      Swal.fire('Error updating trainer', error.message, 'error');
+      Swal.fire("Error updating trainer", error.message, "error");
     }
   };
 
@@ -117,22 +136,24 @@ const Trainer = () => {
   const handleDeleteClick = async (trainerId) => {
     // Show a confirmation alert before deleting
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
     });
 
     if (result.isConfirmed) {
       try {
         await trainerService.deleteTrainer(trainerId); // Call the delete function
-        Swal.fire('Deleted!', 'Trainer has been deleted.', 'success');
+        Swal.fire("Deleted!", "Trainer has been deleted.", "success");
         // Remove the trainer from the state to reflect the deletion
-        setTrainers((prevTrainers) => prevTrainers.filter(trainer => trainer.id !== trainerId));
+        setTrainers((prevTrainers) =>
+          prevTrainers.filter((trainer) => trainer.id !== trainerId)
+        );
       } catch (error) {
-        Swal.fire('Error deleting trainer', error.message, 'error');
+        Swal.fire("Error deleting trainer", error.message, "error");
       }
     }
   };
@@ -149,8 +170,9 @@ const Trainer = () => {
     <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[80vh]">
       <div className="flex flex-col lg:flex-row justify-between mb-5">
         <h2 className="text-3xl font-semibold mb-4 lg:mb-0">Trainer List</h2>
-        <button className="flex items-center  bg-gradient-to-r from-green-400 to-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-600" onClick={() =>
-          setIsModalOpen(true)} // Open modal when button is clicked
+        <button
+          className="flex items-center bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700"
+          onClick={() => setIsModalOpen(true)} // Open modal when button is clicked
         >
           <FaPlus className="mr-2" />
           Tambah Trainer
@@ -161,58 +183,108 @@ const Trainer = () => {
       {isModalOpen && (
         <div className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
-            <h3 className="text-2xl font-semibold mb-6 text-center">Tambah Trainer</h3>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <h3 className="text-2xl font-semibold mb-6 text-center">
+              Tambah Trainer
+            </h3>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+            >
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium">Name</label>
-                <input type="text" id="name" name="name" value={trainerData.name} onChange={handleInputChange}
+                <label htmlFor="name" className="block text-sm font-medium">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={trainerData.name}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="age" className="block text-sm font-medium">Age</label>
-                <input type="number" id="age" name="age" value={trainerData.age} onChange={handleInputChange}
+                <label htmlFor="age" className="block text-sm font-medium">
+                  Age
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  value={trainerData.age}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="alamat" className="block text-sm font-medium">Alamat</label>
-                <input type="text" id="alamat" name="alamat" value={trainerData.alamat} onChange={handleInputChange}
+                <label htmlFor="alamat" className="block text-sm font-medium">
+                  Alamat
+                </label>
+                <input
+                  type="text"
+                  id="alamat"
+                  name="alamat"
+                  value={trainerData.alamat}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="phone" className="block text-sm font-medium">Nomor Telepon</label>
-                <input type="number" id="phone" name="phone" value={trainerData.phone} onChange={handleInputChange}
+                <label htmlFor="phone" className="block text-sm font-medium">
+                  Nomor Telepon
+                </label>
+                <input
+                  type="number"
+                  id="phone"
+                  name="phone"
+                  value={trainerData.phone}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4 col-span-2">
-                <label htmlFor="image_path" className="block text-sm font-medium">Trainer Image</label>
-                <input type="file" id="image_path" name="image_path" onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    if (file.size > 5 * 1024 * 1024) {
-                      alert("Ukuran file tidak boleh lebih dari 5MB");
-                      e.target.value = ""; // Reset input jika file terlalu besar
-                    } else {
-                      handleFileChange(e); // Panggil fungsi untuk memproses file valid
+                <label
+                  htmlFor="image_path"
+                  className="block text-sm font-medium"
+                >
+                  Trainer Image
+                </label>
+                <input
+                  type="file"
+                  id="image_path"
+                  name="image_path"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      if (file.size > 5 * 1024 * 1024) {
+                        alert("Ukuran file tidak boleh lebih dari 5MB");
+                        e.target.value = ""; // Reset input jika file terlalu besar
+                      } else {
+                        handleFileChange(e); // Panggil fungsi untuk memproses file valid
+                      }
                     }
-                  }
-                }}
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2
           focus:ring-blue-500"
                 />
               </div>
 
               <div className="flex justify-between col-span-2">
-                <button type="button" onClick={() => setIsModalOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
                   className="bg-gray-400 text-white px-6 py-2 rounded-md hover:bg-gray-500 focus:outline-none"
                 >
                   Batal
                 </button>
-                <button type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none">
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none"
+                >
                   Tambah Trainer
                 </button>
               </div>
@@ -225,58 +297,108 @@ const Trainer = () => {
       {isUpdateModalOpen && (
         <div className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
-            <h3 className="text-2xl font-semibold mb-6 text-center">Update Trainer</h3>
-            <form onSubmit={handleUpdateSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <h3 className="text-2xl font-semibold mb-6 text-center">
+              Update Trainer
+            </h3>
+            <form
+              onSubmit={handleUpdateSubmit}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+            >
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium">Name</label>
-                <input type="text" id="name" name="name" value={trainerData.name} onChange={handleInputChange}
+                <label htmlFor="name" className="block text-sm font-medium">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={trainerData.name}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="age" className="block text-sm font-medium">Age</label>
-                <input type="number" id="age" name="age" value={trainerData.age} onChange={handleInputChange}
+                <label htmlFor="age" className="block text-sm font-medium">
+                  Age
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  value={trainerData.age}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="alamat" className="block text-sm font-medium">Alamat</label>
-                <input type="text" id="alamat" name="alamat" value={trainerData.alamat} onChange={handleInputChange}
+                <label htmlFor="alamat" className="block text-sm font-medium">
+                  Alamat
+                </label>
+                <input
+                  type="text"
+                  id="alamat"
+                  name="alamat"
+                  value={trainerData.alamat}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="phone" className="block text-sm font-medium">Nomor Telepon</label>
-                <input type="number" id="phone" name="phone" value={trainerData.phone} onChange={handleInputChange}
+                <label htmlFor="phone" className="block text-sm font-medium">
+                  Nomor Telepon
+                </label>
+                <input
+                  type="number"
+                  id="phone"
+                  name="phone"
+                  value={trainerData.phone}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required />
+                  required
+                />
               </div>
               <div className="mb-4 col-span-2">
-                <label htmlFor="image_path" className="block text-sm font-medium">Trainer Image</label>
-                <input type="file" id="image_path" name="image_path" onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    if (file.size > 5 * 1024 * 1024) {
-                      alert("Ukuran file tidak boleh lebih dari 5MB");
-                      e.target.value = ""; // Reset input file
-                    } else {
-                      handleFileChange(e); // Panggil fungsi jika file valid
+                <label
+                  htmlFor="image_path"
+                  className="block text-sm font-medium"
+                >
+                  Trainer Image
+                </label>
+                <input
+                  type="file"
+                  id="image_path"
+                  name="image_path"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      if (file.size > 5 * 1024 * 1024) {
+                        alert("Ukuran file tidak boleh lebih dari 5MB");
+                        e.target.value = ""; // Reset input file
+                      } else {
+                        handleFileChange(e); // Panggil fungsi jika file valid
+                      }
                     }
-                  }
-                }}
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2
           focus:ring-blue-500"
                 />
               </div>
 
               <div className="flex justify-between col-span-2">
-                <button type="button" onClick={() => setIsUpdateModalOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => setIsUpdateModalOpen(false)}
                   className="bg-gray-400 text-white px-6 py-2 rounded-md hover:bg-gray-500 focus:outline-none"
                 >
                   Batal
                 </button>
-                <button type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none">
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none"
+                >
                   Perbaharui Trainer
                 </button>
               </div>
@@ -300,7 +422,10 @@ const Trainer = () => {
         <tbody>
           {trainers.length === 0 ? (
             <tr>
-              <td colSpan="7" className="py-6 text-center text-lg font-medium text-gray-500">
+              <td
+                colSpan="7"
+                className="py-6 text-center text-lg font-medium text-gray-500"
+              >
                 Belum ada data trainer
               </td>
             </tr>
@@ -308,10 +433,13 @@ const Trainer = () => {
             trainers.map((trainer, index) => (
               <tr
                 key={trainer.id}
-                className={`transition duration-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-                  } hover:bg-green-50`}
+                className={`transition duration-300 ${
+                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                } hover:bg-green-50`}
               >
-                <td className="px-6 py-4 text-center font-medium text-gray-800">{index + 1}</td>
+                <td className="px-6 py-4 text-center font-medium text-gray-800">
+                  {index + 1}
+                </td>
                 <td className="px-6 py-4">
                   <img
                     src={`/images/trainer/${trainer.imagePath}`}
@@ -319,10 +447,14 @@ const Trainer = () => {
                     className="w-12 h-12 object-cover rounded-full border-2 border-blue-500"
                   />
                 </td>
-                <td className="px-6 py-4 font-medium text-gray-900 capitalize">{trainer.name}</td>
+                <td className="px-6 py-4 font-medium text-gray-900 capitalize">
+                  {trainer.name}
+                </td>
                 <td className="px-6 py-4 text-gray-700">{trainer.phone}</td>
                 <td className="px-6 py-4 text-gray-700">{trainer.alamat}</td>
-                <td className="px-6 py-4 text-center text-gray-700">{trainer.age}</td>
+                <td className="px-6 py-4 text-center text-gray-700">
+                  {trainer.age}
+                </td>
                 <td className="px-6 py-4 text-center">
                   <div className="flex gap-4 items-center justify-center">
                     <button
@@ -344,8 +476,6 @@ const Trainer = () => {
           )}
         </tbody>
       </table>
-
-
     </div>
   );
 };

@@ -273,8 +273,8 @@ const KelasMitra = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 p-6 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-2xl w-full sm:w-3/4 md:w-2/3 lg:w-2/3">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 p-6">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-[90vw] max-w-[1200px] h-120vh">
             <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">
               Buat Kelas
             </h3>
@@ -611,8 +611,8 @@ const KelasMitra = () => {
       )}
 
       {isEditModalOpen && editingClass && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 p-6">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full sm:w-3/4 md:w-2/3 lg:w-2/3">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 p-6">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-[90vw] max-w-[1200px] h-120vh">
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               Edit Kelas
             </h3>

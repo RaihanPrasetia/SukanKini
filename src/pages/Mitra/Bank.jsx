@@ -126,14 +126,16 @@ const Bank = () => {
     return (
         <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[80vh]">
             <div className="flex flex-col lg:flex-row justify-between mb-5">
-                <h2 className="text-3xl font-semibold mb-4 lg:mb-0">Bank List</h2>
-                <button className="flex items-center  bg-gradient-to-r from-green-400 to-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-600"
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    <FaPlus className="mr-2" />
-                    Tambah Bank
-                </button>
-            </div>
+  <h2 className="text-3xl font-semibold mb-4 lg:mb-0">Bank List</h2>
+  <button
+    className="flex items-center bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700"
+    onClick={() => setIsModalOpen(true)}
+  >
+    <FaPlus className="mr-2" />
+    Tambah Bank
+  </button>
+</div>
+
 
             {/* Modal Add Bank */}
             {isModalOpen && (
