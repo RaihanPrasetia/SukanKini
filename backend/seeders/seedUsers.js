@@ -120,10 +120,8 @@ const seedData = async () => {
         title: `Video ${i}`,
         description: `Deskripsi Video ${i}`,
         video_link: `https://youtube.com/video${i}`,
-        video_path: `video${i}.mp4`,
         thumbnail_link: `https://youtube.com/video${i}`,
-        thumbnail_path: `video${i}.jpg`,
-        createdBy: mitraUsers[i - 1].id,
+        createdBy: 1,
         view_count: Math.floor(Math.random() * 100),
         like_count: Math.floor(Math.random() * 50),
       });

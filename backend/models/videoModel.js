@@ -23,21 +23,13 @@ const Video = sequelize.define('Video', {
         allowNull: true,
         comment: 'URL for YouTube video',
     },
-    video_path: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        comment: 'File path for uploaded video',
-    },
+
     thumbnail_link: {
         type: DataTypes.STRING,
         allowNull: true,
         comment: 'URL of thumbnail (e.g., from YouTube)',
     },
-    thumbnail_path: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        comment: 'Path of uploaded thumbnail image',
-    },
+
     view_count: {
         type: DataTypes.INTEGER,
         defaultValue: 0,

@@ -21,20 +21,10 @@ module.exports = {
         allowNull: true,
         comment: 'URL for YouTube video',
       },
-      video_path: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        comment: 'File path for uploaded video',
-      },
       thumbnail_link: {
         type: Sequelize.STRING,
         allowNull: true,
         comment: 'URL of thumbnail (e.g., from YouTube)',
-      },
-      thumbnail_path: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        comment: 'Path of uploaded thumbnail image',
       },
       view_count: {
         type: Sequelize.INTEGER,

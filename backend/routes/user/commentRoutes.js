@@ -6,7 +6,7 @@ const upload = multer();
 const authenticateJWT = require('../../middleware/jwtMiddleware');
 
 
-router.post('/comments', authenticateJWT, createComment); // Create a new comment
+router.post('/comments', upload.none(), authenticateJWT, createComment); // Create a new comment
 router.get('/comments/:video_id', authenticateJWT, upload.none(), getComments); // Get comments for a specific video
 
 module.exports = router;

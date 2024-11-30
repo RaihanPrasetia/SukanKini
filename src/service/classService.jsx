@@ -134,7 +134,6 @@ const updateClass = async (classId, name, category_id, alamat, schedules, benefi
         formData.append("price", price);
         formData.append("updatedAt", new Date().toISOString()); // Set the updatedAt as current date in ISO format
 
-        console.log("ceking data di service: ", category_id);
 
         await axios.post(`${apiUrl}/mitra/class/update/${classId}`, formData, {
             headers: {

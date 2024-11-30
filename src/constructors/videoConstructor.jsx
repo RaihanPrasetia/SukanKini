@@ -1,25 +1,27 @@
+
 export default class Video {
     constructor({
         id,
         title,
         description,
         video_link,
-        video_path,
         view_count,
         thumbnail_link,
-        thumbnail_path,
         like_count,
+        isLiked = false, // Tambahkan properti isLiked
         comments = [],
+        likes = [],
     }) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.videoLink = video_link;
-        this.videoPath = video_path;
         this.thumbnailLink = thumbnail_link;
-        this.thumbnailPath = thumbnail_path;
         this.viewCount = view_count;
         this.likeCount = like_count;
+        this.isLiked = isLiked; // Tetapkan nilai isLiked langsung dari respons API
+
+        // Proses komentar
         this.comments = comments.map((comment) => ({
             id: comment.id,
             createdBy: comment.createdBy,
@@ -28,9 +30,11 @@ export default class Video {
             owner: comment.owner
                 ? {
                     name: comment.owner.name,
+                    imagePath: comment.owner.image_path,
                     age: comment.owner.age,
                 }
                 : null,
-        }), []);
+        }));
+
     }
 }

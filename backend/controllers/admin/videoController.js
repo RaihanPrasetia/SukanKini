@@ -44,9 +44,16 @@ const upload = multer({
 });
 
 const isValidYouTubeLink = (url) => {
-    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)\/(watch\?v=|embed\/|v\/|e\/|playlist\?list=)([A-Za-z0-9_-]{11})([?&][^#]*)?$/;
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)\/(watch\?v=|embed\/|v\/|e\/|playlist\?list=)?([A-Za-z0-9_-]{11})([?&][^#]*)?$/;
     return youtubeRegex.test(url);
 };
+
+
+const getEmbedUrl = (url) => {
+    const videoIdMatch = url.match(/(?:v=|\/)([A-Za-z0-9_-]{11})/);
+    return videoIdMatch ? `https://www.youtube.com/embed/${videoIdMatch[1]}` : null;
+};
+
 
 
 
@@ -55,21 +62,28 @@ const createVideo = async (req, res) => {
         const userId = req.userId; // ID pengguna yang sedang login
         const { title, description, video_link, thumbnail_link } = req.body;
 
-
         // Validasi input
         if (!title) {
             return res.status(400).json({ message: 'Title is required' });
         }
-        if (video_link && isValidYouTubeLink(video_link)) {
+
+        // Validasi video_link
+        if (!video_link || !isValidYouTubeLink(video_link)) {
             return res.status(400).json({ message: 'Invalid YouTube link' });
+        }
+
+        // Konversi video_link ke format embed
+        const embedLink = getEmbedUrl(video_link);
+        if (!embedLink) {
+            return res.status(400).json({ message: 'Failed to process YouTube link' });
         }
 
         // Create new video entry
         const newVideo = await Video.create({
             title,
             description,
-            video_link,
-            thumbnail_link,
+            video_link: embedLink,
+            thumbnail_link: thumbnail_link || null, // Jika tidak ada thumbnail, set null
             createdBy: userId,
         });
 
@@ -79,6 +93,7 @@ const createVideo = async (req, res) => {
         res.status(500).json({ message: 'Failed to create video', error: error.message });
     }
 };
+
 
 
 // **Get All Videos**
@@ -110,26 +125,39 @@ const updateVideo = async (req, res) => {
         const video = await Video.findOne({ where: { id: videoId, createdBy: userId } });
 
         if (!video) {
-            return res.status(404).json({ message: 'Video not found or you are not authorized to update this video' });
+            return res
+                .status(404)
+                .json({ message: 'Video not found or you are not authorized to update this video' });
+        }
+
+        // Validasi video_link jika ada
+        let embedLink = video.video_link; // Default: gunakan link sebelumnya
+        if (video_link) {
+            if (!isValidYouTubeLink(video_link)) {
+                return res.status(400).json({ message: 'Invalid YouTube link' });
+            }
+            embedLink = getEmbedUrl(video_link);
+            if (!embedLink) {
+                return res.status(400).json({ message: 'Failed to process YouTube link' });
+            }
         }
 
         // Update hanya kolom yang diberikan
         if (title) video.title = title;
         if (description) video.description = description;
-        if (video_link) video.video_link = video_link;
+        if (video_link) video.video_link = embedLink;
         if (thumbnail_link) video.thumbnail_link = thumbnail_link;
-
-
 
         // Simpan perubahan
         await video.save();
 
         res.status(200).json({ message: 'Video updated successfully', video });
     } catch (error) {
-        console.error(error);
+        console.error('Error updating video:', error);
         res.status(500).json({ message: 'Failed to update video', error: error.message });
     }
 };
+
 
 // **Delete Video**
 const deleteVideo = async (req, res) => {

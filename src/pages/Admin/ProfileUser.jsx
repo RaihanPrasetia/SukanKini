@@ -16,7 +16,6 @@ export default function ProfilUser() {
       try {
         const userData = await adminUserService.getAdminDataUser();
         setUserData(userData);
-        console.log(userData); // Assign fetched data to userData state
       } catch (error) {
         Swal.fire({
           title: 'Error',

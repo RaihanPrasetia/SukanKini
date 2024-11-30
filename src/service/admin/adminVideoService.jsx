@@ -36,19 +36,13 @@ const createVideo = async (formData) => {
             },
         });
 
-        // Log response for debugging (optional)
-        console.log("Video created successfully:", response.data);
 
-        // Return the newly created video data
         return response.data;
     } catch (error) {
-        // Log error for debugging (optional)
         console.error("Error creating video:", error.message || error);
 
-        // Extract error message from response if available
         const errorMessage = error.response?.data?.message || error.message || "Failed to create video";
 
-        // Handle errors and throw a more detailed message
         throw new Error(errorMessage);
     }
 };

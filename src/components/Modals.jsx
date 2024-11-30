@@ -10,7 +10,9 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext'; // Ensure to use your custom hook
 import LoginMitraForm from './authModals/LoginMitraForm';
 import RegisterMitraForm from './authModals/RegisterMitraForm';
+import NewPasswordForm from './authModals/NewPasswordForm';
 import OtpFormMitra from './authModals/OtpFormMitra';
+import OtpFormReset from './authModals/OtpFormReset';
 import sendOtpService from '../service/sendOtpService';
 import Swal from 'sweetalert2';
 
@@ -29,7 +31,6 @@ function AuthModal({ isOpen, onClose }) {
     const [message, setMessage] = useState(null)
     const navigate = useNavigate();
     const { login } = useAuth(); // Use your AuthContext's login function
-
     if (!isOpen) return null;
 
     const handleForgotPassword = () => setCurrentForm("forgotPassword");
@@ -61,6 +62,7 @@ function AuthModal({ isOpen, onClose }) {
             toast.error('Terjadi kesalahan saat mengirim OTP. Silakan coba lagi.');
         }
     };
+
     const handleSendOTP = ({ otp: generatedOtp, name, email, password, kota, alamat, brand, no_rek, an, message }) => {
         setOtp(generatedOtp);  // Store generated OTP for validation later
         setMessage(message);  // Store generated OTP for validation later
@@ -73,6 +75,35 @@ function AuthModal({ isOpen, onClose }) {
         setUserData({ name, email, password, kota, alamat, brand, no_rek, an });  // Store user data for registration
         setCurrentForm("otpConfirmationMitra");  // Switch to OTP confirmation form
     }
+
+    const handleSendOtpForgot = ({ otp: forgotOtp, email, message }) => {
+        setOtp(forgotOtp); // Simpan OTP di state
+        setUserData({ email });
+        setMessage(message)
+        setCurrentForm("otpForgotConfirmation"); // Pindah ke form verifikasi OTP
+    };
+
+    const handleToResetPassword = (inputOtp) => {
+        if (inputOtp === otp.toString()) {
+            Swal.fire({
+                title: "Berhasil!",
+                text: "OTP cocok. Silahkan atur ulang kata sandi.",
+                icon: "success",
+                confirmButtonText: "OK",
+            }).then(() => {
+                setCurrentForm('newResetPassword');
+            });
+        } else {
+            Swal.fire({
+                title: "OTP Tidak Valid",
+                text: "OTP yang Anda masukkan tidak cocok. Silakan coba lagi.",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+        }
+    };
+
+
 
     const handleConfirmOTP = async (inputOtp) => {
         if (inputOtp === otp.toString()) {
@@ -114,7 +145,6 @@ function AuthModal({ isOpen, onClose }) {
     const handleConfirmOTPMitra = async (inputOtp) => {
         if (inputOtp === otp.toString()) {
             try {
-                console.log("User data being sent to registerMitra:", userData); // Log the user data
                 const { token, user } = await registerMitra(userData); // Call the updated registerMitra function
                 login(token, user.name, user.role); // Log in the user with the received token and user data
 
@@ -192,7 +222,7 @@ function AuthModal({ isOpen, onClose }) {
             case "forgotPassword":
                 return (
                     <ForgotForm
-                        onSendOTP={handleSendOTP}
+                        onSendOTP={handleSendOtpForgot}
                         onLogin={() => setCurrentForm("login")}
                     />
                 );
@@ -212,6 +242,22 @@ function AuthModal({ isOpen, onClose }) {
                         onMessage={message}
                         onConfirmOTPMitra={handleConfirmOTPMitra}
                         onRegisterMitra={handleRegisterMitra}
+                    />
+                );
+            case "otpForgotConfirmation":
+                return (
+                    <OtpFormReset
+                        reSendOtp={handleResendOtp}
+                        onConfirmOTPMitra={handleToResetPassword}
+                        onBack={handleForgotPassword}
+                    />
+                );
+            case "newResetPassword":
+                return (
+                    <NewPasswordForm
+                        reEmail={userData.email}
+
+                        onLogin={() => setCurrentForm("login")}
                     />
                 );
             default:
