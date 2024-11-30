@@ -41,7 +41,6 @@ export default function Community() {
 
   return (
     <div className="relative min-h-screen text-white flex flex-col items-center font-poppins">
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{
@@ -51,9 +50,7 @@ export default function Community() {
         }}
       ></div>
 
-      {/* Content */}
       <div className="relative z-10 pt-20 px-6 w-full max-w-7xl">
-        {/* Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-10">
           <motion.button
             className="text-yellow-400 text-3xl transform hover:scale-110 transition duration-300"
@@ -88,7 +85,6 @@ export default function Community() {
           </motion.div>
         </div>
 
-        {/* Community Cards */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
           initial="hidden"
@@ -122,7 +118,6 @@ export default function Community() {
           ))}
         </motion.div>
 
-        {/* Footer */}
         <motion.div
           className="mt-12 text-center"
           initial="hidden"

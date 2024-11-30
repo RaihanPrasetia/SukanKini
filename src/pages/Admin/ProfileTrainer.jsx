@@ -16,7 +16,6 @@ export default function ProfileTrainer() {
       try {
         const trainerData = await adminTrainerService.getAdminTrainer();
         setTrainerData(trainerData);
-        console.log(trainerData); // Assign fetched data to trainerData state
       } catch (error) {
         Swal.fire({
           title: 'Error',

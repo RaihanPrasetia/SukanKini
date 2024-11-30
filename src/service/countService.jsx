@@ -14,7 +14,6 @@ const getCountData = async () => {
 
         // Inisialisasi objek sesuai dengan response yang diterima
         if (response.data) {
-            console.log(response.data.countMemberships)
             const { countClasses, countMemberships, countTotal, paymentStatusCounts } = response.data;
             return {
                 countClasses,

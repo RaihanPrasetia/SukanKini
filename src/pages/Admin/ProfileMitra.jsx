@@ -16,7 +16,6 @@ export default function ProfilMitra() {
       try {
         const mitraData = await adminUserService.getAdminDataMitra();
         setMitraData(mitraData);
-        console.log(mitraData) // Assign fetched data to mitraData state
       } catch (error) {
         Swal.fire({
           title: 'Error',

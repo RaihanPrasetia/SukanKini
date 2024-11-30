@@ -1,4 +1,3 @@
-const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
@@ -189,6 +188,49 @@ const cekemail = async (req, res) => {
   }
 };
 
+
+const cekEmailReady = async (req, res) => {
+  const { email } = req.body;
+
+  // Validasi format email
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({
+      success: false,
+      message: "Format email tidak valid",
+    });
+  }
+
+  try {
+    // Cek apakah email sudah terdaftar
+    const isEmailRegistered = await User.findOne({
+      where: { email },
+    });
+
+    if (isEmailRegistered) {
+      // Jika email terdaftar
+      return res.status(200).json({
+        success: true,
+        message: "Email ditemukan dan sudah terdaftar",
+      });
+    }
+
+    // Jika email belum terdaftar
+    return res.status(404).json({
+      success: false,
+      message: "Email yang Anda masukkan belum terdaftar",
+    });
+  } catch (error) {
+    console.error("Error checking email:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan pada server",
+    });
+  }
+};
+
+
+
+
 const verifyToken = (req, res, next) => {
   const token = req.headers['authorization'];
 
@@ -205,7 +247,35 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+const resetPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({ success: false, message: 'Format email tidak valid.' });
+  }
+  if (!newPassword || newPassword.length < 8) {
+    return res.status(400).json({ success: false, message: 'Password baru harus setidaknya 8 karakter.' });
+  }
+
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Email tidak terdaftar.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.update({ password: hashedPassword }, { where: { email } });
+
+    res.status(200).json({ success: true, message: 'Password berhasil diperbarui.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan pada server.' });
+  }
+};
 
 
 
-module.exports = { register, login, verifyToken, cekemail, registerMitra };
+
+
+
+module.exports = { register, login, verifyToken, cekemail, registerMitra, cekEmailReady, resetPassword };

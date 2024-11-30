@@ -17,6 +17,9 @@ const userRoutes = require('./userRoutes');
 const classUser = require('./user/classUser');
 const paymentUser = require('./user/paymentUser');
 const getBankMitra = require('./user/bankMitra');
+const commentRoutes = require('./user/commentRoutes');
+const videoUserRoute = require('./user/videosRoutes');
+const likeRoute = require('./user/likeRoutes');
 
 // import Send Otp Routes & notif
 const sendOtp = require('./sendOtpRoutes');
@@ -28,6 +31,7 @@ const adminClass = require('./admin/adminClassRoutes');
 const adminTrainer = require('./admin/adminTrainerRoutes');
 const adminUser = require('./admin/adminUser');
 const adminDashboard = require('./admin/adminDashboardCount');
+const adminVideo = require('./admin/adminVideoRoutes');
 
 router.use(authRoutes);
 
@@ -48,6 +52,9 @@ router.use(paymentUser);
 router.use(getBankMitra);
 router.use(sendOtp);
 router.use(notifications);
+router.use(commentRoutes);
+router.use(videoUserRoute);
+router.use(likeRoute);
 
 // Admin Routes
 router.use('/admin', adminPayment);
@@ -55,6 +62,7 @@ router.use('/admin', adminClass);
 router.use('/admin', adminTrainer);
 router.use('/admin', adminUser);
 router.use('/admin', adminDashboard);
+router.use('/admin', adminVideo);
 
 
 module.exports = router;

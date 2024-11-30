@@ -1,27 +1,18 @@
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('benefits', {
+    await queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      class_id: {
+      video_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Classes',
+          model: 'videos',
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -37,25 +28,28 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      message: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW,
       },
       deletedAt: {
-        type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW,
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('benefits');
-  }
+    await queryInterface.dropTable('comments');
+  },
 };

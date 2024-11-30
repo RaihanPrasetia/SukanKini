@@ -65,6 +65,57 @@ export const checkEmailAvailability = async (email) => {
     }
 };
 
+export const checkEmail = async (email) => {
+    try {
+        const response = await fetch(`${apiUrl}/check-email/ready`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api_key': apiKey,
+            },
+            body: JSON.stringify({ email }),
+        });
+
+        // Tangkap error jika respons bukan 200 OK
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Kesalahan pada server");
+        }
+
+        const result = await response.json();
+        return result.success; // true jika email terdaftar
+    } catch (error) {
+        console.error("Error checking email availability:", error);
+        throw error; // Lempar error agar bisa ditangkap di handleForgot
+    }
+};
+
+
+export const resetPassword = async (email, newPassword) => {
+    try {
+        const response = await fetch(`${apiUrl}/reset-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api_key': apiKey,
+            },
+            body: JSON.stringify({ email, newPassword }),
+        });
+
+        // Tangkap error jika respons bukan 200 OK
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Kesalahan pada server");
+        }
+
+        const result = await response.json();
+        return result.success; // true jika email terdaftar
+    } catch (error) {
+        console.error("Error checking email availability:", error);
+        throw error; // Lempar error agar bisa ditangkap di handleForgot
+    }
+}
+
 
 
 

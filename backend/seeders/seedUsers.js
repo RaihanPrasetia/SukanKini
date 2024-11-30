@@ -1,236 +1,180 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
-const Payment = require('../models/paymentModel');  // Import the Payment model
+const Payment = require('../models/paymentModel');
 const ClassSchedule = require('../models/classScheduleModel');
 const Category = require('../models/categoryModel');
 const Class = require('../models/classModel');
 const Trainer = require('../models/trainerModel');
 const Membership = require('../models/membershipsModel');
 const Benefit = require('../models/benefitModel');
+const Video = require('../models/videoModel');
+const Comment = require('../models/commentModel');
 
 const seedData = async () => {
   try {
-
-    // Seed User Data
+    // Seed Admin User
     const hashedPassword = await bcrypt.hash('12345678', 10);
 
-    // // Create admin user
     const adminUser = await User.create({
-      name: 'admin',
+      name: 'Admin',
       password: hashedPassword,
       email: 'admin@example.com',
       role: 'admin',
       isVerified: true,
       gender: 'Laki-Laki',
-      age: 20,
+      age: 30,
     });
 
-    // Create regular user
-    const regularUser = await User.create({
-      name: 'user',
-      password: hashedPassword,
-      email: 'user@example.com',
-      kota: 'Jambi',
-      alamat: 'Jalan Merpati Blok.D No.2 Kel.Selamat',
-      isVerified: true,
-      gender: 'Laki-Laki',
-      age: 20,
-      height: 170,
-      weight: 72,
-      phone_number: '0857912635271',
-    });
+    console.log('Admin seeded successfully.');
 
-    // Create Mitra user
-    const mitraUser = await User.create({
-      name: 'mitra',
-      password: hashedPassword,
-      email: 'mitra@example.com',
-      role: 'mitra',
-      alamat: 'Astone Hotel',
-      kota: 'Jambi',
-      isVerified: true,
-      gender: 'Perempuan',
-      age: 45,
-      phone_number: '0857912635276',
-    });
+    // Seed Regular Users
+    const regularUsers = [];
+    for (let i = 1; i <= 3; i++) {
+      const user = await User.create({
+        name: `User ${i}`,
+        password: hashedPassword,
+        email: `user${i}@example.com`,
+        kota: 'Jambi',
+        alamat: `Alamat User ${i}`,
+        isVerified: true,
+        gender: 'Laki-Laki',
+        age: 25 + i,
+        height: 170 + i,
+        weight: 70 + i,
+        phone_number: `08579126352${i}`,
+      });
+      regularUsers.push(user);
+    }
 
     console.log('Users seeded successfully.');
-    // // Seed Bank Data
-    await Bank.create({
-      brand: 'BRI',
-      an: 'Admin',
-      no_rek: '5267891022',
-      createdBy: adminUser.id,
-    });
-    console.log('Bank seeded successfully.');
 
-    await Bank.create({
-      brand: 'MANDIRI',
-      an: 'Mitra',
-      no_rek: '62818626372',
-      createdBy: mitraUser.id,
-    });
-    await Bank.create({
-      brand: 'BCA',
-      an: 'Mitra',
-      no_rek: '2863234',
-      createdBy: mitraUser.id,
-    });
+    // Seed Mitra Users
+    const mitraUsers = [];
+    for (let i = 1; i <= 5; i++) {
+      const mitra = await User.create({
+        name: `Mitra ${i}`,
+        password: hashedPassword,
+        email: `mitra${i}@example.com`,
+        role: 'mitra',
+        kota: 'Jambi',
+        alamat: `Alamat Mitra ${i}`,
+        isVerified: true,
+        gender: 'Perempuan',
+        age: 40 + i,
+        phone_number: `08579126352${i + 5}`,
+      });
+      mitraUsers.push(mitra);
 
-    console.log('Banks seeded successfully.');
+      // Seed Banks for Mitra
+      await Bank.bulkCreate([
+        { brand: 'BCA', an: `Mitra ${i}`, no_rek: `52678910${i}1`, createdBy: mitra.id },
+        { brand: 'BRI', an: `Mitra ${i}`, no_rek: `52678910${i}2`, createdBy: mitra.id },
+      ]);
 
-    await Category.create({
-      name: 'Yoga',
-      createdBy: mitraUser.id,
-    })
-    await Category.create({
-      name: 'Zumba',
-      createdBy: mitraUser.id,
-    })
-    await Trainer.create({
-      name: 'Natalie Rose',
-      age: 32,
-      image_path: 'pelatih1.jpg',
-      alamat: 'Jalan Merpati Blok E no 32',
-      phone_number: '086735243712',
-      createdBy: mitraUser.id,
-    })
-    await Trainer.create({
-      name: 'Natasha Willona',
-      age: 32,
-      image_path: 'pelatih1.jpg',
-      alamat: 'Jalan Merpati Blok E no 31',
-      phone_number: '08629633483',
-      createdBy: mitraUser.id,
-    })
-    await Class.create({
-      name: 'Kelas Yoga Natalie',
-      category_id: 1,
-      alamat: mitraUser.kota + ', ' + mitraUser.alamat,
-      trainer_id: 1,
-      createdBy: mitraUser.id,
-      price: 500000
-    })
-    await Class.create({
-      name: 'Kelas Zumba Bersama Natasha',
-      category_id: 2,
-      alamat: mitraUser.kota + ', ' + mitraUser.alamat,
-      trainer_id: 2,
-      createdBy: mitraUser.id,
-      price: 300000
-    })
-    await ClassSchedule.bulkCreate([
-      {
-        class_id: 1,
-        hari: 'Senin',
-        jam: '09:00',
-        createdBy: mitraUser.id,
-      },
-      {
-        class_id: 1,
-        hari: 'Rabu',
-        jam: '09:00',
-        createdBy: mitraUser.id,
-      },
-      {
-        class_id: 1,
-        hari: 'Kamis',
-        jam: '11:00',
-        createdBy: mitraUser.id,
-      },
-      {
-        class_id: 2,
-        hari: 'Senin',
-        jam: '11:00',
-        createdBy: mitraUser.id,
-      },
-      {
-        class_id: 2,
-        hari: 'Rabu',
-        jam: '14:00',
-        createdBy: mitraUser.id,
-      },
-      {
-        class_id: 2,
-        hari: 'Kamis',
-        jam: '13:00',
-        createdBy: mitraUser.id,
+      // Seed Classes for Mitra
+      for (let j = 1; j <= 2; j++) {
+        const category = await Category.create({
+          name: `Kategori ${j} Mitra ${i}`,
+          createdBy: mitra.id,
+        });
+
+        const trainer = await Trainer.create({
+          name: `Trainer ${j} Mitra ${i}`,
+          age: 30 + j,
+          image_path: 'trainer.jpg',
+          alamat: `Alamat Trainer ${j} Mitra ${i}`,
+          phone_number: `0867352437${i}${j}`,
+          createdBy: mitra.id,
+        });
+
+        const classInstance = await Class.create({
+          name: `Kelas ${j} Mitra ${i}`,
+          category_id: category.id,
+          alamat: mitra.kota + ', ' + mitra.alamat,
+          trainer_id: trainer.id,
+          createdBy: mitra.id,
+          price: 100000 * j,
+        });
+
+        // Seed Schedules for Class
+        await ClassSchedule.bulkCreate([
+          { class_id: classInstance.id, hari: 'Senin', jam: '09:00', createdBy: mitra.id },
+          { class_id: classInstance.id, hari: 'Rabu', jam: '10:00', createdBy: mitra.id },
+        ]);
+
+        // Seed Benefits for Class
+        await Benefit.bulkCreate([
+          { name: 'Benefit 1', description: 'Deskripsi 1', class_id: classInstance.id, createdBy: mitra.id },
+          { name: 'Benefit 2', description: 'Deskripsi 2', class_id: classInstance.id, createdBy: mitra.id },
+        ]);
       }
-    ]);
+    }
 
-    await Benefit.create({
-      name: 'Personal Training',
-      description: 'Dapatkan Pelatihan dengan Trainer yang berpengalaman dan bersertifikat internasional',
-      class_id: 1,
-      createdBy: mitraUser.id,
-    })
-    await Benefit.create({
-      name: 'Makan & Minuman',
-      description: 'Gratis cemilan dan minuman setiap sesi',
-      class_id: 1,
-      createdBy: mitraUser.id,
-    })
+    console.log('Mitras seeded successfully.');
 
-    await Benefit.create({
-      name: 'Personal Training',
-      description: 'Dapatkan Pelatihan dengan Trainer yang berpengalaman dan bersertifikat internasional',
-      class_id: 2,
-      createdBy: mitraUser.id,
-    })
+    // Seed Videos
+    const videos = [];
+    for (let i = 1; i <= 5; i++) {
+      const video = await Video.create({
+        title: `Video ${i}`,
+        description: `Deskripsi Video ${i}`,
+        video_link: `https://youtube.com/video${i}`,
+        thumbnail_link: `https://youtube.com/video${i}`,
+        createdBy: 1,
+        view_count: Math.floor(Math.random() * 100),
+        like_count: Math.floor(Math.random() * 50),
+      });
+      videos.push(video);
+    }
 
+    console.log('Videos seeded successfully.');
 
-    await Payment.create({
-      user_id: adminUser.id, // Payment for the admin user
-      bank_id: 1, // Associated with Bank A
-      bukti: 'bukti1.jpg', // Payment proof file path
-      status_pembayaran: 'Diterima',
-      createdBy: mitraUser.id,
-      total: 250000 // Payment status (completed)
-    });
+    // Seed Comments
+    for (let i = 0; i < videos.length; i++) {
+      for (let j = 1; j <= 3; j++) {
+        await Comment.create({
+          video_id: videos[i].id,
+          createdBy: regularUsers[j - 1].id,
+          message: `Comment ${j} on Video ${videos[i].title}`,
+        });
+      }
+    }
 
-    await Payment.create({
-      user_id: mitraUser.id, // Payment for the regular user
-      bank_id: 2, // Associated with Bank A
-      bukti: 'path/to/payment-proof-user.jpg', // Payment proof file path
-      status_pembayaran: 'Diproses',
-      createdBy: regularUser.id,
-      class_id: 1,
-      total: 150000
-    });
-    await Payment.create({
-      user_id: mitraUser.id, // Payment for the regular user
-      bank_id: 2, // Associated with Bank A
-      bukti: 'path/to/payment-proof-user.jpg', // Payment proof file path
-      status_pembayaran: 'Ditolak',
-      createdBy: regularUser.id,
-      class_id: 1,
-      total: 150000
-    });
+    console.log('Comments seeded successfully.');
 
-    await Payment.create({
-      user_id: mitraUser.id, // Payment for the mitra user
-      bank_id: 2, // Associated with Bank B
-      bukti: 'path/to/payment-proof-mitra.jpg', // Payment proof file path
-      status_pembayaran: 'Diterima',
-      createdBy: regularUser.id,
-      class_id: 2,
-      total: 200000
-    });
+    // Register Users to Classes
+    for (const user of regularUsers) {
+      for (let i = 0; i < 2; i++) {
+        const classId = i + 1; // Assuming classes are auto-incremented starting from 1
+        await Membership.create({
+          user_id: user.id,
+          class_id: classId,
+          status: 'active',
+        });
+      }
+    }
 
-    await Membership.create({
-      user_id: regularUser.id,
-      class_id: 1,
-      status: 'active'
-    })
+    console.log('Memberships seeded successfully.');
 
-    await Membership.create({
-      user_id: regularUser.id,
-      class_id: 2,
-      status: 'active'
-    })
+    // Seed Payments
+    for (const user of regularUsers) {
+      await Payment.bulkCreate([
+        { createdBy: user.id, bank_id: 1, class_id: 1, total: 50000, status_pembayaran: 'Diproses', user_id: mitraUsers[0].id },
+        { createdBy: user.id, bank_id: 1, class_id: 2, total: 70000, status_pembayaran: 'Diterima', user_id: mitraUsers[1].id },
+        { createdBy: user.id, bank_id: 1, class_id: 1, total: 80000, status_pembayaran: 'Ditolak', user_id: mitraUsers[2].id },
+      ]);
+    }
 
-    console.log('User seeded successfully.');
+    for (const mitra of mitraUsers) {
+      await Payment.bulkCreate([
+        { createdBy: mitra.id, bank_id: 1, total: 100000, status_pembayaran: 'Diproses', user_id: adminUser.id },
+        { createdBy: mitra.id, bank_id: 1, total: 150000, status_pembayaran: 'Diterima', user_id: adminUser.id },
+        { createdBy: mitra.id, bank_id: 1, total: 200000, status_pembayaran: 'Ditolak', user_id: adminUser.id },
+      ]);
+    }
+
+    console.log('Payments seeded successfully.');
   } catch (error) {
     console.error('Error seeding data:', error);
   }

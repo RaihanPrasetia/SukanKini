@@ -1,31 +1,42 @@
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('benefits', {
+    await queryInterface.createTable('videos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      name: {
+      title: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       description: {
         type: Sequelize.TEXT,
-        allowNull: true
+        allowNull: true,
       },
-      class_id: {
+      video_link: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        comment: 'URL for YouTube video',
+      },
+      thumbnail_link: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        comment: 'URL of thumbnail (e.g., from YouTube)',
+      },
+      view_count: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
         allowNull: false,
-        references: {
-          model: 'Classes',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        comment: 'Total number of views',
+      },
+      like_count: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+        comment: 'Total number of likes',
       },
       createdBy: {
         type: Sequelize.INTEGER,
@@ -40,22 +51,21 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW,
       },
       deletedAt: {
-        type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW,
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('benefits');
-  }
+    await queryInterface.dropTable('videos');
+  },
 };

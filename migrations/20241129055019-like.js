@@ -1,61 +1,54 @@
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('benefits', {
+    await queryInterface.createTable('Likes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      class_id: {
+      video_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Classes',
-          key: 'id',
+          model: 'Videos', // Nama tabel video (harus sesuai dengan nama tabel di database)
+          key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: 'Users', // Nama tabel user (harus sesuai dengan nama tabel di database)
+          key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      isLiked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       },
       deletedAt: {
-        type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW,
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('benefits');
+    await queryInterface.dropTable('Likes');
   }
 };
