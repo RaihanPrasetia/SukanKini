@@ -168,141 +168,154 @@ const Profile = () => {
 
         {/* Detail Profile Section */}
         {showDetails && (
-          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-6 md:p-8">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl sm:text-2xl font-semibold text-gray-800">Detail Profile</h3>
-              <button
-                onClick={handleEditProfile}
-                className={`px-4 py-1 text-white rounded-md text-[16px] font-semibold ${isEditing ? 'bg-red-500' : 'bg-yellow-500'}`}
+          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 md:p-10">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-2xl font-semibold text-gray-800">Detail Profile</h3>
+            <button
+              onClick={handleEditProfile}
+              className={`px-4 py-2 text-white rounded-md text-[16px] font-semibold ${isEditing ? 'bg-red-600' : 'bg-yellow-600'}`}
+            >
+              {isEditing ? "Batal Edit" : "Edit"}
+            </button>
+          </div>
+        
+          <div className="flex justify-center items-center mb-6">
+            <div className="relative">
+              <img
+                src={isEditing && imagePreview ? imagePreview : user.image_path ? `/images/profile/${user.image_path}` : `/default_profile.jpg`} 
+                alt="Profile"
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-yellow-600 shadow-lg"
+              />
+              {isEditing && (
+                <button
+                  onClick={() => document.getElementById("fileInput").click()}
+                  className="absolute bottom-0 right-0 bg-yellow-600 text-white p-2 rounded-full"
+                >
+                  <FaPencilAlt />
+                </button>
+              )}
+              <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </div>
+          </div>
+        
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="name" className="block text-gray-700 font-medium">Full Name*</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+        
+            <div>
+              <label htmlFor="email" className="block text-gray-700 font-medium">Email Address*</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+        
+            <div>
+              <label htmlFor="phone_number" className="block text-gray-700 font-medium">Nomor Handphone*</label>
+              <input
+                id="phone_number"
+                type="text"
+                value={phone_number}
+                onChange={(e) => setPhone(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+        
+            <div>
+              <label htmlFor="alamat" className="block text-gray-700 font-medium">Alamat*</label>
+              <input
+                id="alamat"
+                type="text"
+                value={alamat}
+                onChange={(e) => setAlamat(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+        
+            <div>
+              <label htmlFor="age" className="block text-gray-700 font-medium">Umur</label>
+              <input
+                id="age"
+                type="text"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+        
+            <div>
+              <label htmlFor="gender" className="block text-gray-700 font-medium">Jenis Kelamin*</label>
+              <select
+                id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                {isEditing ? "Batal Edit" : "Edit"}
+                <option value="Laki-Laki">Laki-Laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+        
+            <div>
+              <label htmlFor="height" className="block text-gray-700 font-medium">Tinggi Badan (cm)</label>
+              <input
+                id="height"
+                type="text"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+        
+            <div>
+              <label htmlFor="weight" className="block text-gray-700 font-medium">Berat Badan (kg)</label>
+              <input
+                id="weight"
+                type="text"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+          </div>
+        
+          {isEditing && (
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={handleUpdateAccount}
+                className="bg-green-600 text-white px-6 py-2 text-[16px] font-semibold rounded-lg"
+              >
+                Perbaharui
               </button>
             </div>
-            <div className="flex items-center justify-center my-2">
-              <div className="relative">
-                <img
-                  src={isEditing && imagePreview ? imagePreview : user.image_path ? `/images/profile/${user.image_path}` : `/default_profile.jpg`} // Preview or default image
-                  alt="Profile"
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-yellow-500"
-                />
-                {/* Tombol pensil hanya muncul jika sedang dalam mode edit */}
-                {isEditing && (
-                  <button
-                    onClick={() => document.getElementById("fileInput").click()}
-                    className="absolute bottom-0 right-0 bg-yellow-500 text-white p-2 rounded-full"
-                  >
-                    <FaPencilAlt />
-                  </button>
-                )}
-                <input
-                  id="fileInput"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-              </div>
-            </div>
-
-
-            {/* Mode Edit */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="name" className="block text-gray-700">Full Name*</label>
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Email Address*</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={!isEditing || isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Nomor Handphone*</label>
-                <input
-                  type="text"
-                  value={phone_number}
-                  onChange={(e) => setPhone(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Alamat*</label>
-                <input
-                  type="text"
-                  value={alamat}
-                  onChange={(e) => setAlamat(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Umur</label>
-                <input
-                  type="text"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Jenis Kelamin*</label>
-                <select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                >
-                  <option value="Laki-Laki">Laki-Laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-gray-700">Tinggi Badan (cm)</label>
-                <input
-                  type="text"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Berat Badan (kg)</label>
-                <input
-                  type="text"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  disabled={!isEditing}
-                  className={`w-full px-3 py-2 border ${isEditing ? 'border-gray-300' : 'border-transparent'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-                />
-              </div>
-            </div>
-
-            {isEditing && (
-              <div className="mt-4 flex">
-                <button
-                  onClick={handleUpdateAccount}
-                  className="bg-green-500 text-white px-4 py-2 text-[16px] font-semibold rounded-lg"
-                >
-                  Perbaharui
-                </button>
-              </div>
-            )}
-          </div>
+          )}
+        </div>
+        
         )}
 
 

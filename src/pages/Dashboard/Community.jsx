@@ -32,7 +32,11 @@ export default function Community() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   return (
@@ -126,7 +130,8 @@ export default function Community() {
           variants={itemVariants}
         >
           <p className="text-gray-300 text-lg">
-            Temukan komunitas yang tepat untuk Anda dan mulai perjalanan kebugaran Anda hari ini!
+            Temukan komunitas yang tepat untuk Anda dan mulai perjalanan
+            kebugaran Anda hari ini!
           </p>
         </motion.div>
       </div>

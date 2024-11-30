@@ -65,7 +65,7 @@ export default function Pembayaran() {
   // If there are no payments, show a message and a button to navigate to /kelas
   if (orderData.length === 0) {
     return (
-      <div className="items-center justify-center  flex flex-col rounded-lg  w-full mx-auto animate__animated animate__fadeInUp">
+      <div className="items-center justify-center flex flex-col rounded-lg w-full mx-auto animate__animated animate__fadeInUp">
         <h3 className="text-blue-500 text-4xl font-bold mb-6 text-center animate__animated animate__zoomIn">
           Data Pesanan Belum Ada
         </h3>
@@ -83,7 +83,7 @@ export default function Pembayaran() {
   }
 
   return (
-    <div className="items-center justify-start flex flex-col rounded-lg pt-6 w-full  mx-auto animate__animated animate__fadeInUp">
+    <div className="items-center justify-start flex flex-col rounded-lg pt-6 w-full mx-auto animate__animated animate__fadeInUp">
       <h3 className="text-blue-600 text-4xl font-bold mb-6 text-center animate__animated animate__zoomIn">
         Riwayat Pesanan
       </h3>
@@ -101,11 +101,11 @@ export default function Pembayaran() {
             <div className="flex flex-col items-end mb-4">
               <span
                 className={`px-4 py-1 rounded-full text-md font-semibold text-white ${order.paymentStatus === 'Diterima'
-                  ? 'bg-gradient-to-r from-green-400 to-green-600'
+                  ? 'bg-green-500'
                   : order.paymentStatus === 'Diproses'
-                    ? 'bg-gradient-to-r from-yellow-400 to-yellow-600'
-                    : 'bg-gradient-to-r from-red-400 to-red-600'
-                  } shadow-lg`}
+                    ? 'bg-yellow-500'
+                    : 'bg-red-500'
+                  } shadow-md`}
               >
                 {order.paymentStatus}
               </span>
@@ -113,7 +113,7 @@ export default function Pembayaran() {
 
             {/* Order Details */}
             <div className="space-y-4">
-              {[
+              {[ 
                 { label: 'Nama Mitra', value: (order.to?.name || 'N/A').toUpperCase() },
                 { label: 'Kelas', value: order.classInfo?.name || 'N/A' },
                 { label: 'Tanggal Pembayaran', value: `${new Date(order.createdAt).toLocaleDateString()} ${formatTime(order.createdAt)}` },
@@ -138,7 +138,6 @@ export default function Pembayaran() {
           </div>
         ))}
       </div>
-
 
       {/* Modal */}
       {isModalOpen && selectedOrder && (

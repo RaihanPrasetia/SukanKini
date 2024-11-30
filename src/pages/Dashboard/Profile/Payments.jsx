@@ -17,18 +17,18 @@ function Payments() {
   };
 
   return (
-    <div className="lg:p-6 p-0">
-      <h1 className="text-2xl font-bold text-green-500 mb-4">Pembayaran</h1>
+    <div className="lg:p-8 p-4 bg-white rounded-lg shadow-lg max-w-2xl mx-auto">
+      <h1 className="text-3xl font-semibold text-green-600 mb-6">Pembayaran</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-gray-700" htmlFor="amount">
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="amount">
             Amount
           </label>
           <input
             id="amount"
             type="number"
-            className="w-full p-2 border rounded-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
@@ -37,12 +37,12 @@ function Payments() {
         </div>
 
         <div>
-          <label className="block text-gray-700" htmlFor="paymentMethod">
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="paymentMethod">
             Payment Method
           </label>
           <select
             id="paymentMethod"
-            className="w-full p-2 border rounded-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
             required
@@ -56,14 +56,14 @@ function Payments() {
 
         <button
           type="submit"
-          className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out"
+          className="w-full bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition duration-300 ease-in-out"
         >
           Submit Payment
         </button>
       </form>
 
       {paymentStatus && (
-        <div className="mt-4 p-2 bg-green-100 text-green-700 rounded-lg shadow-md">
+        <div className="mt-6 p-4 bg-green-100 text-green-800 rounded-lg shadow-md">
           {paymentStatus}
         </div>
       )}
