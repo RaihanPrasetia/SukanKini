@@ -2,7 +2,6 @@ const { Trainer } = require('../../associations');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { Op } = require('sequelize');
 
 
 // Tentukan path folder tujuan

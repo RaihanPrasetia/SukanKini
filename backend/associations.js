@@ -8,6 +8,8 @@ const Payment = require('./models/paymentModel');
 const Bank = require('./models/bankModel');
 const Notification = require('./models/notifModel');
 const Benefit = require('./models/benefitModel');
+const Video = require('./models/videoModel');
+const Comment = require('./models/commentModel');
 
 // Define Associations
 Class.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
@@ -42,6 +44,12 @@ Payment.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
 Notification.belongsTo(User, { foreignKey: 'createdBy', as: 'from' });
 Notification.belongsTo(User, { foreignKey: 'user_id', as: 'to' });
 
+Comment.belongsTo(Video, { foreignKey: 'video_id', as: 'video' });
+Comment.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
+
+Video.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
+Video.hasMany(Comment, { foreignKey: 'video_id', as: 'comments' });
+
 module.exports = {
     Class,
     ClassSchedule,
@@ -51,7 +59,8 @@ module.exports = {
     Memberships,
     Payment,
     Bank,
-    User,
     Notification,
     Benefit,
+    Video,
+    Comment,
 };
