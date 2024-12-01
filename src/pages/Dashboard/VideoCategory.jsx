@@ -21,7 +21,7 @@ const VideoCategory = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const commentsPerPage = 4;
+  const commentsPerPage = 3;
   const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
@@ -82,8 +82,8 @@ const VideoCategory = () => {
 
   const sortedComments = currentVideo.comments
     ? [...currentVideo.comments].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      )
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )
     : [];
 
   const indexOfLastComment = currentPage * commentsPerPage;
@@ -181,29 +181,25 @@ const VideoCategory = () => {
                 <FaArrowDown className="text-xl" />
               </div>
 
-              <div className="mt-6 text-center">
+              <div className="mt-6 text-center flex flex-col justify-center items-center">
                 <button
-                  className={`flex items-center justify-center space-x-2 text-xl py-2 px-4 rounded-lg transition ${
-                    currentVideo.isLiked
-                      ? "bg-red-500 text-white"
-                      : "bg-gray-700 hover:bg-red-500 text-gray-300"
-                  }`}
+                  className={`flex items-center justify-center cursor-pointer space-x-2 text-lg ${currentVideo.isLiked === 1 ? "text-red-500" : "text-gray-400"}`}
                   onClick={() => handleLike(currentVideo.id)}
                 >
                   <FaHeart />
-                  <span>{currentVideo.likeCount}</span>
                 </button>
-                <div className="flex items-center justify-center space-x-2 mt-4 text-gray-300">
+                <span>{currentVideo.likeCount}</span>
+                <div className="flex items-center justify-center space-x-2 mt-2 text-gray-300">
                   <FaEye />
-                  <span>{currentVideo.viewCount}</span>
                 </div>
+                <span>{currentVideo.viewCount}</span>
                 <div
-                  className="flex items-center justify-center space-x-2 mt-4 cursor-pointer text-gray-300 hover:text-white transition"
+                  className="flex items-center justify-center space-x-2 mt-2 cursor-pointer text-gray-300 hover:text-white transition"
                   onClick={() => setShowComments(!showComments)}
                 >
                   <FaComment />
-                  <span>{currentVideo.comments.length}</span>
                 </div>
+                <span>{currentVideo.comments.length}</span>
               </div>
             </div>
           </>
