@@ -154,7 +154,7 @@ const MitraNavbar = ({ sidebarOpen, setSidebarOpen }) => {
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                         >
                             <img
-                                src={`/images/profile/${userData.image_path}`}
+                                src={`${userData.image_path ? `/images/profile/${userData.image_path}` : `/default_profile.jpg`} `}
                                 alt="Profile"
                                 className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
                             />
