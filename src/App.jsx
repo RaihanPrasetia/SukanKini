@@ -8,6 +8,7 @@ import Mitra from './pages/Layouts/Mitra';
 import AdminLogin from './pages/Admin/AdminLogin';
 import Payment from './pages/Mitra/Payment';
 import NotFound from './components/NotFound';
+import Team from './pages/Team/Team';
 
 
 function AppRoutes() {
@@ -50,6 +51,7 @@ function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/konfimasi/payment" element={<Payment />} />
+      <Route path="/team" element={<Team />} />
 
       {/* Jika pengguna terautentikasi */}
       {isAuthenticated ? (

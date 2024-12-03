@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faFacebook, faTiktok } from "@fortawesome/free-brands-svg-icons";
 
 const AuthFooter = () => {
+    const handleMenuClick = () => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    };
     return (
         <footer className="bg-gray-900 text-white py-8 px-10">
             <div className="container flex flex-col items-center justify-between md:flex-row space-y-6 md:space-y-0">
@@ -24,9 +27,9 @@ const AuthFooter = () => {
                     </Link>
                 </div>
                 <div className="flex flex-col items-center space-y-2 text-green-500 text-lg font-bold md:space-y-0 md:gap-6 w-full justify-center">
-                    <Link to="/about" className="hover:text-green-400 transition duration-300">Beranda</Link>
-                    <Link to="/services" className="hover:text-green-400 transition duration-300">Tim Saya</Link>
-                    <Link to="/contact" className="hover:text-green-400 transition duration-300">Tentang Kami</Link>
+                    <Link onClick={handleMenuClick} to="/about" className="hover:text-green-400 transition duration-300">Beranda</Link>
+                    <Link onClick={handleMenuClick} to="/team" className="hover:text-green-400 transition duration-300">Tim Saya</Link>
+                    <Link onClick={handleMenuClick} to="/contact" className="hover:text-green-400 transition duration-300">Tentang Kami</Link>
                 </div>
 
 
