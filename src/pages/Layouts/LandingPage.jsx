@@ -1,7 +1,6 @@
 import React from 'react';
 import Home from '../LandingPages/Home';
 import About from '../LandingPages/About';
-import Komunitas from '../LandingPages/Komunitas';
 import Kelas from '../LandingPages/Kelas';
 import Pelatih from '../LandingPages/Pelatih';
 import ClientTestimonials from '../LandingPages/ClientTestimonials';
@@ -29,11 +28,6 @@ const LandingPage = () => {
             <section id="promosi">
                 <Space />
                 <Promosi />
-            </section>
-
-            <section id="komunitas">
-                <Space />
-                <Komunitas />
             </section>
 
             <section id="kelas">

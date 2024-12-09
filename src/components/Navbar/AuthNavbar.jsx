@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getUserProfile } from "../../controllers/userController";
-import { FaHome, FaUsers, FaVideo, FaGraduationCap, FaSignOutAlt, FaBars, FaUser } from 'react-icons/fa';
+import { FaHome, FaVideo, FaGraduationCap, FaSignOutAlt, FaBars, FaUser } from 'react-icons/fa';
 
 export default function AuthNavbar() {
     const { logout } = useAuth();
@@ -93,14 +93,6 @@ export default function AuthNavbar() {
                     >
                         <FaGraduationCap className="h-6 w-6 mr-2" />
                         Kelas Pelatihan
-                    </Link>
-                    <Link
-                        to="/community"
-                        onClick={handleMenuClick}
-                        className={`flex items-center text-lg font-medium hover:text-yellow-400 transition ${isActive('/community')}`}
-                    >
-                        <FaUsers className="h-6 w-6 mr-2" />
-                        Community
                     </Link>
                     <Link
                         to="/video"
