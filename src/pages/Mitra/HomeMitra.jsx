@@ -33,9 +33,7 @@ export default function HomeMitra({ sidebarOpen }) {
           icon: 'error',
           confirmButtonText: 'OK',
         });
-        console.error("Error fetching classes:", error); // Log the error for debugging
-      } finally {
-        setLoading(false);
+
       }
     };
     fetchClasses();
