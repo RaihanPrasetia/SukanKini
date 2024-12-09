@@ -22,7 +22,7 @@ function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
-            const sections = ['home', 'about', 'promosi', 'komunitas', 'kelas', 'pelatih', 'client', 'footer'];
+            const sections = ['home', 'about', 'promosi', 'kelas', 'pelatih', 'client', 'footer'];
             const currentSection = sections.find((sectionId) => {
                 const section = document.getElementById(sectionId);
                 if (section) {
@@ -65,7 +65,7 @@ function Navbar() {
                         className={`lg:flex ${isMenuOpen ? `block absolute w-full mt-16 -top-1 right-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'} transition-all duration-300` : 'hidden'} lg:relative lg:w-auto`}
                     >
                         <div className="grid grid-cols-2 gap-4 lg:flex lg:space-x-4 p-4 lg:p-0">
-                            {['about', 'promosi', 'komunitas', 'kelas', 'pelatih', 'client'].map((section) => (
+                            {['about', 'promosi', 'kelas', 'pelatih', 'client'].map((section) => (
                                 <button
                                     key={section}
                                     onClick={() => scrollToSection(section)}
