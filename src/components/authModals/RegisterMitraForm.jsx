@@ -3,7 +3,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { checkEmailAvailability } from '../../controllers/authController';
 import sendOtpService from '../../service/sendOtpService';
 
@@ -240,9 +239,7 @@ function RegisterMitraForm({ onLoginMitra, onSendOTPMitra }) {
                         <p className="text-md text-center text-yellow-500 px-4">Atau Daftar Dengan</p>
                         <div className="flex-1 border-t border-yellow-500"></div>
                     </div>
-                    <div className="flex items-center justify-center mb-4">
-                        <Button title="Google" icon={faGoogle} className="text-nowrap bg-yellow-500 hover:text-yellow-500" />
-                    </div>
+
 
                     <p className="text-center text-sm text-yellow-500">
                         Sudah memiliki akun?{' '}

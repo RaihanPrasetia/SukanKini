@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
 import { useAuth } from '../../contexts/AuthContext';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
 import UserModel from '../../constructors/UserModel';
 
@@ -137,7 +136,6 @@ function LoginForm({ onForgotPassword, onRegister, onLoginMitra }) {
                         </p>
                         <div className="flex items-center space-x-5 justify-center">
                             <Button title="Masuk" type="submit" className="text-nowrap hover:text-green-500" onClick={handleMenuClick} />
-                            <Button title="Google" icon={faGoogle} className="text-nowrap hover:text-green-500" />
                         </div>
                     </form>
                     <p className="text-sm text-center font-medium text-gray-600 my-5">

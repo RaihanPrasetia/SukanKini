@@ -3,7 +3,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { checkEmailAvailability } from '../../controllers/authController';
 import sendOtpService from '../../service/sendOtpService';
 
@@ -149,9 +148,7 @@ function RegisterForm({ onLogin, onSendOTP }) {
                         <p className="text-md text-center text-green-500 px-4">Atau Daftar Dengan</p>
                         <div className="flex-1 border-t border-green-500"></div>
                     </div>
-                    <div className="flex items-center justify-center mb-4">
-                        <Button title="Google" icon={faGoogle} className='hover:text-green-500' />
-                    </div>
+
 
                     <p className="text-sm text-right font-medium text-gray-600">
                         Anda pengguna lama?{' '}

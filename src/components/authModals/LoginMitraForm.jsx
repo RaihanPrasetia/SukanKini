@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../assets/FormInput';
 import Button from '../assets/Button';
 import { useAuth } from '../../contexts/AuthContext';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { login } from '../../controllers/authController';
 
 function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
@@ -110,7 +109,6 @@ function LoginMitraForm({ onForgotPassword, onRegisterMitra, onLogin }) {
                         </p>
                         <div className="flex items-center space-x-5 w-full justify-center">
                             <Button title="Masuk Mitra" type="submit" className="text-nowrap bg-yellow-500 hover:text-yellow-500" />
-                            <Button title="Google" icon={faGoogle} className="text-nowrap bg-yellow-500 hover:text-yellow-500" />
                         </div>
                     </form>
                     <p className="text-sm text-center font-medium text-gray-600 my-5">
