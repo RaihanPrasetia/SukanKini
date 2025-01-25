@@ -18,7 +18,6 @@ const KelasPelatihan = () => {
   const categories = Array.from(
     new Set(classData.map((cls) => cls.category?.name))
   );
-  const locations = Array.from(new Set(classData.map((cls) => cls.address)));
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -82,7 +81,9 @@ const KelasPelatihan = () => {
       (selectedCategory
         ? classInfo.category?.name === selectedCategory
         : true) &&
-      (selectedLocation ? classInfo.address === selectedLocation : true)
+      (selectedLocation
+        ? classInfo.address?.toLowerCase().includes(selectedLocation)
+        : true)
     );
   });
 
@@ -116,82 +117,73 @@ const KelasPelatihan = () => {
         className="py-16 px-6 lg:px-20 min-h-screen bg-gray-50"
       >
         <div className="flex flex-col md:flex-row items-center justify-between w-full md:space-y-0 space-y-6">
-  <div className="flex space-x-6 w-full md:w-auto">
-    {/* Dropdown for Categories */}
-    <div className="flex flex-col items-center justify-center">
-      <span className="mb-2 text-xl font-semibold text-gray-700">Filter Kategori</span>
-      <div className="relative flex items-center">
-        <select
-          className="border border-gray-300 rounded-full pl-6 pr-10 py-3 bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-all cursor-pointer text-gray-600 font-medium"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value="">Semua Kategori</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-        <span className="absolute top-[18px] right-4 text-gray-500">
-          <FaChevronDown size={16} />
-        </span>
-      </div>
-    </div>
+          <div className="flex space-x-6 w-full md:w-auto">
+            {/* Dropdown for Categories */}
+            <div className="flex flex-col items-center justify-center">
+              <span className="mb-2 text-xl font-semibold text-gray-700">Filter Kategori</span>
+              <div className="relative flex items-center">
+                <select
+                  className="border border-gray-300 rounded-full pl-6 pr-10 py-3 bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-all cursor-pointer text-gray-600 font-medium"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="">Semua Kategori</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                <span className="absolute top-[18px] right-4 text-gray-500">
+                  <FaChevronDown size={16} />
+                </span>
+              </div>
+            </div>
 
-    {/* Dropdown for Locations */}
-    <div className="flex flex-col items-center justify-center">
-      <span className="mb-2 text-xl font-semibold text-gray-700">Filter Lokasi</span>
-      <div className="relative flex items-center">
-        <select
-          className="border border-gray-300 rounded-full pl-6 pr-10 py-3 bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-all cursor-pointer text-gray-600 font-medium"
-          value={selectedLocation}
-          onChange={(e) => setSelectedLocation(e.target.value)}
-        >
-          <option value="">Semua Lokasi</option>
-          {locations.map((location) => (
-            <option key={location} value={location}>
-              {location}
-            </option>
-          ))}
-        </select>
-        <span className="absolute right-4 top-[18px] text-gray-500">
-          <FaChevronDown size={16} />
-        </span>
-      </div>
-    </div>
-  </div>
+            {/* Dropdown for Locations */}
+            <div className="flex flex-col items-center justify-center">
+              <span className="mb-2 text-xl font-semibold text-gray-700">Cari Lokasi</span>
+              <input
+                type="text"
+                placeholder="Masukkan lokasi..."
+                value={selectedLocation}
+                onChange={(e) => setSelectedLocation(e.target.value.toLowerCase())}
+                className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600 transition-all w-full text-gray-600"
+              />
+            </div>
 
-  {/* Price Search */}
-  <div className="relative flex flex-col items-center w-full md:w-auto">
-    <span className="mb-2 text-xl font-semibold text-gray-700">Cari berdasarkan Harga</span>
-    <input
-      type="number"
-      placeholder="Harga maksimal..."
-      value={priceSearchTerm}
-      onChange={(e) => setPriceSearchTerm(e.target.value)}
-      className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-green-500 transition-all w-full md:w-80 text-gray-600"
-    />
-  </div>
+          </div>
 
-  {/* Search by Name */}
-  <div className="relative flex flex-col items-center w-full md:w-auto">
-    <span className="mb-2 text-xl font-semibold text-gray-700">Cari Nama Kelas / Mitra</span>
-    <div className="relative flex items-center w-full">
-      <input
-        type="text"
-        placeholder="Cari Kelas ..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all text-gray-600"
-      />
-      {/* Search Icon */}
-      <span className="absolute right-4 text-green-500 hover:text-green-700 cursor-pointer">
-        <FaSearch size={20} />
-      </span>
-    </div>
-  </div>
-</div>
+          {/* Price Search */}
+          <div className="relative flex flex-col items-center w-full md:w-auto">
+            <span className="mb-2 text-xl font-semibold text-gray-700">Cari berdasarkan Harga</span>
+            <input
+              type="number"
+              placeholder="Harga maksimal..."
+              value={priceSearchTerm}
+              onChange={(e) => setPriceSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-green-500 transition-all w-full md:w-80 text-gray-600"
+            />
+          </div>
+
+          {/* Search by Name */}
+          <div className="relative flex flex-col items-center w-full md:w-auto">
+            <span className="mb-2 text-xl font-semibold text-gray-700">Cari Nama Kelas / Mitra</span>
+            <div className="relative flex items-center w-full">
+              <input
+                type="text"
+                placeholder="Cari Kelas ..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-80 focus:outline-none focus:border-green-500 transition-all text-gray-600"
+              />
+              {/* Search Icon */}
+              <span className="absolute right-4 text-green-500 hover:text-green-700 cursor-pointer">
+                <FaSearch size={20} />
+              </span>
+            </div>
+          </div>
+        </div>
 
 
         {loading ? (

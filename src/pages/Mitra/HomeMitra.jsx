@@ -35,6 +35,8 @@ export default function HomeMitra({ sidebarOpen }) {
         });
 
       }
+      setLoading(false);
+
     };
     fetchClasses();
   }, []);
