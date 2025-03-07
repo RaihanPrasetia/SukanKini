@@ -25,6 +25,24 @@ const seedData = async () => {
       gender: 'Laki-Laki',
       age: 30,
     });
+    const user = await User.create({
+      name: 'User 1',
+      password: hashedPassword,
+      email: 'user1@example.com',
+      role: 'user',
+      isVerified: true,
+      gender: 'Laki-Laki',
+      age: 30,
+    });
+    const mitra = await User.create({
+      name: 'Mitra 1',
+      password: hashedPassword,
+      email: 'mitra1@example.com',
+      role: 'mitra',
+      isVerified: true,
+      gender: 'Laki-Laki',
+      age: 30,
+    });
 
     console.log('Admin seeded successfully.');
 

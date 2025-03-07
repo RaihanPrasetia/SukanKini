@@ -257,7 +257,7 @@ const KelasMitra = () => {
   };
 
   return (
-    <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[80vh]">
+    <div className="w-full bg-white p-6 lg:px-16 rounded-lg py-24 lg:pt-32 shadow-lg min-h-[100vh]">
       <div className="flex flex-col lg:flex-row justify-between items-center mb-5">
         <h2 className="text-3xl font-bold text-gray-800 mb-4 lg:mb-0">
           Daftar Kelas
@@ -958,7 +958,7 @@ const KelasMitra = () => {
         </div>
       )}
 
-      <div className="overflow-x-auto mt-6">
+      <div className="overflow-x-auto mt-6 flex-grow">
         {loading ? (
           <div className="text-center text-gray-600 font-medium">
             Loading...
@@ -971,10 +971,8 @@ const KelasMitra = () => {
                   <th className="px-6 py-4 text-center">Gambar</th>
                   <th className="px-6 py-4">Nama Kelas</th>
                   <th className="px-6 py-4">Kategori</th>
-                  <th className="px-6 py-4">Hari & Jam</th>
-                  <th className="px-6 py-4">Trainer</th>
+                  <th className="px-6 w-max text-center py-4">Trainer</th>
                   <th className="px-6 py-4">Alamat</th>
-                  <th className="px-6 py-4">Benefit</th>
                   <th className="px-6 py-4">Harga</th>
                   <th className="px-6 py-4 text-center">Aksi</th>
                 </tr>
@@ -1008,47 +1006,6 @@ const KelasMitra = () => {
                       <td className="px-6 py-4 text-gray-700">
                         {kelas.category.name}
                       </td>
-                      <td className="px-6 py-4">
-                        <ul className="space-y-3">
-                          {kelas.schedules.map((schedule, index) => {
-                            const formattedTime = schedule.jam
-                              .split(":")
-                              .slice(0, 2)
-                              .join(":");
-                            return (
-                              <li
-                                key={index}
-                                className="flex items-center bg-gray-50 border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow"
-                              >
-                                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full mr-4">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M8 7V3M16 7V3M9 21h6m-6 0a2 2 0 01-2-2m8 2a2 2 0 002-2m-6-10h6m-6 0H6m6 0V5m0 6v6"
-                                    />
-                                  </svg>
-                                </div>
-                                <div>
-                                  <p className="font-semibold text-gray-800">
-                                    {schedule.hari}
-                                  </p>
-                                  <p className="text-sm text-gray-600">
-                                    {formattedTime}
-                                  </p>
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </td>
 
                       <td className="px-6 py-4 text-gray-700">
                         <div className="flex items-center space-x-2">
@@ -1057,31 +1014,10 @@ const KelasMitra = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-gray-700">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex space-x-2">
                           <i className="fa fa-map-marker-alt text-blue-600 w-6 h-6"></i>
                           <span className="text-sm">{kelas.address}</span>
                         </div>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <ul className="space-y-2">
-                          {kelas.benefits.map((benefit, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start space-x-2"
-                            >
-                              <span className="block w-2 h-2 bg-green-600 rounded-full mt-1"></span>
-                              <div>
-                                <span className="font-medium text-gray-800">
-                                  {benefit.name}
-                                </span>
-                                <p className="text-sm text-gray-500">
-                                  {benefit.description}
-                                </p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
                       </td>
 
                       <td className="px-6 py-4 font-semibold text-green-600">

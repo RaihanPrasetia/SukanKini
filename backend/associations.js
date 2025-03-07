@@ -11,6 +11,7 @@ const Benefit = require('./models/benefitModel');
 const Video = require('./models/videoModel');
 const Comment = require('./models/commentModel');
 const Like = require('./models/likeModel');
+const Rating = require('./models/ratingModel');
 
 // Define Associations
 Class.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
@@ -25,6 +26,7 @@ Class.hasMany(ClassSchedule, { foreignKey: 'class_id', as: 'schedules' });
 Class.hasMany(Memberships, { foreignKey: 'class_id', as: 'members' });
 Class.hasMany(Payment, { foreignKey: 'class_id', as: 'payments' });
 Class.hasMany(Benefit, { foreignKey: 'class_id', as: 'benefits' });
+Class.hasMany(Rating, { foreignKey: 'class_id', as: 'ratings' });
 
 Trainer.hasMany(Class, { foreignKey: 'trainer_id', as: 'class' });
 Trainer.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
@@ -52,6 +54,9 @@ Video.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
 Video.hasMany(Comment, { foreignKey: 'video_id', as: 'comments' });
 Video.hasMany(Like, { foreignKey: 'video_id', as: 'likes' });
 
+Rating.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Rating.belongsTo(Class, { foreignKey: 'class_id', as: 'class' });
+
 Like.belongsTo(Video, { foreignKey: 'video_id', as: 'video' });
 
 module.exports = {
@@ -68,4 +73,5 @@ module.exports = {
     Benefit,
     Video,
     Comment,
+    Rating,
 };

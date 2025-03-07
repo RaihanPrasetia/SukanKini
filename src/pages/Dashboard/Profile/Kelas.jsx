@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiMapPin, FiClock, FiCalendar } from "react-icons/fi";
+import { FiMapPin, FiClock, FiCalendar, FiStar } from "react-icons/fi";
 import { motion } from "framer-motion";
 import profileClass from "../../../service/User/profileClass";
+import ratingService from "../../../service/User/ratingService";
+import Swal from "sweetalert2";
 
 const Kelas = () => {
   const [classDetails, setClassDetails] = useState([]); // Kelas Hari Ini
   const [allClass, setAllClass] = useState([]); // Semua Kelas
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +47,46 @@ const Kelas = () => {
     if (!time) return "Jam tidak tersedia";
     const [hour, minute] = time.split(":");
     return `${hour}:${minute}`;
+  };
+
+  const handleOpenModal = (kelas) => {
+    setSelectedClass(kelas);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedClass(null);
+    setOpenModal(false);
+    setRating(0);
+    setMessage("");
+  };
+
+  const handleSubmitRating = async (e) => {
+    e.preventDefault();
+    const formData = {
+      class_id: selectedClass.class.id,
+      message: message,
+      value: rating
+    }
+    try {
+      const result = await ratingService.createRating(formData);
+      if (result.message && result.rating) {
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Rating Submitted',
+          text: result.message,
+        });
+        handleCloseModal();
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'There was an error submitting your rating. Please try again.',
+      });
+      console.error("Error submitting rating:", err);
+    }
   };
 
   return (
@@ -129,11 +175,10 @@ const Kelas = () => {
 
                 <button
                   onClick={() => navigate(`/kelas/${kelas.class?.id}`)}
-                  className={`mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 ${
-                    kelas.class?.deletedAt !== null
-                      ? "bg-gray-500 cursor-not-allowed"
-                      : ""
-                  }`}
+                  className={`mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 ${kelas.class?.deletedAt !== null
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : ""
+                    }`}
                   disabled={kelas.class?.deletedAt !== null}
                 >
                   Lihat Detail Kelas
@@ -213,17 +258,75 @@ const Kelas = () => {
                 </p>
               )}
 
-              <button
-                onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
-                className={`mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 ${
-                  favorite.class?.deletedAt !== null ? "hidden" : ""
-                }`}
-                disabled={favorite.class?.deletedAt !== null}
-              >
-                Lihat Detail Kelas
-              </button>
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => navigate(`/kelas/${favorite.class?.id}`)}
+                  className={`mt-4 bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700 ${favorite.class?.deletedAt !== null ? "hidden" : ""
+                    }`}
+                  disabled={favorite.class?.deletedAt !== null}
+                >
+                  Lihat Detail Kelas
+                </button>
+                <button
+                  onClick={() => handleOpenModal(favorite)}
+                  className={`mt-4 bg-yellow-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-yellow-700 ${favorite.class?.deletedAt !== null ? "hidden" : ""
+                    }`}
+                  disabled={favorite.class?.deletedAt !== null}
+                >
+                  Rating
+                </button>
+              </div>
             </motion.div>
           ))}
+        </div>
+      )}
+
+      {openModal && selectedClass && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+            <h2 className="text-2xl font-bold mb-4">{selectedClass.class?.name}</h2>
+            <form onSubmit={handleSubmitRating}>
+              <div className="flex mb-4">
+                {[...Array(5)].map((star, index) => {
+                  const ratingValue = index + 1;
+                  return (
+                    <label key={index}>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value={ratingValue}
+                        onClick={() => setRating(ratingValue)}
+                        className="hidden"
+                      />
+                      <FiStar
+                        className={`cursor-pointer text-2xl ${ratingValue <= rating ? "text-yellow-500" : "text-gray-300"}`}
+                      />
+                    </label>
+                  );
+                })}
+              </div>
+              <textarea
+                className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                rows="4"
+                placeholder="Tulis pesan Anda..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              ></textarea>
+              <button
+                type="submit"
+                className="bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-green-700"
+              >
+                Submit Rating
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="ml-4 bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 hover:bg-red-700"
+              >
+                Close
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

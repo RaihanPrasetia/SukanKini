@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DaftarKelasPopup from "./DaftarKelas";
 import { FaArrowDown, FaChevronDown, FaSearch } from "react-icons/fa";
+import { FiStar } from "react-icons/fi";
 import classService from "../../../service/User/classService";
 
 const KelasPelatihan = () => {
@@ -26,6 +27,7 @@ const KelasPelatihan = () => {
       try {
         const classes = await classService.getAllClasses();
         setClassData(classes);
+        console.log(classes)
       } catch (err) {
         setError(err.message || "Failed to fetch classes.");
       } finally {
@@ -222,13 +224,22 @@ const KelasPelatihan = () => {
 
                 {/* Class Details */}
                 <div className="p-6 flex flex-col">
-                  {/* Location */}
-                  <p className="text-gray-700 text-sm flex items-center mb-4">
-                    <span className="material-icons text-green-500 mr-2">
-                      location_on
-                    </span>
-                    {classInfo.address}
-                  </p>
+                  <div className="flex justify-between items-center">
+                    {/* Location */}
+                    <p className="text-gray-700 text-lg flex font-bold items-center">
+                      <span className="material-icons text-green-500 mr-2">
+                        location:
+                      </span>
+                      {classInfo.address}
+                    </p>
+                    {/* Rating */}
+                    <div className="flex items-center">
+                      <FiStar className="text-yellow-500 mr-1" />
+                      <span className="text-gray-700 text-lg font-bold">
+                        {classInfo.averageRating}
+                      </span>
+                    </div>
+                  </div>
 
                   {/* Schedule */}
                   {classInfo.schedules && classInfo.schedules.length > 0 && (

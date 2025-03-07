@@ -20,6 +20,7 @@ const getBankMitra = require('./user/bankMitra');
 const commentRoutes = require('./user/commentRoutes');
 const videoUserRoute = require('./user/videosRoutes');
 const likeRoute = require('./user/likeRoutes');
+const ratingRoute = require('./user/ratingRoutes');
 
 // import Send Otp Routes & notif
 const sendOtp = require('./sendOtpRoutes');
@@ -55,6 +56,7 @@ router.use(notifications);
 router.use(commentRoutes);
 router.use(videoUserRoute);
 router.use(likeRoute);
+router.use(ratingRoute);
 
 // Admin Routes
 router.use('/admin', adminPayment);

@@ -1,4 +1,4 @@
-const { Memberships, User, Class, ClassSchedule, Category, Trainer, Benefit } = require('../../associations');
+const { Memberships, User, Class, ClassSchedule, Category, Trainer, Benefit, Rating } = require('../../associations');
 const moment = require('moment'); // Pastikan moment.js terinstal
 moment.locale('id');
 const { Op } = require('sequelize');
@@ -135,6 +135,16 @@ const getClassById = async (req, res) => {
                     model: User,
                     as: 'owner',
                     attributes: ['id', 'name', 'alamat', 'phone_number']
+                },
+                {
+                    model: Rating,
+                    as: 'ratings',
+                    attributes: ['id', 'message', 'value', 'createdAt'],
+                    include: [
+                        {
+                            model: User, as: 'user', attributes: ['name', 'image_path']
+                        }
+                    ]
                 }
             ],
             attributes: ['id', 'name', 'createdBy', 'category_id', 'image_path', 'alamat', 'price', 'createdAt']
@@ -183,6 +193,11 @@ const getClassById = async (req, res) => {
                     model: User,
                     as: 'owner',
                     attributes: ['id', 'name', 'alamat', 'phone_number']
+                },
+                {
+                    model: Rating,
+                    as: 'ratings',
+                    attributes: ['id', 'message', 'value', 'createdAt']
                 }
             ],
             attributes: ['id', 'name', 'createdBy', 'image_path', 'alamat', 'price', 'createdAt']
@@ -202,7 +217,6 @@ const getClassById = async (req, res) => {
 
 
 const getAllClass = async (req, res) => {
-
     try {
         const allClass = await Class.findAll({
             include: [
@@ -215,7 +229,6 @@ const getAllClass = async (req, res) => {
                     model: Benefit,
                     as: 'benefits',
                     attributes: ['id', 'name', 'description']
-
                 },
                 {
                     model: Category,
@@ -233,17 +246,33 @@ const getAllClass = async (req, res) => {
                     model: User,
                     as: 'owner',
                     attributes: ['id', 'name', 'alamat', 'phone_number']
+                },
+                {
+                    model: Rating,
+                    as: 'ratings',
+                    attributes: ['id', 'message', 'value', 'createdAt']
                 }
             ],
             attributes: ['id', 'name', 'createdBy', 'image_path', 'alamat', 'price', 'createdAt']
         });
-        res.status(200).json({ classes: allClass });
+
+        // Calculate average rating for each class
+        const classesWithRatings = allClass.map(cls => {
+            const ratings = cls.ratings;
+            const totalRating = ratings.reduce((acc, rating) => acc + rating.value, 0);
+            const averageRating = ratings.length > 0 ? totalRating / ratings.length : 0;
+            return {
+                ...cls.toJSON(),
+                averageRating: averageRating.toFixed(2) // Round to 2 decimal places
+            };
+        });
+
+        res.status(200).json({ classes: classesWithRatings });
     } catch (error) {
         res.status(500).json({ message: `Terjadi kesalahan: ${error.message}` });
     }
+};
 
-
-}
 
 
 module.exports = { getUserMemberships, getClassNow, getAllClass, getClassById };

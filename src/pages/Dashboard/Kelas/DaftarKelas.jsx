@@ -265,9 +265,8 @@ const DaftarKelasPopup = ({ onClose, classInfo }) => {
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className={`bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 transition-all transform hover:scale-105 ${
-                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 transition-all transform hover:scale-105 ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {isSubmitting ? "Mengirim..." : "Konfirmasi"}
               </button>

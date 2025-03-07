@@ -15,6 +15,7 @@ const getAllClasses = async () => {
 
         // Ensure that the data structure matches what's expected
         if (response.data && Array.isArray(response.data.classes)) {
+            console.log("Data Class: ", response.data.classes)
             // Map response data to Membership instances
             return response.data.classes.map((classes) => new Class(classes));
         } else {
@@ -49,6 +50,7 @@ const getClassById = async (classId) => {
                 price: classData.price,
                 schedules: classData.schedules || [],  // Default to empty if not available
                 benefits: classData.benefits || [],  // Default to empty if not available
+                ratings: classData.ratings || [],  // Default to empty if not available
                 trainer: classData.trainer || { name: 'Unknown', image_path: '' },  // Default to 'Unknown' if no trainer
                 category: classData.category || { name: 'Unknown' },  // Default to 'Unknown' if no category
                 createdBy: classData.createdBy,

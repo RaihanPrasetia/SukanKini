@@ -3,6 +3,7 @@ export default class Class {
         id,
         name,
         alamat,
+        averageRating,
         price,
         image_path,
         owner = null, // Default ke null jika tidak ada
@@ -19,6 +20,7 @@ export default class Class {
         this.id = id;
         this.name = name;
         this.address = alamat;
+        this.averageRating = averageRating;
         this.price = price;
         this.createdBy = createdBy;
         this.imagePath = image_path;
